@@ -1,17 +1,13 @@
 openapi: 3.1.0
 info:
   contact: {}
-  title: Binance smart chain (BSC)
+  title: Klaytn
   version: 3.9.3
   x-logo:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                  <p>Binance Smart Chain (BSC) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
-                  Tatum supports 2 chains:
-                  <ul><li>Mainnet - a regular live chain
-                  <li> Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-                  a faucet, e.g. <a target="_blank" href="https://testnet.binance.org/faucet-smart/">https://testnet.binance.org/faucet-smart</a></li></ul></p>
+                <p>Klaytn is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Baobab Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://baobab.wallet.klaytn.com/access?next=faucet\">https://baobab.wallet.klaytn.com/access?next=faucet</a></li></ul></p>
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
@@ -25,13 +21,13 @@ tags:
   - description: ''
     name: Utilities
 paths:
-  /v3/bsc/wallet:
+  /v3/polygon/wallet:
     get:
       description: |
-        <h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for BSC wallet with derivation path m'/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
-        Generate BIP44 compatible BSC wallet.</p>
-      operationId: BscGenerateWallet
-      summary: Generate BSC wallet
+        <h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for Polygon wallet with derivation path m'/44'/966'/0'/0. More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
+        Generate BIP44 compatible Polygon wallet.</p>
+      operationId: PolygonGenerateWallet
+      summary: Generate Polygon wallet
       tags:
         - Account
       parameters:
@@ -71,14 +67,14 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  '/v3/bsc/address/{xpub}/{index}':
+  '/v3/polygon/address/{xpub}/{index}':
     get:
       description: |
         <h4>1 credit per API call.</h4><br/>
-        <p>Generate BSC account deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate
+        <p>Generate Polygon account deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate
         up to 2^31 addresses starting from index 0 until 2^31.</p>
-      operationId: BscGenerateAddress
-      summary: Generate BSC account address from Extended public key
+      operationId: PolygonGenerateAddress
+      summary: Generate Polygon account address from Extended public key
       tags:
         - Account
       parameters:
@@ -105,7 +101,7 @@ paths:
                 properties:
                   address:
                     type: string
-                    description: BSC address
+                    description: Polygon address
                     example: '0xa7673161CbfE0116A4De9E341f8465940c2211d4'
           description: OK
         '400':
@@ -130,14 +126,14 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  /v3/bsc/wallet/priv:
+  /v3/polygon/wallet/priv:
     post:
       description: |
         <h4>1 credit per API call.</h4><br/>
         <p>Generate private key of address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic
         can generate up to 2^31 private keys starting from index 0 until 2^31.</p>
-      operationId: BscGenerateAddressPrivateKey
-      summary: Generate BSC private key
+      operationId: PolygonGenerateAddressPrivateKey
+      summary: Generate Polygon private key
       tags:
         - Account
       requestBody:
@@ -175,13 +171,16 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  '/v3/bsc/web3/{xApiKey}':
+  '/v3/polygon/web3/{xApiKey}':
     post:
       description: |
         <h4>2 credits per API call.</h4><br/>
-        <p>Use this endpoint URL as a http-based web3 driver to connect directly to the BSC node provided by Tatum.
-        To learn more about BSC Web3, please visit <a href="https://bsc.org/en/developers/" target="_blank">BSC developer's guide.</a></p>
-      operationId: BscWeb3Driver
+        <p>Use this endpoint URL as a http-based web3 driver to connect directly to the Polygon node provided by Tatum.
+        To learn more about Polygon Web3, please visit <a href="https://docs.matic.network/" target="_blank">Polygon developer's guide.</a></p>
+      operationId: PolygonWeb3Driver
+      summary: Web3 HTTP driver
+      tags:
+        - Utilities
       parameters:
         - description: Tatum X-API-Key used for authorization.
           in: path
@@ -234,13 +233,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal server error. There was an error on the server during the processing of the request.
-      summary: Web3 HTTP driver
-      tags:
-        - Utilities
-  /v3/bsc/block/current:
+  /v3/polygon/block/current:
     get:
-      description: <h4>1 credit per API call.</h4><br/><p>Get BSC current block number. This is the number of the latest block in the blockchain.</p>
-      operationId: BscGetCurrentBlock
+      description: <h4>1 credit per API call.</h4><br/><p>Get Polygon current block number. This is the number of the latest block in the blockchain.</p>
+      operationId: PolygonGetCurrentBlock
       summary: Get current block number
       tags:
         - Block
@@ -269,11 +265,11 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  '/v3/bsc/block/{hash}':
+  '/v3/polygon/block/{hash}':
     get:
-      description: <h4>1 credit per API call.</h4><br/><p>Get BSC block by block hash or block number.</p>
-      operationId: BscGetBlock
-      summary: Get BSC block by hash
+      description: <h4>1 credit per API call.</h4><br/><p>Get Polygon block by block hash or block number.</p>
+      operationId: PolygonGetBlock
+      summary: Get Polygon block by hash
       tags:
         - Block
       parameters:
@@ -313,11 +309,11 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  '/v3/bsc/account/balance/{address}':
+  '/v3/polygon/account/balance/{address}':
     get:
-      description: <h4>1 credit per API call.</h4><br/><p>Get BSC account balance in BNB. This method does not prints any balance of the BEP20 or BEP721 tokens on the account.</p>
-      operationId: BscGetBalance
-      summary: Get BSC Account balance
+      description: <h4>1 credit per API call.</h4><br/><p>Get Polygon account balance in MATIC. This method does not prints any balance of the ERC20 or ERC721 tokens on the account.</p>
+      operationId: PolygonGetBalance
+      summary: Get Polygon Account balance
       tags:
         - Account
       parameters:
@@ -337,7 +333,7 @@ paths:
                 properties:
                   balance:
                     type: string
-                    description: Balance in BNB
+                    description: Balance in MATIC
                     example: '10.52'
           description: OK
         '400':
@@ -362,11 +358,11 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  '/v3/bsc/transaction/{hash}':
+  '/v3/polygon/transaction/{hash}':
     get:
-      description: <h4>2 credit per API call.</h4><br/><p>Get BSC transaction by transaction hash.</p>
-      operationId: BscGetTransaction
-      summary: Get BSC Transaction
+      description: <h4>2 credit per API call.</h4><br/><p>Get Polygon transaction by transaction hash.</p>
+      operationId: PolygonGetTransaction
+      summary: Get Polygon Transaction
       tags:
         - Transaction
       parameters:
@@ -382,7 +378,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BscTx'
+                $ref: '#/components/schemas/PolygonTx'
           description: OK
         '400':
           content:
@@ -413,14 +409,102 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  '/v3/bsc/transaction/count/{address}':
+  '/v3/polygon/account/transaction/{address}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get Polygon transactions by address. This includes incoming and outgoing transactions for the address.</p>
+      operationId: PolygonGetTransactionByAddress
+      summary: Get Polygon transactions by address
+      tags:
+        - Transaction
+      parameters:
+        - description: Account address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: '0x8ce4e40889a13971681391aad29e88efaf91f784'
+        - description: Max number of items per page is 50.
+          in: query
+          name: pageSize
+          schema:
+            type: number
+            example: 10
+            maximum: 50
+            minimum: 1
+          required: true
+        - description: Offset to obtain next page of the data.
+          in: query
+          name: offset
+          schema:
+            type: number
+            example: 0
+        - description: Transactions from this block onwords will be included.
+          in: query
+          name: from
+          schema:
+            type: number
+            minimum: 0
+            example: 1087623
+        - description: Transactions up to this block will be included.
+          in: query
+          name: to
+          schema:
+            type: number
+            minimum: 0
+            example: 1087823
+        - description: 'Sorting of the data. ASC - oldest first, DESC - newest first.'
+          in: query
+          name: sort
+          schema:
+            type: string
+            default: DESC
+            example: ASC
+            enum:
+              - ASC
+              - DESC
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolygonTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/polygon/transaction/count/{address}':
     get:
       description: |
         <h4>1 credit per API call.</h4><br/>
-        <p>Get a number of outgoing BSC transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,
+        <p>Get a number of outgoing Polygon transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,
         which are not yet processed by the blockchain. To distinguish between them, there is a counter called a nonce, which represents
         the order of the transaction in the list of outgoing transactions.</p>
-      operationId: BscGetTransactionCount
+      operationId: PolygonGetTransactionCount
+      summary: Get count of outgoing Polygon transactions
+      tags:
+        - Transaction
       parameters:
         - description: address
           in: path
@@ -462,14 +546,11 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Get count of outgoing BSC transactions
-      tags:
-        - Transaction
-  /v3/bsc/transaction:
+  /v3/polygon/transaction:
     post:
       description: |
         <h4>2 credits per API call.</h4><br/>
-        <p>Send BNB or Tatum supported BEP20 token from account to account.<br/><br/>
+        <p>Send MATIC from account to account.<br/><br/>
         This operation needs the <strong>private key</strong> of the blockchain address.
         <strong>Warning:</strong> Do not expose private keys to the internet because there is a strong possibility of stealing keys and loss of funds. 
         </br>
@@ -480,8 +561,8 @@ paths:
         Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.
         </p>
         </p>
-      operationId: BscBlockchainTransfer
-      summary: Send BSC / BEP20 from account to account
+      operationId: PolygonBlockchainTransfer
+      summary: Send MATIC from account to account
       tags:
         - Transaction
       requestBody:
@@ -489,8 +570,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/TransferBscBlockchain'
-                - $ref: '#/components/schemas/TransferBscBlockchainKMS'
+                - $ref: '#/components/schemas/TransferPolygonBlockchain'
+                - $ref: '#/components/schemas/TransferPolygonBlockchainKMS'
         required: true
       responses:
         '200':
@@ -521,12 +602,12 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403BscBroadcast'
-                  - $ref: '#/components/schemas/Error403BscGasPrice'
-                  - $ref: '#/components/schemas/Error403BscTxBody'
-                  - $ref: '#/components/schemas/Error403BscGasCalculation'
-                  - $ref: '#/components/schemas/Error403BscTxHash'
-                  - $ref: '#/components/schemas/Error403BscTxSign'
+                  - $ref: '#/components/schemas/Error403PolygonBroadcast'
+                  - $ref: '#/components/schemas/Error403PolygonGasPrice'
+                  - $ref: '#/components/schemas/Error403PolygonTxBody'
+                  - $ref: '#/components/schemas/Error403PolygonGasCalculation'
+                  - $ref: '#/components/schemas/Error403PolygonTxHash'
+                  - $ref: '#/components/schemas/Error403PolygonTxSign'
         '500':
           content:
             application/json:
@@ -535,21 +616,21 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  /v3/bsc/gas:
+  /v3/polygon/gas:
     post:
       description: |
         <h4>2 credits per API call.</h4><br/>
-        <p>Estimate gasLimit and gasPrice of the BSC transaction. Gas price is obtained from <a href="https://explorer.bitquery.io/bsc/gas" target="_blank">https://explorer.bitquery.io/bsc/gas</a>.
+        <p>Estimate gasLimit and gasPrice of the Polygon transaction. Gas price is obtained from <a href="https://gasstation-mainnet.matic.network/" target="_blank">https://gasstation-mainnet.matic.network/</a>.
         </p>
-      operationId: BscEstimateGas
-      summary: Estimate BSC transaction fees
+      operationId: PolygonEstimateGas
+      summary: Estimate Polygon transaction fees
       tags:
         - Transaction
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BscEstimateGas'
+              $ref: '#/components/schemas/PolygonEstimateGas'
         required: true
       responses:
         '200':
@@ -590,8 +671,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403BscTxBody'
-                  - $ref: '#/components/schemas/Error403BscGasCalculation'
+                  - $ref: '#/components/schemas/Error403PolygonTxBody'
+                  - $ref: '#/components/schemas/Error403PolygonGasCalculation'
         '500':
           content:
             application/json:
@@ -600,7 +681,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  /v3/bsc/smartcontract:
+  /v3/polygon/smartcontract:
     post:
       description: |
         <h4>2 credits per API call.</h4><br/>
@@ -611,7 +692,7 @@ paths:
         or signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
         <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
         Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.</p>
-      operationId: BscBlockchainSmartContractInvocation
+      operationId: PolygonBlockchainSmartContractInvocation
       summary: Invoke Smart Contract method
       tags:
         - Utilities
@@ -620,9 +701,9 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/CallBscSmartContractReadMethod'
-                - $ref: '#/components/schemas/CallBscSmartContractMethod'
-                - $ref: '#/components/schemas/CallBscSmartContractMethodKMS'
+                - $ref: '#/components/schemas/CallPolygonSmartContractReadMethod'
+                - $ref: '#/components/schemas/CallPolygonSmartContractMethod'
+                - $ref: '#/components/schemas/CallPolygonSmartContractMethodKMS'
         required: true
       responses:
         '200':
@@ -654,12 +735,12 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403BscBroadcast'
-                  - $ref: '#/components/schemas/Error403BscGasPrice'
-                  - $ref: '#/components/schemas/Error403BscScBody'
-                  - $ref: '#/components/schemas/Error403BscGasCalculation'
-                  - $ref: '#/components/schemas/Error403BscTxHash'
-                  - $ref: '#/components/schemas/Error403BscTxSign'
+                  - $ref: '#/components/schemas/Error403PolygonBroadcast'
+                  - $ref: '#/components/schemas/Error403PolygonGasPrice'
+                  - $ref: '#/components/schemas/Error403PolygonScBody'
+                  - $ref: '#/components/schemas/Error403PolygonGasCalculation'
+                  - $ref: '#/components/schemas/Error403PolygonTxHash'
+                  - $ref: '#/components/schemas/Error403PolygonTxSign'
         '500':
           content:
             application/json:
@@ -668,14 +749,14 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-  /v3/bsc/broadcast:
+  /v3/polygon/broadcast:
     post:
       description: |
         <h4>2 credits per API call.</h4><br/>
-        <p>Broadcast signed transaction to BSC blockchain. This method is used internally from Tatum KMS or Tatum client libraries.
+        <p>Broadcast signed transaction to Polygon blockchain. This method is used internally from Tatum KMS or Tatum client libraries.
         It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
-      operationId: BscBroadcast
-      summary: Broadcast signed BSC transaction
+      operationId: PolygonBroadcast
+      summary: Broadcast signed Polygon transaction
       tags:
         - Transaction
       requestBody:
@@ -710,7 +791,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error403BscBroadcast'
+                $ref: '#/components/schemas/Error403PolygonBroadcast'
         '500':
           content:
             application/json:
@@ -739,274 +820,6 @@ components:
       required:
         - txData
       type: object
-    BscTx:
-      type: object
-      properties:
-        blockHash:
-          description: Hash of the block where this transaction was in.
-          type: string
-          example: '0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137'
-        status:
-          type: boolean
-          example: true
-          description: 'TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction.'
-        blockNumber:
-          type: number
-          description: Block number where this transaction was in.
-          example: 6470854
-        from:
-          type: string
-          description: Address of the sender.
-          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-        gas:
-          type: number
-          description: Gas provided by the sender.
-          example: 21000
-        gasPrice:
-          type: string
-          description: Gas price provided by the sender in wei.
-          example: '1000000000'
-        transactionHash:
-          type: string
-          description: Hash of the transaction.
-          example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
-        input:
-          type: string
-          description: The data sent along with the transaction.
-          example: 0x
-        nonce:
-          type: number
-          description: The number of transactions made by the sender prior to this one.
-          example: 26836405
-        to:
-          type: string
-          description: Address of the receiver. 'null' when its a contract creation transaction.
-          example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
-        transactionIndex:
-          type: number
-          description: Integer of the transactions index position in the block.
-          example: 3
-        value:
-          type: string
-          description: Value transferred in wei.
-          example: '1000000000000000000'
-        gasUsed:
-          type: number
-          description: The amount of gas used by this specific transaction alone.
-          example: 21000
-        cumulativeGasUsed:
-          type: number
-          description: The total amount of gas used when this transaction was executed in the block.
-          example: 314159
-        contractAddress:
-          type: string
-          description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
-          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-        logs:
-          type: array
-          description: 'Log events, that happened in this transaction.'
-          items:
-            type: object
-            properties:
-              address:
-                type: string
-                description: From which this event originated from.
-                example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-              topics:
-                type: array
-                description: 'An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.'
-                items:
-                  type: string
-                  example: '0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234'
-              data:
-                type: string
-                description: The data containing non-indexed log parameter.
-              logIndex:
-                type: number
-                description: Integer of the event index position in the block.
-              blockNumber:
-                type: number
-                description: Block number where this transaction was in.
-                example: 6470854
-              blockHash:
-                description: Hash of the block.
-                type: string
-                example: '0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc'
-              transactionIndex:
-                type: number
-                description: 'Integer of the transaction’s index position, the event was created in.'
-              transactionHash:
-                type: string
-                description: Hash of the transaction this event was created in.
-                example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
-    CallBscSmartContractMethod:
-      type: object
-      properties:
-        contractAddress:
-          maxLength: 42
-          minLength: 42
-          description: Address of BEP20 token
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          type: string
-        methodName:
-          minLength: 1
-          maxLength: 500
-          description: Name of the method to invoke on smart contract.
-          type: string
-          example: transfer
-        methodABI:
-          type: object
-          example:
-            inputs:
-              - internalType: uint256
-                name: amount
-                type: uint256
-            name: stake
-            outputs: []
-            stateMutability: nonpayable
-            type: function
-          description: ABI of the method to invoke.
-        params:
-          type: array
-          items:
-            type: object
-            description: Parameters of the method to be invoked
-        amount:
-          description: Amount of the assets to be sent.
-          example: '100000'
-          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
-          type: string
-        fromPrivateKey:
-          type: string
-          maxLength: 66
-          example: '0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2'
-          minLength: 66
-          description: 'Private key of sender address. Private key, or signature Id must be present.'
-        nonce:
-          type: number
-          minimum: 0
-          description: 'Nonce to be set to BSC transaction. If not present, last known nonce will be used.'
-        fee:
-          description: 'Custom defined fee. If not present, it will be calculated automatically.'
-          type: object
-          required:
-            - gasLimit
-            - gasPrice
-          properties:
-            gasLimit:
-              type: string
-              description: Gas limit for transaction in gas price.
-              pattern: '^[+]?\d+$'
-              example: '40000'
-            gasPrice:
-              type: string
-              description: Gas price in Gwei.
-              pattern: '^[+]?\d+$'
-              example: '20'
-      required:
-        - contractAddress
-        - params
-        - methodABI
-        - fromPrivateKey
-        - methodName
-    CallBscSmartContractReadMethod:
-      type: object
-      properties:
-        contractAddress:
-          maxLength: 42
-          minLength: 42
-          description: Address of BEP20 token
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          type: string
-        methodName:
-          minLength: 1
-          maxLength: 500
-          description: Name of the method to invoke on smart contract.
-          type: string
-          example: transfer
-        methodABI:
-          type: object
-          example:
-            inputs:
-              - internalType: uint256
-                name: amount
-                type: uint256
-            name: stake
-            outputs: []
-            stateMutability: nonpayable
-            type: function
-          description: ABI of the method to invoke.
-        params:
-          type: array
-          items:
-            type: object
-            description: Parameters of the method to be invoked
-      required:
-        - contractAddress
-        - params
-        - methodABI
-        - methodName
-    CallBscSmartContractMethodKMS:
-      type: object
-      properties:
-        contractAddress:
-          maxLength: 42
-          minLength: 42
-          description: Address of BEP20 token
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          type: string
-        methodName:
-          minLength: 1
-          maxLength: 500
-          description: Name of the method to invoke on smart contract.
-          type: string
-          example: transfer
-        methodABI:
-          type: object
-          description: ABI of the method to invoke.
-        params:
-          type: array
-          items:
-            type: object
-          description: Parameters of the method to be invoked.
-        index:
-          type: number
-          minimum: 0
-          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
-        signatureId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          format: uuid
-          example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
-          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
-        nonce:
-          type: number
-          minimum: 0
-          description: 'Nonce to be set to BSC transaction. If not present, last known nonce will be used.'
-        fee:
-          description: 'Custom defined fee. If not present, it will be calculated automatically.'
-          type: object
-          required:
-            - gasLimit
-            - gasPrice
-          properties:
-            gasLimit:
-              type: string
-              description: Gas limit for transaction in gas price.
-              pattern: '^[+]?\d+$'
-              example: '40000'
-            gasPrice:
-              type: string
-              description: Gas price in Gwei.
-              pattern: '^[+]?\d+$'
-              example: '20'
-      required:
-        - contractAddress
-        - params
-        - methodABI
-        - signatureId
-        - methodName
     Data:
       type: object
       properties:
@@ -1193,6 +1006,106 @@ components:
                 type: string
                 description: Hash of the transaction this event was created in.
                 example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+    PolygonTx:
+      type: object
+      properties:
+        blockHash:
+          description: Hash of the block where this transaction was in.
+          type: string
+          example: '0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137'
+        status:
+          type: boolean
+          example: true
+          description: 'TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction.'
+        blockNumber:
+          type: number
+          description: Block number where this transaction was in.
+          example: 6470854
+        from:
+          type: string
+          description: Address of the sender.
+          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+        gas:
+          type: number
+          description: Gas provided by the sender.
+          example: 21000
+        gasPrice:
+          type: string
+          description: Gas price provided by the sender in wei.
+          example: '1000000000'
+        transactionHash:
+          type: string
+          description: Hash of the transaction.
+          example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+        input:
+          type: string
+          description: The data sent along with the transaction.
+          example: 0x
+        nonce:
+          type: number
+          description: The number of transactions made by the sender prior to this one.
+          example: 26836405
+        to:
+          type: string
+          description: Address of the receiver. 'null' when its a contract creation transaction.
+          example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
+        transactionIndex:
+          type: number
+          description: Integer of the transactions index position in the block.
+          example: 3
+        value:
+          type: string
+          description: Value transferred in wei.
+          example: '1000000000000000000'
+        gasUsed:
+          type: number
+          description: The amount of gas used by this specific transaction alone.
+          example: 21000
+        cumulativeGasUsed:
+          type: number
+          description: The total amount of gas used when this transaction was executed in the block.
+          example: 314159
+        contractAddress:
+          type: string
+          description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
+          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+        logs:
+          type: array
+          description: 'Log events, that happened in this transaction.'
+          items:
+            type: object
+            properties:
+              address:
+                type: string
+                description: From which this event originated from.
+                example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+              topics:
+                type: array
+                description: 'An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.'
+                items:
+                  type: string
+                  example: '0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234'
+              data:
+                type: string
+                description: The data containing non-indexed log parameter.
+              logIndex:
+                type: number
+                description: Integer of the event index position in the block.
+              blockNumber:
+                type: number
+                description: Block number where this transaction was in.
+                example: 6470854
+              blockHash:
+                description: Hash of the block.
+                type: string
+                example: '0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc'
+              transactionIndex:
+                type: number
+                description: 'Integer of the transaction’s index position, the event was created in.'
+              transactionHash:
+                type: string
+                description: Hash of the transaction this event was created in.
+                example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
     PrivKey:
       type: object
       properties:
@@ -1227,7 +1140,340 @@ components:
           type: string
       required:
         - signatureId
-    TransferBscBlockchain:
+    TransactionHashKMS:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+        failed:
+          description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+          example: false
+          type: boolean
+      required:
+        - txId
+    Error403PolygonBroadcast:
+      properties:
+        errorCode:
+          description: polygon.broadcast.failed
+          example: polygon.broadcast.failed
+          type: string
+        message:
+          description: 'Unable to broadcast transaction due to ${error}.'
+          example: 'Unable to broadcast transaction due to ${error}.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403PolygonTxHash:
+      properties:
+        errorCode:
+          description: polygon.transaction.hash
+          example: polygon.transaction.hash
+          type: string
+        message:
+          description: 'Unable to calculate transaction hash. ${error}'
+          example: 'Unable to calculate transaction hash. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403PolygonTxSign:
+      properties:
+        errorCode:
+          description: polygon.transaction.sign
+          example: polygon.transaction.sign
+          type: string
+        message:
+          description: 'Unable to sign transaction. ${error}'
+          example: 'Unable to sign transaction. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403PolygonGasCalculation:
+      properties:
+        errorCode:
+          description: polygon.transaction.gas
+          example: polygon.transaction.gas
+          type: string
+        message:
+          description: 'Unable to calculate gas limit for transaction. ${error}'
+          example: 'Unable to calculate gas limit for transaction. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403PolygonTxBody:
+      properties:
+        errorCode:
+          description: polygon.transaction.body
+          example: polygon.transaction.body
+          type: string
+        message:
+          description: 'Either currency, or tokenAddress must be defined.'
+          example: 'Either currency, or tokenAddress must be defined.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403PolygonScBody:
+      properties:
+        errorCode:
+          description: polygon.sc.invalid
+          example: polygon.sc.invalid
+          type: string
+        message:
+          description: Invalid parameters for smart contract invocation.
+          example: Invalid parameters for smart contract invocation.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403PolygonGasPrice:
+      properties:
+        errorCode:
+          description: gas.price.failed
+          example: gas.price.failed
+          type: string
+        message:
+          description: Unable to obtain current GAS price.
+          example: Unable to obtain current GAS price.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403TxNotFound:
+      properties:
+        errorCode:
+          description: tx.missing
+          example: tx.missing
+          type: string
+        message:
+          description: No such tx.
+          example: No such tx.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    CallPolygonSmartContractMethod:
+      type: object
+      properties:
+        contractAddress:
+          maxLength: 42
+          minLength: 42
+          description: Address of ERC20 token
+          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+          type: string
+        amount:
+          description: Amount of the assets to be sent.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+        methodName:
+          minLength: 1
+          maxLength: 500
+          description: Name of the method to invoke on smart contract.
+          type: string
+          example: transfer
+        methodABI:
+          type: object
+          example:
+            inputs:
+              - internalType: uint256
+                name: amount
+                type: uint256
+            name: stake
+            outputs: []
+            stateMutability: nonpayable
+            type: function
+          description: ABI of the method to invoke.
+        params:
+          type: array
+          items:
+            type: object
+            description: Parameters of the method to be invoked
+        fromPrivateKey:
+          type: string
+          maxLength: 66
+          example: '0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2'
+          minLength: 66
+          description: 'Private key of sender address. Private key, or signature Id must be present.'
+        nonce:
+          type: number
+          minimum: 0
+          description: 'Nonce to be set to Polygon transaction. If not present, last known nonce will be used.'
+        fee:
+          description: 'Custom defined fee. If not present, it will be calculated automatically.'
+          type: object
+          required:
+            - gasLimit
+            - gasPrice
+          properties:
+            gasLimit:
+              type: string
+              description: Gas limit for transaction in gas price.
+              pattern: '^[+]?\d+$'
+              example: '40000'
+            gasPrice:
+              type: string
+              description: Gas price in Gwei.
+              pattern: '^[+]?\d+$'
+              example: '20'
+      required:
+        - contractAddress
+        - params
+        - methodABI
+        - fromPrivateKey
+        - methodName
+    CallPolygonSmartContractReadMethod:
+      type: object
+      properties:
+        contractAddress:
+          maxLength: 42
+          minLength: 42
+          description: Address of ERC20 token
+          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+          type: string
+        methodName:
+          minLength: 1
+          maxLength: 500
+          description: Name of the method to invoke on smart contract.
+          type: string
+          example: transfer
+        methodABI:
+          type: object
+          example:
+            inputs:
+              - internalType: uint256
+                name: amount
+                type: uint256
+            name: stake
+            outputs: []
+            stateMutability: nonpayable
+            type: function
+          description: ABI of the method to invoke.
+        params:
+          type: array
+          items:
+            type: object
+            description: Parameters of the method to be invoked
+      required:
+        - contractAddress
+        - params
+        - methodABI
+        - methodName
+    CallPolygonSmartContractMethodKMS:
+      type: object
+      properties:
+        contractAddress:
+          maxLength: 42
+          minLength: 42
+          description: Address of ERC20 token
+          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+          type: string
+        methodName:
+          minLength: 1
+          maxLength: 500
+          description: Name of the method to invoke on smart contract.
+          type: string
+          example: transfer
+        methodABI:
+          type: object
+          description: ABI of the method to invoke.
+        params:
+          type: array
+          items:
+            type: object
+          description: Parameters of the method to be invoked.
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        signatureId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          format: uuid
+          example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        nonce:
+          type: number
+          minimum: 0
+          description: 'Nonce to be set to Polygon transaction. If not present, last known nonce will be used.'
+        fee:
+          description: 'Custom defined fee. If not present, it will be calculated automatically.'
+          type: object
+          required:
+            - gasLimit
+            - gasPrice
+          properties:
+            gasLimit:
+              type: string
+              description: Gas limit for transaction in gas price.
+              pattern: '^[+]?\d+$'
+              example: '40000'
+            gasPrice:
+              type: string
+              description: Gas price in Gwei.
+              pattern: '^[+]?\d+$'
+              example: '20'
+      required:
+        - contractAddress
+        - params
+        - methodABI
+        - signatureId
+        - methodName
+    TransferPolygonBlockchain:
       type: object
       properties:
         data:
@@ -1238,7 +1484,7 @@ components:
         nonce:
           type: number
           minimum: 0
-          description: 'Nonce to be set to BSC transaction. If not present, last known nonce will be used.'
+          description: 'Nonce to be set to Polygon transaction. If not present, last known nonce will be used.'
         to:
           description: Blockchain address to send assets
           example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
@@ -1246,24 +1492,12 @@ components:
           minLength: 42
           type: string
         currency:
-          description: 'Currency to transfer from BSC Blockchain Account. BEP20 tokens BETH, BBTC, BADA, WBNB, BDOT, BXRP, BLTC, BBCH are available only for mainnet use.'
+          description: Currency to transfer from Polygon Blockchain Account. ERC20 tokens USDC and USDT are available only for mainnet use.
           enum:
-            - BETH
-            - BBTC
-            - RMD
-            - USDC_BSC
-            - B2U_BSC
-            - BADA
-            - WBNB
-            - GMC_BSC
-            - BDOT
-            - BXRP
-            - BLTC
-            - BBCH
-            - HAG
-            - CAKE
-            - BUSD_BSC
-          example: BUSD_BSC
+            - MATIC
+            - USDC_MATIC
+            - USDT_MATIC
+          example: MATIC
           type: string
         fee:
           description: 'Custom defined fee. If not present, it will be calculated automatically.'
@@ -1298,7 +1532,7 @@ components:
         - amount
         - currency
         - fromPrivateKey
-    BscEstimateGas:
+    PolygonEstimateGas:
       type: object
       properties:
         from:
@@ -1315,6 +1549,7 @@ components:
         amount:
           description: Amount to be sent in Ether.
           example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
           type: string
         data:
           type: string
@@ -1325,20 +1560,7 @@ components:
         - to
         - amount
         - from
-    TransactionHashKMS:
-      type: object
-      properties:
-        txId:
-          description: TX hash of successful transaction.
-          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
-          type: string
-        failed:
-          description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
-          example: false
-          type: boolean
-      required:
-        - txId
-    TransferBscBlockchainKMS:
+    TransferPolygonBlockchainKMS:
       type: object
       properties:
         data:
@@ -1349,7 +1571,7 @@ components:
         nonce:
           type: number
           minimum: 0
-          description: 'Nonce to be set to BSC transaction. If not present, last known nonce will be used.'
+          description: 'Nonce to be set to Polygon transaction. If not present, last known nonce will be used.'
         to:
           description: Blockchain address to send assets
           example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
@@ -1357,18 +1579,18 @@ components:
           minLength: 42
           type: string
         currency:
-          description: 'Currency to transfer from BSC Blockchain Account. BEP20 tokens BETH, BBTC, BADA, WBNB, BDOT, BXRP, BLTC, BBCH are available only for mainnet use.'
+          description: 'Currency to transfer from Polygon Blockchain Account. ERC20 tokens BETH, BBTC, BADA, WMATIC, BDOT, BXRP, BLTC, BBCH are available only for mainnet use.'
           enum:
             - BETH
             - BBTC
             - BADA
-            - WBNB
+            - WMATIC
             - BDOT
             - BXRP
             - BLTC
             - BBCH
-            - BSC
-          example: BSC
+            - MATIC
+          example: MATIC
           type: string
         fee:
           description: 'Custom defined fee. If not present, it will be calculated automatically.'
@@ -1423,196 +1645,6 @@ components:
           description: 'secretKey can generate Mnemonic, similar to private Key.'
           type: string
           example: NBYMCVEEDFYV3TPWVRE6APE7PKHUJD4XAKXCKNCLKGUXOC3LFNJGZQCJCRA53HB7ZAHF6NFJH2QIVQ5USQNWG35QCJLD4KZ5IWMB24Q
-    Error401Invalid:
-      properties:
-        errorCode:
-          example: subscription.invalid
-          description: subscription.invalid
-          type: string
-        message:
-          example: 'Unable to find valid subscription for ''${apiKey}'''
-          description: 'Unable to find valid subscription for ''${apiKey}'''
-          type: string
-        statusCode:
-          example: 401
-          description: '401'
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error401NotActive:
-      properties:
-        errorCode:
-          example: subscription.not.active
-          description: subscription.not.active
-          type: string
-        message:
-          example: Subscription not active anymore.
-          description: Subscription not active anymore.
-          type: string
-        statusCode:
-          example: 401
-          description: '401'
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403BscBroadcast:
-      properties:
-        errorCode:
-          description: bsc.broadcast.failed
-          example: bsc.broadcast.failed
-          type: string
-        message:
-          description: 'Unable to broadcast transaction due to ${error}.'
-          example: 'Unable to broadcast transaction due to ${error}.'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403BscGasCalculation:
-      properties:
-        errorCode:
-          description: bsc.transaction.gas
-          example: bsc.transaction.gas
-          type: string
-        message:
-          description: 'Unable to calculate gas limit for transaction. ${error}'
-          example: 'Unable to calculate gas limit for transaction. ${error}'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403BscTxBody:
-      properties:
-        errorCode:
-          description: bsc.transaction.body
-          example: bsc.transaction.body
-          type: string
-        message:
-          description: 'Either currency, or tokenAddress must be defined.'
-          example: 'Either currency, or tokenAddress must be defined.'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403BscScBody:
-      properties:
-        errorCode:
-          description: bsc.sc.invalid
-          example: bsc.sc.invalid
-          type: string
-        message:
-          description: Invalid parameters for smart contract invocation.
-          example: Invalid parameters for smart contract invocation.
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403BscGasPrice:
-      properties:
-        errorCode:
-          description: gas.price.failed
-          example: gas.price.failed
-          type: string
-        message:
-          description: Unable to obtain current GAS price.
-          example: Unable to obtain current GAS price.
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object    
-    Error403BscTxHash:
-      properties:
-        errorCode:
-          description: bsc.transaction.hash
-          example: bsc.transaction.hash
-          type: string
-        message:
-          description: 'Unable to calculate transaction hash. ${error}'
-          example: 'Unable to calculate transaction hash. ${error}'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403BscTxSign:
-      properties:
-        errorCode:
-          description: bsc.transaction.sign
-          example: bsc.transaction.sign
-          type: string
-        message:
-          description: 'Unable to sign transaction. ${error}'
-          example: 'Unable to sign transaction. ${error}'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403TxNotFound:
-      properties:
-        errorCode:
-          description: tx.missing
-          example: tx.missing
-          type: string
-        message:
-          description: No such tx.
-          example: No such tx.
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
     Error400:
       properties:
         errorCode:
@@ -1652,6 +1684,44 @@ components:
                 description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
                 example:
                   isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
     Error500:
       properties:
         message:
