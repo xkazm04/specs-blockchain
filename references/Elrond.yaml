@@ -1,0 +1,1195 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  title: Elrond network
+  version: 3.9.2
+  x-logo:
+    url: 'https://tatum.io/images/logo.svg'
+    altText: Tatum
+  description: |-
+                        <p>Elrond (EGLD) is a distributed transactional computation protocol which relies on a sharded state architecture and a secure Proof of Stake consensus mechanism.
+                        <br/>
+                        Tatum supports 2 chains:
+                        <ul><li>Mainnet - a regular live chain
+                        <li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+                        a faucet, e.g. <a target="_blank" href="https://r3d4.fr/elrond/devnet/index.php">https://r3d4.fr/elrond/devnet/</a></li></ul></p>
+servers:
+  - url: 'https://api-eu1.tatum.io'
+  - url: 'https://api-us-west1.tatum.io'
+tags:
+  - description: ''
+    name: Account
+  - description: ''
+    name: Block
+  - description: ''
+    name: Transaction
+  - description: ''
+    name: Utilities
+paths:
+  /v3/egld/wallet:
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>The Elrond Address format is bech32, specified by the BIP 0173. The address always starts with an erd1. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase.
+        Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.
+        <br/>
+        Each address is identified by 3 main values:
+        <ul><li>Private Key - your secret value, which should never be revealed</li>
+        <li>Public Key - public address to be published</li>
+        <li>Derivation index - index of generated address</li></ul>
+        </p>
+        <p>Tatum follows BIP44 specification and generates for EGLD wallet with derivation path m'/44'/508'/0'/0'.
+        More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
+        Generate BIP44 compatible EGLD wallet.</p>
+      operationId: EgldGenerateWallet
+      summary: Generate EGLD wallet
+      tags:
+        - Account
+      parameters:
+        - description: Mnemonic to use for generation of private key.
+          in: query
+          name: mnemonic
+          required: false
+          schema:
+            type: string
+            maxLength: 500
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mnemonic:
+                    type: string
+                    description: Mnemonic to use for generation of private key
+                    example: quantum tobacco key they maid mean crime youth chief jungle mind design broken tilt bus shoulder leaf good forward erupt split divert bread kitten
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/address/{mnemonic}/{index}':
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>Generate EGLD account deposit address from mnemonic phrase. Deposit address is generated for the specific
+        index - each mnemonic phrase can generate up to 2^31 addresses starting from index 0 until 2^31.</p>
+      operationId: EgldGenerateAddress
+      summary: Generate EGLD account address from mnemonic
+      tags:
+        - Account
+      parameters:
+        - description: Mnemonic to use for generation of address.
+          in: path
+          name: mnemonic
+          required: true
+          schema:
+            type: string
+            example: quantum tobacco key they maid mean crime youth chief jungle mind design broken tilt bus shoulder leaf good forward erupt split divert bread kitten
+        - description: Derivation index of desired address to be generated.
+          in: path
+          name: index
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: EGLD address
+                    example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/egld/wallet/priv:
+    post:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>Generate private key of address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic
+        can generate up to 2^31 private keys starting from index 0 until 2^31.</p>
+      operationId: EgldGenerateAddressPrivateKey
+      summary: Generate EGLD private key
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivKeyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivKey'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/node/{xApiKey}/*':
+    post:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Use this endpoint URL as a http-based driver to connect directly to the EGLD node provided by Tatum.
+        To learn more about EGLD, please visit <a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">EGLD developer's guide.</a></p>
+      operationId: EgldNodePost
+      summary: Node HTTP driver
+      tags:
+        - Utilities
+      parameters:
+        - description: Tatum X-API-Key used for authorization.
+          in: path
+          name: xApiKey
+          required: true
+          schema:
+            type: string
+            example: /v3/egld/node/asdlkfjnqunalkwjf124387ad/transaction/cost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Any valid method content body.
+              example:
+                version: 1
+                chainId: D
+                nonce: 42
+                value: '100000000000000000'
+                receiver: erd1cux02zersde0l7hhklzhywcxk4u9n4py5tdxyx7vrvhnza2r4gmq4vw35r
+                sender: erd1njqj2zggfup4nl83x0nfgqjkjserm7mjyxdx5vzkm8k0gkh40ezqtfz9lg
+                gasPrice: 1000000000
+                gasLimit: 70000
+                data: food for cats
+                signature: 93207c579bf57be03add632b0e1624a73576eeda8a1687e0fa286f03eb1a17ffb125ccdb008a264c402f074a360442c7a034e237679322f62268b614e926d10f
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Any valid response.
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+    get:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Use this endpoint URL as a http-based driver to connect directly to the EGLD node provided by Tatum.
+        To learn more about EGLD, please visit <a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">EGLD developer's guide.</a></p>
+      operationId: EgldNodeGet
+      summary: Node HTTP driver
+      tags:
+        - Utilities
+      parameters:
+        - description: Tatum X-API-Key used for authorization.
+          in: path
+          name: xApiKey
+          required: true
+          schema:
+            type: string
+            example: /v3/egld/node/asdlkfjnqunalkwjf12341kljl/network/config
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Any valid response.
+                example:
+                  config:
+                    erd_chain_id: '1'
+                    erd_denomination: 18
+                    erd_gas_per_data_byte: 1500
+                    erd_latest_tag_software_version: v1.1.0.0
+                    erd_meta_consensus_group_size: 400
+                    erd_min_gas_limit: 50000
+                    erd_min_gas_price: 1000000000
+                    erd_min_transaction_version: 1
+                    erd_num_metachain_nodes: 400
+                    erd_num_nodes_in_shard: 400
+                    erd_num_shards_without_meta: 3
+                    erd_round_duration: 6000
+                    erd_shard_consensus_group_size: 63
+                    erd_start_time: 1596117600
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+  /v3/egld/block/current:
+    get:
+      description: <h4>1 credit per API call.</h4><br/> <p>Get EGLD current block number. This is the number of the latest block in the blockchain.</p>
+      operationId: EGldGetCurrentBlock
+      summary: Get current block number
+      tags:
+        - Block
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: number
+                description: Current block number
+                example: 649127
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/block/{hash}':
+    get:
+      description: '<h4>1 credit per API call.</h4><br/> <p>Get EGLD block by block hash or block number. <a href=''https://docs.elrond.com/sdk-and-tools/rest-api/blocks/'' target=''_blank''> EGLD docs </a></p>'
+      operationId: EgldGetBlock
+      summary: Get EGLD block by hash
+      tags:
+        - Block
+      parameters:
+        - description: Block hash or nonce
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+            example: a6f2ac15a6b1bafdde9afff2297cef49c4c523c516f8ee12fed54be070e9512b
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EgldBlock'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/account/balance/{address}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/> <p>Get account balance in EGLD.</p>
+      operationId: EgldGetBalance
+      summary: Get EGLD Account balance
+      tags:
+        - Account
+      parameters:
+        - description: Account address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: string
+                    description: Balance in EGLD
+                    example: '10.52'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/transaction/{hash}':
+    get:
+      description: '<h4>1 credit per API call.</h4><br/> <p>Get EGLD transaction by transaction hash. Detail result please find here <a href=''https://docs.elrond.com/sdk-and-tools/rest-api/transactions/#get-transaction'' target=''_blank''> EGLD docs </a></p>'
+      operationId: EgldGetTransaction
+      summary: Get EGLD Transaction
+      tags:
+        - Transaction
+      parameters:
+        - description: Transaction hash
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+            example: 99996224823736c1e9b8484ed74c1573049478f871d6f94b86811fb1c7b2addd
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EgldTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403EgldBroadcast'
+                  - $ref: '#/components/schemas/Error403EgldGasCalculation'
+                  - $ref: '#/components/schemas/Error403EgldTxHash'
+                  - $ref: '#/components/schemas/Error403EgldTxSign'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/transaction/address/{address}':
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>This endpoint allows one to retrieve the latest 20 transactions sent from an address.</p>
+      operationId: EgldGetTransactionAddress
+      summary: Get count of outgoing EGLD transactions
+      tags:
+        - Transaction
+      parameters:
+        - description: address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            maxLength: 62
+            minLength: 62
+            example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of transactions sent from an address.
+                items:
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/egld/transaction/count/{address}':
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>Get a number of outgoing EGLD transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,
+        which are not yet processed by the blockchain. To distinguish between them, there is a counter called a nonce, which represents
+        the order of the transaction in the list of outgoing transactions.</p>
+      operationId: EgldGetTransactionCount
+      summary: Get count of outgoing EGLD transactions
+      tags:
+        - Transaction
+      parameters:
+        - description: address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            maxLength: 62
+            minLength: 62
+            example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: number
+                example: 5
+                description: 'Number of transactions, that were made from this address. Can be used as a nonce parameter in send transaction calls.'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/egld/transaction:
+    post:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Send EGLD from account to account.<br/><br/>
+        This operation needs the <strong>private key</strong> of the blockchain address.
+        <strong>Warning:</strong> Do not expose private keys to the internet because there is a strong possibility of stealing keys and loss of funds. 
+        </br>
+        </br>
+        In this method, it is possible to enter privateKey
+        or signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
+        Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.
+        </p>
+        </p>
+      operationId: EgldBlockchainTransfer
+      summary: Send EGLD from account to account
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/TransferEgldBlockchain'
+                - $ref: '#/components/schemas/TransferEgldBlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/TransactionHashKMS'
+                  - $ref: '#/components/schemas/SignatureId'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403EgldBroadcast'
+                  - $ref: '#/components/schemas/Error403EgldGasCalculation'
+                  - $ref: '#/components/schemas/Error403EgldTxHash'
+                  - $ref: '#/components/schemas/Error403EgldTxSign'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/egld/broadcast:
+    post:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Broadcast signed transaction to EGLD blockchain. This method is used internally from Tatum KMS or Tatum client libraries.
+        It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
+      operationId: EgldBroadcast
+      summary: Broadcast signed EGLD transaction
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHashKMS'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403EgldBroadcast'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+components:
+  schemas:
+    BroadcastKMS:
+      properties:
+        txData:
+          description: Raw signed transaction to be published to network.
+          example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
+          maxLength: 500000
+          minLength: 1
+          type: string
+        signatureId:
+          description: 'ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.'
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          type: string
+          minLength: 36
+          maxLength: 36
+      required:
+        - txData
+      type: object
+    EgldBlock:
+      type: object
+      properties:
+        nonce:
+          description: The block height.
+          type: number
+          example: 5440076
+        round:
+          description: The round number.
+          type: number
+          example: 186582
+        hash:
+          description: Hash of the block.
+          type: string
+          example: bd2de3618929b696807f6ef8a619f93d29d639aec9277f9c6f8569a8487141b1
+        prevBlockHash:
+          description: Hash of the previous block.
+          type: string
+          example: 2a11aad21e933be58200839ff875f0ca7e955b8c483a0e117cb92409e5d2a5da
+        epoch:
+          description: An epoch is a sequence of consecutive rounds during which the configuration of the network does not change (currently aprox. 24 hrs in length).
+          type: number
+          example: 18
+        numTxs:
+          description: Number of transactions in current block.
+          type: number
+          example: 8
+        shardBlocks:
+          description: Array of shard blocks
+          type: array
+          items:
+            $ref: '#/components/schemas/EgldShardBlock'
+        transactions:
+          description: Array of transactions.
+          type: array
+          items:
+            $ref: '#/components/schemas/EgldTx'
+    EgldShardBlock:
+      type: object
+      properties:
+        hash:
+          description: The block hash.
+          type: string
+          example: a6f2ac15a6b1bafdde9afff2297cef49c4c523c516f8ee12fed54be070e9512b
+        nonce:
+          description: The block height.
+          type: number
+          example: 5440070
+        shard:
+          description: The shard number.
+          type: number
+          example: 1
+    EgldTx:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of transaction.
+        nonce:
+          type: number
+          description: Nonce of the transaction.
+          example: 2
+        round:
+          type: number
+          description: The round number.
+          example: 186580
+        epoch:
+          type: number
+          description: An epoch is a sequence of consecutive rounds during which the configuration of the network does not change (currently aprox. 24 hrs in length).
+          example: 12
+        value:
+          type: string
+          description: Transferred value.
+          example: '1000000000000000000'
+        receiver:
+          type: string
+          description: Address of the receiver.
+          example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+        sender:
+          type: string
+          description: Address of the sender.
+          example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq1
+        gasPrice:
+          type: number
+          description: Gas price provided by the sender
+          example: 1000000000
+        gasLimit:
+          type: number
+          description: Gas provided by the sender
+          example: 70000
+        data:
+          type: string
+          description: Data field in transaction.
+          example: Zm9yIHRlc3Rz
+        signature:
+          type: string
+          description: Signature of the transaction.
+          example: c6ab10b401f14b122caf9d2ef80d532b986aa82b589dac77d77929da27ae2382c6ab10b401f14b122caf9d2ef80d532b986aa82b589dac77d77929da27ae238
+        sourceShard:
+          type: number
+          description: Source shard.
+          example: 2
+        destinationShard:
+          type: number
+          description: Destination shard.
+          example: 1
+        blockNonce:
+          type: number
+          description: Nonce of block which contains current transaction.
+          example: 186535
+        blockHash:
+          type: string
+          description: Hash of block which contains current transaction.
+          example: bd2de3618929b696807f6ef8a619f93d29d639aec9277f9c6f8569a8487141b1
+        miniblockHash:
+          type: string
+          description: Miniblock hash.
+          example: 7cb0a10cf9e9ec9ff719ffe99349db3feac3ec217b6de62f6cf7756647194bbf
+        timestamp:
+          type: number
+          description: The unix timestamp for when the block was collated.
+          example: 1569600592
+        status:
+          type: string
+          description: Status of the transaction.
+          example: Success
+        hyperblockNonce:
+          type: number
+          description: Nonce of the hyperblockwhere this transaction was in.
+          example: 123321
+        hyperblockHash:
+          type: string
+          description: Hash of the hyperblock where this transaction was in.
+          example: 715224f1f7d8330e3837500d1f82431954e30db6149f3ee4644d0950576d8dfe
+    Error403EgldBroadcast:
+      properties:
+        errorCode:
+          description: egld.broadcast.failed
+          example: egld.broadcast.failed
+          type: string
+        message:
+          description: 'Unable to broadcast transaction due to ${error}.'
+          example: 'Unable to broadcast transaction due to ${error}.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403EgldTxHash:
+      properties:
+        errorCode:
+          description: egld.transaction.hash
+          example: egld.transaction.hash
+          type: string
+        message:
+          description: 'Unable to calculate transaction hash. ${error}'
+          example: 'Unable to calculate transaction hash. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403EgldTxSign:
+      properties:
+        errorCode:
+          description: egld.transaction.sign
+          example: egld.transaction.sign
+          type: string
+        message:
+          description: 'Unable to sign transaction. ${error}'
+          example: 'Unable to sign transaction. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403EgldGasCalculation:
+      properties:
+        errorCode:
+          description: egld.transaction.gas
+          example: egld.transaction.gas
+          type: string
+        message:
+          description: 'Unable to calculate gas limit for transaction. ${error}'
+          example: 'Unable to calculate gas limit for transaction. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    TransferEgldBlockchain:
+      type: object
+      properties:
+        from:
+          description: Account address of the sender
+          example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+          maxLength: 62
+          minLength: 62
+          type: string
+        to:
+          description: Account address of the receiver or smart contract
+          example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq6
+          maxLength: 62
+          minLength: 62
+          type: string
+        amount:
+          type: string
+          description: Value to be sent.
+          example: '0'
+        fee:
+          description: 'Custom defined fee. If not present, it will be calculated automatically.'
+          type: object
+          properties:
+            gasLimit:
+              type: string
+              description: 'Gas limit for transaction. If transfer to a smart contract, then 500000 + an appropriate amount for the method call'
+              example: '500000'
+              pattern: '^[+]?\d+$'
+            gasPrice:
+              type: string
+              description: Gas price.
+              example: '1000000000'
+              pattern: '^[+]?\d+$'
+        data:
+          description: 'Additinal data, that will be passed to blockchain transaction as data property.'
+          type: string
+          example: Hello world
+        fromPrivateKey:
+          type: string
+          maxLength: 64
+          minLength: 64
+          example: 0cd8e6217b4a218807b858ffb508483cdcdadbb7a21196727f764a510a692760
+          description: 'Private key of sender address. Private key, or signature Id must be present.'
+      required:
+        - fromPrivateKey
+    TransferEgldBlockchainKMS:
+      type: object
+      properties:
+        from:
+          description: Account address of the sender
+          example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7
+          maxLength: 62
+          minLength: 62
+          type: string
+        to:
+          description: Account address of the receiver or smart contract
+          example: erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq6
+          maxLength: 62
+          minLength: 62
+          type: string
+        amount:
+          type: string
+          description: Value to be sent.
+          example: '0'
+        fee:
+          description: 'Custom defined fee. If not present, it will be calculated automatically.'
+          type: object
+          properties:
+            gasLimit:
+              type: string
+              description: Gas limit for transaction.
+              example: '500000'
+              pattern: '^[+]?\d+$'
+            gasPrice:
+              type: string
+              description: Gas price.
+              example: '1000000000'
+              pattern: '^[+]?\d+$'
+        data:
+          description: 'Additinal data, that will be passed to blockchain transaction as data property.'
+          type: string
+          example: Hello world
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        signatureId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          format: uuid
+          example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+      required:
+        - signatureId
+    PrivKey:
+      type: object
+      properties:
+        key:
+          description: Generated private key.
+          example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
+          type: string
+    PrivKeyRequest:
+      type: object
+      properties:
+        index:
+          description: Derivation index of private key to generate.
+          example: 0
+          maximum: 2147483647
+          type: integer
+        mnemonic:
+          maxLength: 500
+          minLength: 1
+          description: Mnemonic to generate private key from.
+          example: urge pulp usage sister evidence arrest palm math please chief egg abuse
+          type: string
+      required:
+        - mnemonic
+        - index
+    SignatureId:
+      type: object
+      properties:
+        signatureId:
+          format: uuid
+          description: 'ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.'
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          type: string
+      required:
+        - signatureId
+    TransactionHashKMS:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+        failed:
+          description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+          example: false
+          type: boolean
+      required:
+        - txId
+    Error400:
+      properties:
+        errorCode:
+          example: validation.failed
+          description: validation.failed
+          type: string
+        message:
+          example: Request validation failed. Please see data for additional information.
+          description: Request validation failed. Please see data for additional information.
+          type: string
+        statusCode:
+          example: 400
+          description: '400'
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - target
+            properties:
+              target:
+                type: object
+                additionalProperties: true
+                description: Request object present in the body of the HTTP request
+              value:
+                type: number
+                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                example: 12345
+              property:
+                type: string
+                description: Property name of the target object which validation is wrong
+                example: fromPrivateKey
+              constraints:
+                type: object
+                additionalProperties: true
+                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                example:
+                  isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error500:
+      properties:
+        message:
+          example: Internal server error
+          description: Internal server error
+          type: string
+        statusCode:
+          example: 500
+          description: '500'
+          type: number
+        errorCode:
+          example: internal.error
+          description: Internal server error
+          type: string
+      required:
+        - statusCode
+        - message
+      type: object
+  securitySchemes:
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
+      in: header
+      name: x-api-key
+      type: apiKey

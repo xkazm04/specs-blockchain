@@ -1,0 +1,1322 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  title: Quantum (QTUM)
+  version: 3.9.2
+  x-logo:
+    url: 'https://tatum.io/images/logo.svg'
+    altText: Tatum
+  description: |-
+    <p>Qtum is a cryptocurrency that combines properties of bitcoin and ethereum. It uses a UTXO-based smart contract system with a proof-of-stake (PoS) consensus model. Qtum is designed to be suitable for use by large organizations.<br/>
+    Tatum supports 2 chains:
+    <ul><li>Mainnet - a regular live chain
+    <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="http://testnet-faucet.qtum.info/#!/">http://testnet-faucet.qtum.info/</a></li></ul></p>
+servers:
+  - url: 'https://api-eu1.tatum.io'
+  - url: 'https://api-us-west1.tatum.io'
+tags:
+  - description: ''
+    name: Account
+  - description: ''
+    name: Block
+  - description: ''
+    name: Transaction
+  - description: ''
+    name: Utilities
+paths:
+  /v3/qtum/wallet:
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for Qtum wallet with derivation path m'/44'/2301'/0'/0. More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
+                Generate BIP44 compatible QTum wallet.</p>
+      operationId: QtumGenerateWallet
+      summary: Generate QTUM wallet
+      tags:
+        - Account
+      parameters:
+        - description: Mnemonic
+          in: query
+          name: mnemonic
+          schema:
+            type: string
+            example: plunge setup measure permit junior cheese tortoise olive fly asset merit steak flight paper layer glass sure march confirm rhythm enroll kitchen future ridge
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QtumWallet'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/address/{xpub}/{i}':
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>Generate QTUM account deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate
+        up to 2^31 addresses starting from index 0 until 2^31.</p>
+      operationId: QtumGenerateAddress
+      summary: Generate QTUM account address from Extended public key
+      tags:
+        - Account
+      parameters:
+        - description: Extended public key of wallet.
+          in: path
+          name: xpub
+          required: true
+          schema:
+            type: string
+            example: xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid
+        - description: Derivation index of desired address to be generated.
+          in: path
+          name: i
+          required: true
+          schema:
+            type: number
+            example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: QTUM address
+                    example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/qtum/wallet/priv:
+    post:
+      description: |
+        <h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for Qtum wallet with derivation path defined by QTUM. More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
+        Generate BIP44 compatible QTUM wallet.</p>
+      operationId: generatePrivateKeyFromMnemonic
+      summary: Generate QTUM wallet
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/GeneratePrivateKey'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: key
+                    example: cNR1n1EuzzaWHD7xcmAo71mwxyVV3uJUbLoamQFiXzaJhjTfCF2P
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/qtum/block/current:
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get QTUM current block number. This is the number of the latest block in the blockchain.</p>
+      operationId: QtumGetCurrentBlock
+      summary: Get current block number
+      tags:
+        - Block
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: number
+                description: Current block number
+                example: 6491272
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/address/{key}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Generate Address by private key</p>
+      operationId: GenerateAddressPrivatekey
+      summary: Generate QTUM Address 
+      tags:
+        - Account
+      parameters:
+        - description: Private key
+          in: path
+          name: key
+          required: true
+          schema:
+            type: string
+            example: cNR1n1EuzzaWHD7xcmAo71mwxyVV3uJUbLoamQFiXzaJhjTfCF2P
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: Address
+                    example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/block/{hash}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get BSC block by block hash or block number.</p>
+      operationId: QtumGetBlock
+      summary: Get QTUM block by hash
+      tags:
+        - Block
+      parameters:
+        - description: Block hash or block number
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+            example: '6470657'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QtumBlock'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/utxo/{address}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get UTXOS by address</p>
+      operationId: GetQtumUTXOs
+      summary: Generate QTUM Address
+      tags:
+        - Transaction
+      parameters:
+        - description: address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QtumIUTXO'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/account/balance/{address}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get QTUM account balance in QTUM tokens on an account.</p>
+      operationId: QtumGetBalance
+      summary: Get QTUM Account balance
+      tags:
+        - Account
+      parameters:
+        - description: Account address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QtumIGetInfo'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/transaction/{id}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get QTUM transaction by transaction hash.</p>
+      operationId: GetQtumTransaction
+      summary: Get QTUM Transaction
+      tags:
+        - Transaction
+      parameters:
+        - description: Transaction hash
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QtumIRawTransactionInfo'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403TxNotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/transactions/address/{address}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get QTUM paginated transactions by address.</p>
+      operationId: GetQtumPaginatedTransaction
+      summary: Get QTUM Transactions by address
+      tags:
+        - Transaction
+      parameters:
+        - description: Address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+        - description: pageSize
+          in: query
+          name: pageSize
+          required: true
+          schema:
+            type: number
+            example: 20
+        - description: offset
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QtumIRawTransactions'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403TxNotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/transactions/gas/{nblocks}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get estimated gas fees</p>
+      operationId: EstimateFee
+      summary: Get QTUM estimated gas fees
+      tags:
+        - Transaction
+      parameters:
+        - description: nblocks
+          in: path
+          name: nblocks
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403TxNotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/qtum/transactions/gasbytes/{nblocks}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get estimated gas fees per byte</p>
+      operationId: EstimateFeePerByte
+      summary: Get QTUM estimated gas fees per byte
+      tags:
+        - Transaction
+      parameters:
+        - description: nblocks
+          in: path
+          required: true
+          name: nblocks
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403TxNotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/qtum/broadcast:
+    post:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Broadcast signed transaction to QTUM blockchain. This method is used internally from Tatum KMS, Tatum Middleware or Tatum client libraries.
+        It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
+      operationId: QtumBroadcast
+      summary: Broadcast signed QTUM transaction
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHashKMS'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403QtumBroadcast'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+components:
+  schemas:
+    BroadcastKMS:
+      properties:
+        txData:
+          description: Raw signed transaction to be published to network.
+          example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
+          maxLength: 500000
+          minLength: 1
+          type: string
+        signatureId:
+          description: 'ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.'
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          type: string
+          minLength: 36
+          maxLength: 36
+      required:
+        - txData
+      type: object
+    QtumWallet:
+      type: object
+      required:
+        - mnemonic
+        - xpub
+      properties:
+        mnemonic:
+          type: string
+          description: Mnemonic seed for the generated wallet
+          example: plunge setup measure permit junior cheese tortoise olive fly asset merit steak flight paper layer glass sure march confirm rhythm enroll kitchen future ridge
+        xpub:
+          type: string
+          description: Extended public key to generate addresses from the wallet.
+          example: tpubDEBnBwR7VarUrWCBxhbfVnMHa3fjjdTHCFJFSyu7a5TdsLUUuQMKZRjSriLrZ3LWCr9TmYUpovD4NiWhhyasQNQPteFafsYH79sJRqfvd7T
+    GeneratePrivateKey:
+      type: object
+      properties:
+        mnemonic:
+          maxLength: 500
+          minLength: 1
+          description: 'Mnemonic to generate private key for the account of QTUM, from which the gas will be paid (index will be used).'
+          example: urge pulp usage sister evidence arrest palm math please chief egg abuse
+          type: string
+        index:
+          description: derivation index of address to pay for deployment of ERC20
+          example: 0
+          type: integer
+          maximum: 2147483647
+      required:
+        - index
+        - mnemonic
+    Error403QtumBroadcast:
+      properties:
+        errorCode:
+          description: qtum.broadcast.failed
+          example: qtum.broadcast.failed
+          type: string
+        message:
+          description: 'Unable to broadcast transaction due to ${error}.'
+          example: 'Unable to broadcast transaction due to ${error}.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    QtumIGetInfo:
+      properties:
+        addrStr:
+          description: account address
+          example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+          type: string
+        balance:
+          description: Balance of address
+          example: 0
+          type: number
+        balanceSat:
+          description: Balance of address in satoshi
+          example: 0
+          type: number
+        totalReceived:
+          description: total amount received
+          example: 0
+          type: number
+        totalReceivedSat:
+          description: total amount received in satoshi
+          example: 0
+          type: number
+        totalSet:
+          description: total set amount
+          example: 0
+          type: number
+        totalSentSat:
+          description: total send amount in satoshi
+          example: 0
+          type: number
+        unconfirmedBalance:
+          description: uncomfirmed balance
+          example: 0
+          type: number
+        unconfirmedBalanceSat:
+          description: unconfirmed balance in satoshi
+          example: 0
+          type: number
+        unconfirmedTxApperances:
+          description: number of unconfirmed transaction
+          example: 0
+          type: number
+        txApperances:
+          description: number of txn apprerances
+          example: 0
+          type: number
+        transactions:
+          description: list of transactions
+          example:
+            - '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: array
+    QtumIRawTransactionInfo:
+      type: object
+      properties:
+        txid:
+          description: transaction hash
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: string
+        version:
+          description: version number
+          example: 0
+          type: number
+        locktime:
+          description: locktime
+          example: 0
+          type: number
+        receipt:
+          description: transaction receipts
+          type: array
+          items:
+            properties:
+              blockHash:
+                description: block hash
+                example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                type: string
+              blockNumber:
+                description: block number
+                example: 0
+                type: number
+              transactionHash:
+                description: transaction hash
+                example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                type: string
+              transactionIndex:
+                description: transaction index
+                example: 0
+                type: number
+              from:
+                description: from address
+                example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                type: string
+              to:
+                description: to address
+                example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                type: string
+              cumulativeGasUsed:
+                description: cumulativeGasUsed
+                example: ''
+                type: string
+              gasUsed:
+                description: gas Used
+                example: '0'
+                type: string
+              contractAddress:
+                description: address of contract
+                example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                type: string
+              excepted:
+                description: expected
+                example: ''
+                type: string
+              log:
+                description: logs
+                example:
+                  - ''
+                type: array
+        vin:
+          type: array
+          items:
+            properties:
+              value:
+                description: value
+                example: 0
+                type: number
+              script:
+                description: buffer of script
+                example: ''
+                type: string
+        vout:
+          type: array
+          items:
+            properties:
+              value:
+                description: value
+                example: 0
+                type: integer
+              address:
+                description: address
+                example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+                type: string
+              script:
+                description: script buffer
+                example: ''
+                type: string
+              scriptPubKey:
+                type: object
+                properties:
+                  hex:
+                    type: string
+                    description: hex value
+                    example: ''
+                  asm:
+                    type: string
+                    description: asm value
+                    example: ''
+                  addresses:
+                    type: object
+                    description: array of addresses
+        confirmations:
+          type: number
+          description: number of confirmations
+          example: 0
+        time:
+          type: number
+          description: time of txn
+          example: 1626959613
+        valueOut:
+          type: number
+          description: out value
+          example: 0
+        valueIn:
+          type: number
+          description: in value
+          example: 0
+        fees:
+          type: number
+          description: txn fees
+          example: 0
+        blockhash:
+          type: string
+          description: block hash
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+        blockheight:
+          type: number
+          description: block height
+          example: 0
+        isqrc20Transfer:
+          type: boolean
+          description: is qrc20 transfer?
+          example: false
+    QtumIUTXO:
+      type: array
+      items:
+        properties:
+          address:
+            description: account address
+            example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+            type: string
+          txid:
+            description: transaction id
+            example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+            type: string
+          vout:
+            description: number of outputs
+            example: 0
+            type: number
+          scriptPubKey:
+            description: 'Public key that controls this UXTO, as hex string.'
+            example: 4104f5eeb2b10c944c6b9fbcfff94c35bdeecd93df977882babc7f3a2cf7f5c81d3b09a68db7f0e04f21de5d4230e75e6dbe7ad16eefe0d4325a62067dc6f369446aac
+            type: string
+          amount:
+            description: amount transferred
+            example: 0
+            type: number
+          satoshis:
+            description: 'Amount of the transaction, in Satoshis'
+            example: 0
+            type: number
+          isStake:
+            description: staking true or false
+            example: false
+            type: boolean
+          height:
+            description: height
+            example: 1200
+            type: number
+          confirmations:
+            description: number of confirmations
+            example: 0
+            type: number
+    QtumBlock:
+      properties:
+        hash:
+          description: block hash
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: string
+        confirmations:
+          description: number of confirmations
+          example: 0
+          type: number
+        size:
+          description: block size
+          example: 0
+          type: number
+        height:
+          description: block height
+          example: 0
+          type: number
+        version:
+          description: version number
+          example: 0
+          type: number
+        merkleroot:
+          description: merkle tree root
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: string
+        tx:
+          description: transactions array
+          type: object
+        time:
+          description: timestamp
+          example: 0
+          type: number
+        nonce:
+          description: nonce
+          example: 0
+          type: number
+        bits:
+          description: bits
+          example: ''
+          type: string
+        difficulty:
+          description: difficulty
+          example: ''
+          type: string
+        chainwork:
+          description: chainwork
+          example: ''
+          type: string
+        previousblockhash:
+          description: hash of previous block
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: string
+        nextblockhash:
+          description: hash of next block
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: string
+        flags:
+          description: flags
+          example: ''
+          type: string
+        reward:
+          description: reward
+          example: 0
+          type: number
+        isMainChain:
+          description: is mainnet
+          example: true
+          type: boolean
+        minedBy:
+          description: mined by address
+          example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+          type: string
+        poolInfo:
+          description: pool information
+          example: {}
+          type: object
+    QtumIRawTransactions:
+      properties:
+        pagesTotal:
+          type: number
+          description: number of pages
+          example: 150
+        txns:
+          type: array
+          items:
+            properties:
+              txid:
+                type: string
+                description: transaction ID
+                example: 53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc
+              version:
+                type: number
+                description: version number
+                example: 0
+              locktime:
+                type: number
+                description: locktime
+                example: 1626959613
+              receipt:
+                type: array
+                description: transaction receipts
+                items:
+                  properties:
+                    blockHash:
+                      description: block hash
+                      example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                      type: string
+                    blockNumber:
+                      description: block number
+                      example: 0
+                      type: number
+                    transactionHash:
+                      description: transaction hash
+                      example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                      type: string
+                    transactionIndex:
+                      description: transaction index
+                      example: 0
+                      type: number
+                    from:
+                      description: from address
+                      example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                      type: string
+                    to:
+                      description: to address
+                      example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                      type: string
+                    cumulativeGasUsed:
+                      description: cumulativeGasUsed
+                      example: ''
+                      type: string
+                    gasUsed:
+                      description: gas Used
+                      example: '0'
+                      type: string
+                    contractAddress:
+                      description: address of contract
+                      example: '0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326'
+                      type: string
+                    excepted:
+                      description: expected
+                      example: ''
+                      type: string
+                    log:
+                      description: logs
+                      example:
+                        - ''
+                      type: array
+              vin:
+                type: array
+                items:
+                  properties:
+                    value:
+                      description: value
+                      example: 0
+                      type: number
+                    script:
+                      description: buffer of script
+                      example: ''
+                      type: string
+              vout:
+                type: array
+                items:
+                  properties:
+                    value:
+                      description: value
+                      example: 0
+                      type: integer
+                    address:
+                      description: address
+                      example: qWpEineYmtc2Ea25GqDYhvuzCjTiu5hMYA
+                      type: string
+                    script:
+                      description: script buffer
+                      example: ''
+                      type: string
+                    scriptPubKey:
+                      type: object
+                      properties:
+                        hex:
+                          type: string
+                          description: hex value
+                          example: ''
+                        asm:
+                          type: string
+                          description: asm value
+                          example: ''
+                        addresses:
+                          type: object
+                          description: array of addresses
+              confirmations:
+                type: number
+                description: confirmations
+                example: 6
+              time:
+                type: number
+                description: timestamp
+                example: 1626959613
+              valueOut:
+                type: number
+                description: valueOut
+                example: 0
+              valueIn:
+                type: number
+                description: value in
+                example: 1
+              fees:
+                type: number
+                description: fees
+                example: 1
+              blockhash:
+                type: string
+                description: hash of the block
+                example: 53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc
+              blockheight:
+                type: number
+                description: height of block
+                example: 100
+              isqrc20Transfer:
+                type: boolean
+                description: is qrc20 transfer?
+                example: true
+    TransactionHashKMS:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+        failed:
+          description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+          example: false
+          type: boolean
+      required:
+        - txId
+    Error400:
+      properties:
+        errorCode:
+          example: validation.failed
+          description: validation.failed
+          type: string
+        message:
+          example: Request validation failed. Please see data for additional information.
+          description: Request validation failed. Please see data for additional information.
+          type: string
+        statusCode:
+          example: 400
+          description: '400'
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - target
+            properties:
+              target:
+                type: object
+                additionalProperties: true
+                description: Request object present in the body of the HTTP request
+              value:
+                type: number
+                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                example: 12345
+              property:
+                type: string
+                description: Property name of the target object which validation is wrong
+                example: fromPrivateKey
+              constraints:
+                type: object
+                additionalProperties: true
+                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                example:
+                  isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403TxNotFound:
+      properties:
+        errorCode:
+          description: tx.missing
+          example: tx.missing
+          type: string
+        message:
+          description: No such tx.
+          example: No such tx.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error500:
+      properties:
+        message:
+          example: Internal server error
+          description: Internal server error
+          type: string
+        statusCode:
+          example: 500
+          description: '500'
+          type: number
+        errorCode:
+          example: internal.error
+          description: Internal server error
+          type: string
+      required:
+        - statusCode
+        - message
+      type: object
+  securitySchemes:
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
+      in: header
+      name: x-api-key
+      type: apiKey

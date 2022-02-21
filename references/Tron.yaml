@@ -1,0 +1,2074 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  title: Tron
+  version: 3.9.2
+  x-logo:
+    url: 'https://tatum.io/images/logo.svg'
+    altText: Tatum
+  description: |-
+          <p>Tron Blockchain enables access to most commonly used Tron methods. It's possible to generate TRON account, send TRX, TRC10 and TRC20 assets. It's also possible to generate custom TRC10 or TRC20 tokens using API.<br/>
+          Tatum supports 2 chains:
+          <ul><li>Mainnet - regular live chain
+          <li>Shasta Testnet - test chain used for testing purposes. Coins on test chain have no value and can be obtained from
+          Faucet, e.g. <a target="_blank" href="https://www.trongrid.io/shasta/">https://www.trongrid.io/shasta/</a></li></ul>
+servers:
+  - url: 'https://api-eu1.tatum.io'
+  - url: 'https://api-us-west1.tatum.io'
+tags:
+  - description: ''
+    name: Account
+  - description: ''
+    name: Block
+  - description: ''
+    name: Transaction
+  - description: ''
+    name: Utilities
+paths:
+  '/v3/tron/address/{xpub}/{index}':
+    get:
+      description: |
+        <h4>5 credit per API call.</h4><br/>
+        <p>Generate Tron deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate
+        up to 2^32 addresses starting from index 0 until 2^31.</p>
+      operationId: TronGenerateAddress
+      summary: Generate Tron deposit address from Extended public key
+      tags:
+        - Account
+      parameters:
+        - description: Extended public key of wallet.
+          in: path
+          name: xpub
+          required: true
+          example: 0244b3f40c6e570ae0032f6d7be87737a6c4e5314a4a1a82e22d0460a0d0cd794936c61f0c80dc74ace4cd04690d4eeb1aa6555883be006e1748306faa7ed3a26a
+          schema:
+            type: string
+        - description: Derivation index of desired address to be generated.
+          in: path
+          name: index
+          required: true
+          example: 1
+          schema:
+            type: number
+            minimum: 0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: Tron address
+                    example: TFFBpkRNro4Pe4154ayGWx7C6Ev7BvQZ6t
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403AccountAddressGeneral'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/wallet/priv:
+    post:
+      description: |
+        <h4>10 credit per API call.</h4><br/>
+        <p>Generate private key for address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic
+        can generate up to 2^31 private keys starting from index 0 until 2^31.</p>
+      operationId: TronGenerateAddressPrivateKey
+      summary: Generate Tron private key
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivKeyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivKey'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BlockchainPrivateFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/info:
+    get:
+      tags:
+        - Block
+      summary: Get current block
+      description: <h4>5 credits per API call.</h4><br/><p>Get current Tron block.</p>
+      operationId: TronGetCurrentBlock
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blockNumber:
+                    description: Block height.
+                    type: number
+                    example: 26585295
+                  hash:
+                    description: Block hash.
+                    type: string
+                    example: 000000000195a8cfe2ea4ca60ce921b30e95980a96c6bb1da4a35aa03da9c5a8
+                  testnet:
+                    description: Wether the block is from mainnet of Shasta testnet
+                    type: boolean
+                    example: false
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/tron/block/{hash}':
+    get:
+      tags:
+        - Block
+      summary: Get Tron block by hash
+      description: <h4>5 credits per API call.</h4><br/><p>Get Tron block by hash or height.</p>
+      operationId: TronGetBlock
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          description: Block hash or height.
+          schema:
+            type: string
+            example: 000000000195a8cfe2ea4ca60ce921b30e95980a96c6bb1da4a35aa03da9c5a8
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TronBlock'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/tron/transaction/account/{address}':
+    get:
+      tags:
+        - Transaction
+      summary: Get Tron Account transactions
+      description: <h4>5 credits per API call.</h4><br/><p>Get Tron Account transactions. Default page size is 200 transactions per request.</p>
+      operationId: TronAccountTx
+      parameters:
+        - in: path
+          name: address
+          description: Address to get transactions for.
+          required: true
+          schema:
+            type: string
+            example: TGDqQAP5bduoPKVgdbk7fGyW4DwEt3RRn8
+        - in: query
+          name: next
+          description: If
+          required: false
+          schema:
+            type: string
+            example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - transactions
+                properties:
+                  next:
+                    type: string
+                    description: 'If present, there are more transactions for address.'
+                    example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+                  transactions:
+                    type: array
+                    description: List of transactions.
+                    items:
+                      $ref: '#/components/schemas/TronTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/tron/transaction/account/{address}/trc20':
+    get:
+      tags:
+        - Transaction
+      summary: Get Tron Account TRC20 transactions
+      description: <h4>5 credits per API call.</h4><br/><p>Get Tron Account TRC20 transactions. Default page size is 200 transactions per request.</p>
+      operationId: TronAccountTx20
+      parameters:
+        - in: path
+          name: address
+          description: Address to get transactions for.
+          required: true
+          schema:
+            type: string
+            example: TGDqQAP5bduoPKVgdbk7fGyW4DwEt3RRn8
+        - in: query
+          name: next
+          description: If
+          required: false
+          schema:
+            type: string
+            example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - transactions
+                properties:
+                  next:
+                    type: string
+                    description: 'If present, there are more transactions for address.'
+                    example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+                  transactions:
+                    type: array
+                    description: List of transactions.
+                    items:
+                      $ref: '#/components/schemas/TronTx20'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/tron/account/{address}':
+    get:
+      tags:
+        - Account
+      summary: Get Tron Account by address
+      description: <h4>5 credits per API call.</h4><br/><p>Get Tron account by address.</p>
+      operationId: TronGetAccount
+      parameters:
+        - in: path
+          name: address
+          required: true
+          description: Account address.
+          schema:
+            type: string
+            example: TGDqQAP5bduoPKVgdbk7fGyW4DwEt3RRn8
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TronAccount'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/tron/transaction/{hash}':
+    get:
+      tags:
+        - Transaction
+      summary: Get Tron transaction by hash
+      description: <h4>5 credits per API call.</h4><br/><p>Get Tron transaction by hash.</p>
+      operationId: TronGetTransaction
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          description: Transaction hash.
+          schema:
+            type: string
+            example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TronTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Send Tron transaction
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Send Tron transaction from address to address.<br/><br/>
+        This operation needs the <strong>private key</strong> of the blockchain address.
+        <strong>Warning:</strong> Do not expose private keys to the internet because there is a strong possibility of stealing keys and loss of funds. 
+        </br>
+        </br>
+        In this method, it is possible to enter privateKey
+        or signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
+        Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.
+        </p>
+        </p>
+      operationId: TronTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/TransferTronBlockchain'
+                - $ref: '#/components/schemas/TransferTronBlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/freezeBalance:
+    post:
+      tags:
+        - Utilities
+      summary: Freeze Tron balance
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Freeze Tron assets on the address. By freezing assets, you can obtain energy or bandwith to perform transactions.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: TronFreeze
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/FreezeTron'
+                - $ref: '#/components/schemas/FreezeTronKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/trc10/transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Send Tron TRC10 transaction
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Send Tron TRC10 transaction from address to address.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: TronTransferTrc10
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/TransferTronTrc10Blockchain'
+                - $ref: '#/components/schemas/TransferTronTrc10BlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/trc10/deploy:
+    post:
+      tags:
+        - Utilities
+      summary: Create Tron TRC10 token
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Create Tron TRC10 token. 1 account can create only 1 token. All supply of the tokens are transfered to the issuer account 100 seconds after the creation.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: TronCreateTrc10
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/CreateTronTrc10Blockchain'
+                - $ref: '#/components/schemas/CreateTronTrc10BlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  '/v3/tron/trc10/detail/{id}':
+    get:
+      tags:
+        - Utilities
+      summary: Get Tron TRC10 token detail
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Get Tron TRC10 token details.</p>
+      operationId: TronTrc10Detail
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: TRC10 token ID
+          schema:
+            type: number
+            example: 1000540
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TronTrc10Detail'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/trc20/transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Send Tron TRC20 transaction
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Send Tron TRC20 transaction from address to address.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: TronTransferTrc20
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/TransferTronTrc20Blockchain'
+                - $ref: '#/components/schemas/TransferTronTrc20BlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/trc20/deploy:
+    post:
+      tags:
+        - Utilities
+      summary: Create Tron TRC20 token
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Create Tron TRC20 token. 1 account can create only 1 token. All supply of the tokens are transfered to the issuer account 100 seconds after the creation.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: TronCreateTrc20
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/CreateTronTrc20Blockchain'
+                - $ref: '#/components/schemas/CreateTronTrc20BlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/broadcast:
+    post:
+      tags:
+        - Transaction
+      summary: Broadcast Tron transaction
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Broadcast Tron transaction. This method is used internally from Tatum Middleware or Tatum client libraries.
+        It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
+      operationId: TronBroadcast
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TronBroadcast'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Tron'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+  /v3/tron/wallet:
+    get:
+      description: |
+       <h4>1 credit per API call.</h4><br/>
+       Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>
+       Each address is identified by 3 main values:
+       <ul>
+       <li>Private Key - your secret value, which should never be revealed</li>
+       <li>Public Key - public address to be published</li>
+       <li>Derivation index - index of generated address</li></ul>
+       </p><p>Tatum follows BIP44 specification and generates for Bitcoin wallet with derivation path m'/44'/195'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/tron/bips/blob/master/bip-0044.mediawiki</a>.\n        
+       Generate BIP44 compatible Tron wallet.</p>\n",
+      operationId: GenerateTronWallet
+      summary: Generate Tron wallet
+      tags:
+        - Account
+      paramethers:
+        - description: "Mnemonic to use for generatui if extended public and private key."
+          in: query
+          name: mnemonic
+          required: false
+          schema:
+            type: string
+            maxLength: 500
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/TronWallet"
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403AccountAddressGeneral'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server during the processing of the request.
+      security:
+        - X-Api-Key: []
+components:
+  schemas:
+    PrivKey:
+      type: object
+      properties:
+        key:
+          description: Generated private key.
+          example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
+          type: string
+    PrivKeyRequest:
+      type: object
+      properties:
+        index:
+          description: Derivation index of private key to generate.
+          example: 0
+          maximum: 2147483647
+          type: integer
+        mnemonic:
+          maxLength: 500
+          minLength: 1
+          description: Mnemonic to generate private key from.
+          example: urge pulp usage sister evidence arrest palm math please chief egg abuse
+          type: string
+      required:
+        - mnemonic
+        - index
+    TransactionHash:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+      required:
+        - txId
+    TransferTronBlockchain:
+      type: object
+      properties:
+        fromPrivateKey:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: 'Private key of the address, from which the TRX will be sent.'
+          example: 842E09EB40D8175979EFB0071B28163E11AED0F14BDD84090A4CEFB936EF5701
+        to:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        amount:
+          description: Amount to be sent in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - fromPrivateKey
+        - to
+        - amount
+    TransferTronBlockchainKMS:
+      type: object
+      properties:
+        from:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Sender address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        signatureId:
+          type: string
+          minimum: 36
+          maximum: 36
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        to:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        amount:
+          description: Amount to be sent in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+      required:
+        - from
+        - signatureId
+        - to
+        - amount
+        - index
+    TransferTronTrc10Blockchain:
+      type: object
+      properties:
+        fromPrivateKey:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: 'Private key of the address, from which the TRX will be sent.'
+          example: 842E09EB40D8175979EFB0071B28163E11AED0F14BDD84090A4CEFB936EF5701
+        to:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        tokenId:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: ID of the token to transfer.
+          example: '1000538'
+        amount:
+          description: Amount to be sent in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - fromPrivateKey
+        - tokenId
+        - to
+        - amount
+    TransferTronTrc10BlockchainKMS:
+      type: object
+      properties:
+        from:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Sender address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        signatureId:
+          type: string
+          minimum: 36
+          maximum: 36
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        to:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        tokenId:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: ID of the token to transfer.
+          example: '1000538'
+        amount:
+          description: Amount to be sent in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - from
+        - signatureId
+        - index
+        - tokenId
+        - to
+        - amount
+    TransferTronTrc20Blockchain:
+      type: object
+      properties:
+        fromPrivateKey:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: 'Private key of the address, from which the TRX will be sent.'
+          example: 842E09EB40D8175979EFB0071B28163E11AED0F14BDD84090A4CEFB936EF5701
+        to:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        tokenAddress:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Address of the TRC20 token to transfer.
+          example: TVAEYCmc15awaDRAjUZ1kvcHwQQaoPw2CW
+        feeLimit:
+          type: number
+          minimum: 0
+          description: Fee in TRX to be paid.
+          example: 0.01
+        amount:
+          description: Amount to be sent in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - fromPrivateKey
+        - tokenAddress
+        - to
+        - amount
+        - feeLimit
+    TransferTronTrc20BlockchainKMS:
+      type: object
+      properties:
+        from:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Sender address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        signatureId:
+          type: string
+          minimum: 36
+          maximum: 36
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        to:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        tokenAddress:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Address of the TRC20 token to transfer.
+          example: TVAEYCmc15awaDRAjUZ1kvcHwQQaoPw2CW
+        feeLimit:
+          type: number
+          minimum: 0
+          description: Fee in TRX to be paid.
+          example: 0.01
+        amount:
+          description: Amount to be sent in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - from
+        - signatureId
+        - index
+        - tokenAddress
+        - to
+        - amount
+        - feeLimit
+    CreateTronTrc20Blockchain:
+      type: object
+      properties:
+        fromPrivateKey:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: 'Private key of the address, from which the TRX will be sent.'
+          example: 842E09EB40D8175979EFB0071B28163E11AED0F14BDD84090A4CEFB936EF5701
+        recipient:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of created TRC20 tokens.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the token.
+          example: My token
+        symbol:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Symbol of the token.
+          example: SYM
+        totalSupply:
+          type: number
+          minimum: 0
+          description: Total supply of the tokens.
+          example: 100000
+        decimals:
+          type: number
+          minimum: 0
+          maximum: 30
+          description: Number of decimal places of the token.
+          example: 10
+      required:
+        - fromPrivateKey
+        - name
+        - recipient
+        - symbol
+        - totalSupply
+        - decimals
+    CreateTronTrc20BlockchainKMS:
+      type: object
+      properties:
+        from:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Sender address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        signatureId:
+          type: string
+          minimum: 36
+          maximum: 36
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        recipient:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of created TRC20 tokens.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the token.
+          example: My token
+        symbol:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Symbol of the token.
+          example: SYM
+        totalSupply:
+          type: number
+          minimum: 0
+          description: Total supply of the tokens.
+          example: 100000
+        decimals:
+          type: number
+          minimum: 0
+          maximum: 30
+          description: Number of decimal places of the token.
+          example: 10
+      required:
+        - from
+        - signatureId
+        - index
+        - name
+        - recipient
+        - symbol
+        - totalSupply
+        - decimals
+    CreateTronTrc10Blockchain:
+      type: object
+      properties:
+        fromPrivateKey:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: 'Private key of the address, from which the TRX will be sent.'
+          example: 842E09EB40D8175979EFB0071B28163E11AED0F14BDD84090A4CEFB936EF5701
+        recipient:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of created TRC 10 tokens.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the token.
+          example: My token
+        abbreviation:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Abbreviation of the token.
+          example: SYM
+        description:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Description of the token.
+          example: My short description
+        url:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: URL of the token.
+          example: 'https://mytoken.com'
+        totalSupply:
+          type: number
+          minimum: 0
+          description: Total supply of the tokens.
+          example: 100000
+        decimals:
+          type: number
+          minimum: 0
+          maximum: 5
+          description: Number of decimal places of the token.
+          example: 5
+      required:
+        - fromPrivateKey
+        - recipient
+        - name
+        - abbreviation
+        - description
+        - url
+        - totalSupply
+        - decimals
+    CreateTronTrc10BlockchainKMS:
+      type: object
+      properties:
+        from:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Sender address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        signatureId:
+          type: string
+          minimum: 36
+          maximum: 36
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        recipient:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of created TRC 10 tokens.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the token.
+          example: My token
+        abbreviation:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Abbreviation of the token.
+          example: SYM
+        description:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Description of the token.
+          example: My short description
+        url:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: URL of the token.
+          example: 'https://mytoken.com'
+        totalSupply:
+          type: number
+          minimum: 0
+          description: Total supply of the tokens.
+          example: 100000
+        decimals:
+          type: number
+          minimum: 0
+          maximum: 5
+          description: Number of decimal places of the token.
+          example: 5
+      required:
+        - from
+        - signatureId
+        - index
+        - recipient
+        - name
+        - abbreviation
+        - description
+        - url
+        - totalSupply
+        - decimals
+    TronTrc10Detail:
+      type: object
+      properties:
+        ownerAddress:
+          type: string
+          maxLength: 34
+          description: 'Address of the owner of the token, in hex.'
+          example: 41d2803f9c22aa429d71554c9427e97ffe
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the token.
+          example: My token
+        abbr:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Abbreviation of the token.
+          example: SYM
+        description:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Description of the token.
+          example: My short description
+        url:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: URL of the token.
+          example: 'https://mytoken.com'
+        totalSupply:
+          type: number
+          minimum: 0
+          description: Total supply of the tokens.
+          example: 100000
+        precision:
+          type: number
+          minimum: 0
+          maximum: 5
+          description: Number of decimal places of the token.
+          example: 5
+    FreezeTron:
+      type: object
+      properties:
+        fromPrivateKey:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: 'Private key of the address, from which the TRX will be sent.'
+          example: 842E09EB40D8175979EFB0071B28163E11AED0F14BDD84090A4CEFB936EF5701
+        receiver:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of frozen BANDWIDTH or ENERGY.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        duration:
+          type: number
+          description: 'Duration of frozen funds, in days.'
+          example: 3
+          minimum: 3
+        resource:
+          type: string
+          description: 'Resource to obtain, BANDWIDTH or ENERGY.'
+          example: ENERGY
+          enum:
+            - BANDWIDTH
+            - ENERGY
+        amount:
+          description: Amount to be frozen in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - fromPrivateKey
+        - receiver
+        - resource
+        - duration
+        - amount
+    FreezeTronKMS:
+      type: object
+      properties:
+        from:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Sender address of TRON account in Base58 format.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        signatureId:
+          type: string
+          minimum: 36
+          maximum: 36
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+        index:
+          type: number
+          minimum: 0
+          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+        receiver:
+          type: string
+          minLength: 34
+          maxLength: 34
+          description: Recipient address of frozen BANDWIDTH or ENERGY.
+          example: TYMwiDu22V6XG3yk6W9cTVBz48okKLRczh
+        duration:
+          type: number
+          description: 'Duration of frozen funds, in days.'
+          example: 3
+          minimum: 3
+        resource:
+          type: string
+          description: 'Resource to obtain, BANDWIDTH or ENERGY.'
+          example: ENERGY
+          enum:
+            - BANDWIDTH
+            - ENERGY
+        amount:
+          description: Amount to be frozen in TRX.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+      required:
+        - from
+        - signatureId
+        - index
+        - receiver
+        - resource
+        - duration
+        - amount
+    Error403Tron:
+      properties:
+        errorCode:
+          description: tron.failed
+          example: tron.failed
+          type: string
+        message:
+          description: 'Unable to communicate to blockchain. ${error}'
+          example: 'Unable to communicate to blockchain. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    TronBlock:
+      type: object
+      properties:
+        hash:
+          type: string
+          description: Block hash
+          example: 000000000195a8cfe2ea4ca60ce921b30e95980a96c6bb1da4a35aa03da9c5a8
+        blockNumber:
+          type: number
+          description: Block number.
+          example: 26585295
+        timestamp:
+          type: number
+          description: Time of the block in UTC millis.
+          example: 1610134209000
+        parentHash:
+          type: string
+          description: Hash of the parent block.
+          example: 000000000195a8ce6003aa8b6443c52734b80aefdcd079bf40e7f165b046370e
+        witnessAddress:
+          type: string
+          description: Witness address.
+          example: 4118e2e1c6cdf4b74b7c1eb84682e503213a174955
+        witnessSignature:
+          type: string
+          description: Witness signature.
+          example: e20cb7a1f01d279ebe9c20baa0d747bea160042639ba0be63460cbb21ae63f072520e7766cb7aa1bd4e74bebbdea64be431ecf52c2aa2123ca0b1d7495bd581d00
+        transactions:
+          type: array
+          description: Transactions that occurs in this block.
+          items:
+            $ref: '#/components/schemas/TronTx'
+    TronBroadcast:
+      type: object
+      required:
+        - txData
+      properties:
+        txData:
+          type: string
+          description: Raw signed transaction to be published to network.
+          minLength: 1
+          maxLength: 50000
+          example: '{"raw_data": "{\"contract\":[{\"parameter\":{\"value\":{\"amount\":1000,\"owner_address\":\"41608f8da72479edc7dd921e4c30bb7e7cddbe722e\",\"to_address\":\"41e9d79cc47518930bc322d9bf7cddd260a0260a8d\"},\"type_url\":\"type.googleapis.com/protocol.TransferContract\"},\"type\":\"TransferContract\"}],\"ref_block_bytes\":\"5e4b\",\"ref_block_hash\":\"47c9dc89341b300d\",\"expiration\":1591089627000,\"timestamp\":1591089567635}","raw_data_hex": "0a025e4b220847c9dc89341b300d40f8fed3a2a72e5a66080112620a2d747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e73666572436f6e747261637412310a1541608f8da72479edc7dd921e4c30bb7e7cddbe722e121541e9d79cc47518930bc322d9bf7cddd260a0260a8d18e8077093afd0a2a72e"}'
+    TronTx:
+      type: object
+      required:
+        - txID
+        - signature
+        - blockNumber
+        - ret
+        - rawData
+      properties:
+        blockNumber:
+          type: number
+          description: 'Block, where which the transactio nwas included.'
+          example: 11223344
+        ret:
+          type: object
+          description: Result of the smart contract invocation.
+          properties:
+            contractRet:
+              type: string
+              description: Return value of the smart contract invocation.
+              example: SUCCESS
+            fee:
+              type: number
+              description: 'Fee of the blockchain transaction. Not present every time, depends on the type of the smart contract, which was invoked.'
+              example: 200
+          required:
+            - contractRet
+        signature:
+          type: array
+          description: List of signatures of the transaction.
+          items:
+            type: string
+            example: 91fa5d81f9578970d21fdcde4ebb849674d437b62774f34e8d9e4cb50960c0031362cbcb649553b1f5f9daf19495ae46e517d4401172b5e53bb06bfe6896e2e300
+        txID:
+          type: string
+          description: Transaction ID.
+          example: 24dd2f121a24516f22df78adf1ccc32119e3edb7760297f76a925b879f2baa98
+        netFee:
+          type: number
+          description: Fee paid for the transaction.
+          example: 13800
+        netUsage:
+          type: number
+          description: Usage of the network.
+          example: 0
+        energyFee:
+          type: number
+          description: Fee paid for the energy.
+          example: 1157080
+        energyUsage:
+          type: number
+          description: Usage of the energy.
+          example: 2
+        energyUsageTotal:
+          type: number
+          description: Total energy used.
+          example: 28929
+        internalTransactions:
+          type: array
+          items:
+            type: object
+            properties:
+              internal_tx_id:
+                type: string
+                description: Internal TX ID.
+                example: e1543ab5ac85e8fbf2397f30f19dc5b7a32abd508a57ff0c13642c9963d9f312
+              to_address:
+                type: string
+                description: Recipient address.
+                example: 41a614f803b6fd780986a42c78ec9c7f77e6ded13c
+              from_address:
+                type: string
+                description: Sender address.
+                example: 41a2726afbecbd8e936000ed684cef5e2f5cf43008
+          description: List of internal smart contract transactions.
+        rawData:
+          type: object
+          description: Raw data of the transaction.
+          properties:
+            expiration:
+              description: Expiration of the transaction.
+              type: number
+              example: 1610067216000
+            timestamp:
+              description: Time of the transaction.
+              type: number
+              example: 1609980816000
+            fee_limit:
+              description: Max limit of the fee.
+              type: number
+              example: 100000000
+            contract:
+              type: array
+              description: Smart contract invocations details.
+              items:
+                type: object
+                properties:
+                  type:
+                    example: TriggerSmartContract
+                    type: string
+                    description: Type of the Smart contract.
+                  parameter:
+                    type: object
+                    properties:
+                      type_url:
+                        type: string
+                        example: type.googleapis.com/protocol.TriggerSmartContract
+                        description: Type of the smart contract event.
+                      value:
+                        type: object
+                        properties:
+                          data:
+                            type: string
+                            description: Data of the contract method.
+                            example: a9059cbb0000000000000000000000418bea410241bc77c1da7fc8bc13929c4035596c5f0000000000000000000000000000000000000000000000022571499fd43aec00
+                          owner_address:
+                            type: string
+                            example: 418632237fd33f62c549ee044dd3da779aba947dcc
+                            description: Address of the sender.
+                          contract_address:
+                            type: string
+                            example: 41af2c205a7e44f79f680d149d339b733f6d34b6d5
+                            description: Address of the recipient.
+                          ownerAddressBase58:
+                            type: string
+                            example: TNCmcTdyrYKMtmE1KU2itzeCX76jGm5Not
+                            description: Address of the sender in Base58 encoding.
+                          contractAddressBase58:
+                            type: string
+                            example: TRwS7apsNdRGzMBfhB2hVC4RhqfubUYZ8P
+                            description: Address of the recipient in Base58 encoding.
+          required:
+            - contract
+            - timestamp
+            - expiration
+    TronTx20:
+      type: object
+      required:
+        - txID
+        - to
+        - tokenInfo
+        - type
+        - value
+        - from
+      properties:
+        txID:
+          type: string
+          description: Transaction ID.
+          example: 24dd2f121a24516f22df78adf1ccc32119e3edb7760297f76a925b879f2baa98
+        tokenInfo:
+          type: object
+          required:
+            - symbol
+            - decimals
+            - address
+            - name
+          properties:
+            symbol:
+              type: string
+              example: USDT
+            address:
+              type: string
+              example: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t
+            decimals:
+              type: number
+              example: 6
+            name:
+              type: string
+              example: Tether USD
+        from:
+          type: string
+          example: TPn72oEg7WPaffgNBf62vGx8G1s4chx2fp
+        to:
+          type: string
+          example: TJyhbP1bQfo8tLPxEVjaka9gh2qkN7MvD3
+        type:
+          type: string
+          example: Transfer
+        value:
+          type: string
+          example: '1800'
+    TronAccount:
+      type: object
+      required:
+        - address
+        - freeNetUsage
+        - balance
+        - trc10
+        - trc20
+        - createTime
+      properties:
+        address:
+          type: string
+          description: Account address
+          example: TGDqQAP5bduoPKVgdbk7fGyW4DwEt3RRn8
+        freeNetUsage:
+          type: number
+          description: Free usage of the network
+          example: 1900
+        balance:
+          type: number
+          description: 'Balance of the TRX, in SUN. SUN is 1/1000000 TRX.'
+          example: 2342342
+        trc10:
+          type: array
+          items:
+            type: object
+            description: Balance of the TRC10 assets.
+            properties:
+              key:
+                type: string
+                description: Name of the TRC10 asset.
+                example: TEST_TRC_10
+              value:
+                type: number
+                description: Balance of the TRC10 asset.
+                example: 123
+            required:
+              - key
+              - value
+        trc20:
+          type: array
+          items:
+            type: object
+            description: 'Balance of the TRC20 assets. It is structured as key value array, where key is the address of the TRC20 and value is the balance.'
+            example:
+              TRkuKAxmWZ4G74MvZnFpoosQZsfvtNpmwH: '30958'
+              TVKXY8DJ9aVTcg3wwVrRRs2FbTUwi4UZWR: '70000'
+        createTime:
+          type: number
+          description: Date of creation of the account in UTC millis.
+          example: 1602848895000
+        assetIssuedId:
+          type: string
+          description: 'ID of the issued TRC10 token, if any.'
+          example: '1003475'
+        assetIssuedName:
+          type: number
+          description: 'Balance of the issued TRC10 token, if any.'
+          example: 100
+    TronWallet:
+      type: object
+      required:
+        - mnemonic
+        - xpub
+      properties:
+        mnemonic:
+          description: "Generated mnemonic for wallet."
+          example: "uprge pulp usage sister evidence arrest palm math please chief egg abuse"
+          type: string
+        xpub: 
+          description: "Generated Extended public key for wallet with derivation path according to BIP44. This key can be used to generate addresses."
+          example: "0244b3f40c6e570ae0032f6d7be87737a6c4e5314a4a1a82e22d0460a0d0cd794936c61f0c80dc74ace4cd04690d4eeb1aa6555883be006e1748306faa7ed3a26a"
+          type: string
+    Error403AccountAddressGeneral:
+      properties:
+        errorCode:
+          description: Address.generation.failed
+          example: address.generation.failed
+          type: string
+        message:
+          description: Unable to generate address.
+          example: Unable to generate address.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BlockchainPrivateFailed:
+      properties:
+        errorCode:
+          description: key.generation.failed.wrong.mnemonic
+          example: key.generation.failed.wrong.mnemonic
+          type: string
+        message:
+          description: 'Unable to generate address, wrong mnemonic and index.'
+          example: 'Unable to generate address, wrong mnemonic and index.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error400:
+      properties:
+        errorCode:
+          example: validation.failed
+          description: validation.failed
+          type: string
+        message:
+          example: Request validation failed. Please see data for additional information.
+          description: Request validation failed. Please see data for additional information.
+          type: string
+        statusCode:
+          example: 400
+          description: '400'
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - target
+            properties:
+              target:
+                type: object
+                additionalProperties: true
+                description: Request object present in the body of the HTTP request
+              value:
+                type: number
+                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                example: 12345
+              property:
+                type: string
+                description: Property name of the target object which validation is wrong
+                example: fromPrivateKey
+              constraints:
+                type: object
+                additionalProperties: true
+                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                example:
+                  isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error500:
+      properties:
+        message:
+          example: Internal server error
+          description: Internal server error
+          type: string
+        statusCode:
+          example: 500
+          description: '500'
+          type: number
+        errorCode:
+          example: internal.error
+          description: Internal server error
+          type: string
+      required:
+        - statusCode
+        - message
+      type: object
+  securitySchemes:
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
+      in: header
+      name: x-api-key
+      type: apiKey

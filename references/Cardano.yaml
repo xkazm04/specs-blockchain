@@ -1,0 +1,1458 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  title: Cardano
+  version: 3.9.2
+  x-logo:
+    url: 'https://tatum.io/images/logo.svg'
+    altText: Tatum
+  description: |-
+          <h4>Cardano is in maintenance mode.</h4>
+          <p>Cardano Blockchain enables access to the most commonly used Cardano methods. These methods bring a small level of abstraction
+          and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+          to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
+          Tatum supports 2 chains:
+          <ul><li>Mainnet - a regular live chain</li>
+          <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://testnets.cardano.org/en/testnets/cardano/tools/faucet/">https://testnets.cardano.org/en/testnets/cardano/tools/faucet/</a></li></ul><br/>
+          Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+servers:
+  - url: 'https://api-eu1.tatum.io'
+  - url: 'https://api-us-west1.tatum.io'
+tags:
+  - description: ''
+    name: Account
+  - description: ''
+    name: Block
+  - description: ''
+    name: Transaction
+  - description: ''
+    name: Utilities
+paths:
+  /v3/ada/info:
+    get:
+      description: '<h4>1 credit per API call.</h4><br/><p>Gets Ada blockchain information. Obtains basic info like the testnet / mainnet version of the chain, the current block number and its hash.</p>'
+      operationId: AdaGetBlockChainInfo
+      summary: Get Blockchain information
+      tags:
+        - Block
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdaInfo'
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BtcBlockchain'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/ada/wallet:
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. A mnemonic phrase consists of 24 special words in a defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for ADA wallet with derivation path m/1852'/1815'/0'. More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
+        Generate BIP44 compatible Ada wallet.</p>
+      operationId: AdaGenerateWallet
+      summary: Generate Ada wallet
+      tags:
+        - Account
+      parameters:
+        - description: Mnemonic to use for generation of extended public and private keys.
+          in: query
+          name: mnemonic
+          required: false
+          schema:
+            type: string
+            maxLength: 500
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BtcBlockchain'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/ada/address/{xpub}/{index}':
+    get:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>Generates a Ada deposit address from an Extended public key. The deposit address is generated for the specific index - each extended public key can generate
+        up to 2^31 addresses starting from index 0 until 2^31 - 1.</p>
+      operationId: AdaGenerateAddress
+      summary: Generate Ada deposit address from Extended public key
+      tags:
+        - Account
+      parameters:
+        - description: Extended public key of a wallet.
+          in: path
+          name: xpub
+          required: true
+          example: 30e96a57be6235c686da968c1860f69d1871a692b29626b7ebb923aff8c6731cb9fef3a26b7eba8a07653483d06427d0c07966c5f81c69a7925d714530bedb1ef9e9103547b54ad0954b3569785ca70e1fd08313f92a3a9d31efa216b2b9adac4678455e66c97b53cd589f9da70a14265cf15cd4c1e0ce914407008f4a65f316
+          schema:
+            type: string
+        - description: Derivation index of the desired address to be generated.
+          in: path
+          name: index
+          required: true
+          example: 0
+          schema:
+            type: number
+            minimum: 0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: Ada address
+                    example: addr1qyyxyhaa2e7kxeqcc72w7f747zqlgwwwstlzsg9umuxc40wnhawldxl4nan95rhtlcnju9q2r8j9qz8vslwsmrkj5r4spxhep9
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403AccountIncompatibleXpubBtc'
+                  - $ref: '#/components/schemas/Error403AccountAddressGeneral'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/ada/wallet/priv:
+    post:
+      description: |
+        <h4>1 credit per API call.</h4><br/>
+        <p>Generates a private key for an address from a mnemonic for a given derivation path index. The private key is generated for the specific index - each mnemonic
+        can generate up to 2^32 private keys starting from index 0 until 2^31 - 1.</p>
+      operationId: AdaGenerateAddressPrivateKey
+      summary: Generate Ada private key
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivKeyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivKey'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BlockchainPrivateFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/ada/block/{hash}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Gets Ada block detail by block hash or height.</p>
+      operationId: AdaGetBlock
+      summary: Get Block by hash or height
+      tags:
+        - Block
+      parameters:
+        - description: Block hash or height.
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+            example: 00000000ca231a439a5c0a86a5a5dd6dc1918a8e897b96522fa9499288e70183
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdaBlock'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BlockNotExists'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/ada/transaction/{hash}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Get Ada Transaction detail by transaction hash.</p>
+      operationId: AdaGetRawTransaction
+      summary: Get transaction by hash
+      tags:
+        - Transaction
+      parameters:
+        - description: Transaction hash
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+            example: 1451692ebbfbea1a2d2ec6fe6782596b6aa2e46c0589d04c406f491b5b46bc6a
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdaTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403BtcBlockchain'
+                  - $ref: '#/components/schemas/Error403TxNotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/ada/transaction/address/{address}':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Gets a Ada transaction by address.</p>
+      operationId: AdaGetTxByAddress
+      summary: Get transactions by address
+      tags:
+        - Transaction
+      parameters:
+        - description: Address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: Ae2tdPwUPEZMmrkRoduJW9w7wRvnTcdeMbw7yyyjwPqo6zuaeJaDEkHUJSz
+        - description: Max number of items per page is 50.
+          in: query
+          name: pageSize
+          schema:
+            type: number
+            example: 10
+            maximum: 50
+            minimum: 1
+          required: true
+        - description: Offset to obtain the next page of data.
+          in: query
+          name: offset
+          schema:
+            type: number
+            example: 0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AdaTx'
+                type: array
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BtcBlockchain'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/ada/{address}/utxos':
+    get:
+      description: <h4>1 credit per API call.</h4><br/><p>Gets a Ada UTXOs by address.</p>
+      operationId: AdaGetUTXO
+      summary: Get UTXOs by address
+      tags:
+        - Transaction
+      parameters:
+        - description: Address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: Ae2tdPwUPEZMmrkRoduJW9w7wRvnTcdeMbw7yyyjwPqo6zuaeJaDEkHUJSz
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AdaUTXO'
+                type: array
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BtcBlockchain'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/ada/transaction:
+    post:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Send Ada to blockchain addresses. It is possible to build a blockchain transaction in 2 ways:
+        <ul>
+        <li><b>fromAddress</b> - assets will be sent from the list of addresses. For each of the addresses, the last 100 transactions will be scanned for any unspent UTXO to be included in the transaction.</li>
+        <li><b>fromUTXO</b> - assets will be sent from the list of unspent UTXOs. Each of the UTXOs will be included in the transaction.</li>
+        </ul>
+        In bitcoin-like blockchains, a transaction is created from the list of previously unspent UTXOs. Every UTXO contains the amount of funds that can be spent.
+        When the UTXO is entered into the transaction, the whole amount is included and must be spent. For example, address A receives 2 transactions, T1 with 1 ADA and T2 with 2 ADA.
+        The transaction, which will consume the UTXOs for T1 and T2, will have an available amount to spend of 3 ADA = 1 ADA (T1) + 2 ADA(T2).<br/><br/>
+        There can be multiple recipients of the transactions. In the <b>to</b> section, every recipient address has its own corresponding amount.
+        When the amount of funds that the recipient should receive is lower than the amount of funds from the UTXOs, the difference is used as a transaction fee.<br/><br/>
+        This operation requires the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send their private keys to the Internet because there is a strong possibility that they will be stolen and the funds will be lost. In this method, it is possible to enter a privateKey
+        or signatureId. The privateKey should be used only for quick development on testnet versions of blockchains when there is no risk of losing funds. In production,
+        <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used to ensure the highest level of security, and the signatureId should be present in the request.
+        Alternatively, it is also possible to use the Tatum Client Library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: AdaTransferBlockchain
+      summary: Send Ada to blockchain addresses
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/BtcTransactionFromAddress'
+                - $ref: '#/components/schemas/BtcTransactionFromAddressKMS'
+                - $ref: '#/components/schemas/BtcTransactionFromUTXO'
+                - $ref: '#/components/schemas/BtcTransactionFromUTXOKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/TransactionHashKMS'
+                  - $ref: '#/components/schemas/SignatureId'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403BtcTx'
+                  - $ref: '#/components/schemas/Error403BtcBlockchain'
+                  - $ref: '#/components/schemas/Error403BtcUTXO'
+                  - $ref: '#/components/schemas/Error403BtcTxFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/ada/broadcast:
+    post:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Broadcasts a signed transaction to the Ada blockchain. This method is used internally from Tatum KMS, Tatum Middleware or Tatum Client Libraries.
+        It is possible to create a custom signing mechanism and only use this method for broadcasting data to the blockchain.</p>
+      operationId: AdaBroadcast
+      summary: Broadcast signed Ada transaction
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHashKMS'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403BtcBlockchain'
+                  - $ref: '#/components/schemas/Error403Broadcast'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/ada/account/{address}':
+    get:
+      description: |
+        <h4>2 credits per API call.</h4><br/>
+        <p>Gets a Ada account by address.</p>
+      operationId: AdaGetAccount
+      summary: Gets a Ada account by address
+      tags:
+        - Account
+      parameters:
+        - description: Address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: Ae2tdPwUPEZMmrkRoduJW9w7wRvnTcdeMbw7yyyjwPqo6zuaeJaDEkHUJSz
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AdaAccount'
+                type: array
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403BtcBlockchain'
+                  - $ref: '#/components/schemas/Error403Broadcast'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/ada/graphql:
+    post:
+      description: |
+        <h4>100 credits per API call.</h4><br/><p>Use this endpoint URL as an GraphQL to connect directly to the Ada node provided by Tatum. You can find full documentation on <a target='_blank' href='https://github.com/input-output-hk/cardano-graphql'> Cardano GraphQL API</a></p>
+      operationId: AdaGraphQL
+      summary: Ada GraphQL
+      tags:
+        - Transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             type: object
+             description: "Any valid GraphQL method content body."
+             example:
+               query: "{ cardano { tip { number slotNo epoch { number } }} }"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                description: "Any valid GraphQL response"
+                example:
+                  data:
+                    cardano:
+                      tip:
+                        number: 3250222
+                        slotNO: 48226361
+                        epoch:
+                          number: 181
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403BtcBlockchain'
+                  - $ref: '#/components/schemas/Error403Broadcast'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+components:
+  schemas:
+    AdaBlock:
+      type: object
+      properties:
+        hash:
+          type: string
+          description: Hash of block.
+          example: 6178dda07b94becb118f67b21aa72f60d85c1029e9e9b8ae56a25d684de66078
+        number:
+          type: number
+          description: The number of blocks preceding a particular block on a block chain.
+          example: 1234314
+        epochNo:
+          type: number
+          example: 536870912
+          description: Number of the epoch the block is included in.
+        slotNo:
+          type: string
+          description: Number of the slot the block is included in.
+          example: a3047a060e5d586a9b26779ebe62fc57ce7323745da8f28761ab755454d89c52
+        merkleRoot:
+          type: string
+          description: 'The root node of a merkle tree, a descendant of all the hashed pairs in the tree.'
+          example: a1634a42a8e956a5fb5225d06c3af6207e7f6fe5a00fa45229edfd0ddfa587f0
+        forgedAt:
+          type: string
+          description: Time of the block.
+          example: '2020-10-20T08:21:50.107Z'
+        fees:
+          type: number
+          description: Sum of fees paid in the block.
+          example: 503452237
+        slotInEpoch:
+          type: number
+          description: Number of the slot in the epoch.
+          example: 2278594841
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdaTx'
+    AdaTx:
+      type: object
+      properties:
+        hash:
+          type: string
+          description: Transaction hash.
+          example: 5f83d51c8d3054012cea3011fa626b85d89442788721afd60719ab1f9ab8f78a
+        fee:
+          type: string
+          description: 'Fee paid for this transaction, in LTC.'
+          example: '0.00001682'
+        block:
+          type: number
+          description: Index of the block this transaction belongs to.
+          example: 1233224
+        includedAt:
+          type: string
+          description: Time of the transaction.
+          example: '2020-10-20T08:21:50.107Z'
+        inputs:
+          description: 'List of transactions, from which assets are being sent.'
+          type: array
+          items:
+            type: object
+            properties:
+              txHash:
+                type: string
+                description: Transaction hash of the input.
+                example: 0db5a2881f26f7dce20222f9c2538dc296ab562e134a72052596bdf4bb6913b4
+              sourceTxHash:
+                type: string
+                description: Transaction hash of the source transaction input.
+                example: 0db5a2881f26f7dce20222f9c2538dc296ab562e134a72052596bdf4bb6913b4
+              sourceTxIndex:
+                type: number
+                description: Transaction index of the input.
+                example: 1
+              value:
+                type: string
+                description: 'Value of the transaction, in Lovelace - 1/1000000 of ADA.'
+                example: '989946'
+              address:
+                type: string
+                description: Sender address.
+                example: addr1qxm3vd0msv9ph8elhy7xrv975z88y6lr3d8vdgy3fwr2e22uvu2ffa2ctx3pdl4rjjja5p7al2k356x5yx8cn03am88s2807d9
+        outputs:
+          description: List of recipient addresses and amounts to send to each of them.
+          type: array
+          items:
+            $ref: '#/components/schemas/AdaUTXO'
+    AdaUTXO:
+      type: object
+      properties:
+        value:
+          type: string
+          description: Sent amount in Lovelace - 1/1000000 of ADA.
+          example: '15000'
+        index:
+          type: number
+          description: Index of the output in the transaction.
+          example: 1
+        txHash:
+          type: string
+          description: Transaction hash.
+          example: 76a914fc8f50c952da910f473a0533561311ad140c989b88ac
+        address:
+          type: string
+          description: Recipient address.
+          example: addr1qxm3vd0msv9ph8elhy7xrv975z88y6lr3d8vdgy3fwr2e22uvu2ffa2ctx3pdl4rjjja5p7al2k356x5yx8cn03am88s2807d9
+    AdaAccount:
+      type: object
+      properties:
+        summary:
+          type: object
+          properties:
+            utxosCount:
+              type: number
+              description: Count of UTXOs transaction.
+            assetBalances:
+              type: array
+              items:
+                type: object
+                properties:
+                  asset:
+                    type: object
+                    properties:
+                      assetId:
+                        type: string
+                        description: Id of the asset.
+                      assetName:
+                        type: string
+                        description: Name of the asset.
+                      name:
+                        type: string
+                        description: Name of the asset.
+                      description:
+                        type: string
+                        description: Description of the asset.
+                      logo:
+                        type: string
+                        description: Logo of the asset.
+                      metadataHash:
+                        type: string
+                        description: Metadata hash of the asset.
+                      url:
+                        type: string
+                        description: Url of the asset.
+                  quantity:
+                    type: string
+                    description: Quantity of the asset.
+    AdaInfo:
+      type: object
+      properties:
+        testnet:
+          type: string
+          description: 'Chain of the blockchain, main or test.'
+          example: test
+        tip:
+          type: object
+          properties:
+            number:
+              type: number
+              description: Last block.
+              example: 2749845
+            slotNo:
+              type: number
+              description: Last slot number.
+              example: 31798572
+            epoch:
+              type: object
+              properties:
+                number:
+                  type: number
+                  description: Last epoch number.
+                  example: 143
+    BroadcastKMS:
+      properties:
+        txData:
+          description: Raw signed transaction to be published to network.
+          example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
+          maxLength: 500000
+          minLength: 1
+          type: string
+        signatureId:
+          description: 'ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.'
+          format: uuid
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          type: string
+          minLength: 36
+          maxLength: 36
+      required:
+        - txData
+      type: object
+    BtcTransactionFromAddress:
+      type: object
+      required:
+        - to
+        - fromAddress
+      properties:
+        fromAddress:
+          description: Array of addresses and corresponding private keys. Tatum will automatically scan last 100 transactions for each address and will use all of the unspent values. We advise to use this option if you have 1 address per 1 transaction only.
+          type: array
+          items:
+            type: object
+            required:
+              - address
+              - privateKey
+            properties:
+              address:
+                description: Address to send assets from.
+                type: string
+                example: 2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS
+                minimum: 30
+                maximum: 50
+              privateKey:
+                description: 'Private key of the address to send assets from. Private key, or signature Id must be present.'
+                type: string
+                minimum: 52
+                maximum: 52
+                example: cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf
+        to:
+          description: Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.
+          type: array
+          items:
+            type: object
+            required:
+              - address
+              - value
+            properties:
+              address:
+                description: Destination address.
+                type: string
+                example: 2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7
+                minimum: 30
+                maximum: 60
+              value:
+                description: 'Amount to be sent, in BTC.'
+                type: number
+                minimum: 0
+                example: 0.02969944
+    BtcTransactionFromUTXO:
+      type: object
+      required:
+        - to
+        - fromUTXO
+      properties:
+        fromUTXO:
+          description: 'Array of transaction hashes, index of UTXO in it and corresponding private keys. Use this option if you want to calculate amount to send manually. Either fromUTXO or fromAddress must be present.'
+          type: array
+          items:
+            type: object
+            required:
+              - txHash
+              - index
+              - privateKey
+            properties:
+              txHash:
+                description: Transaction hash of the UTXO to be spent.
+                type: string
+                example: 53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc
+                minLength: 64
+                maxLength: 64
+              index:
+                description: Index of the UTXO to be spent.
+                type: number
+                example: 0
+                minimum: 0
+                maximum: 2147483647
+              privateKey:
+                description: Private key of the UTXO to be spent.
+                type: string
+                example: cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf
+                minLength: 52
+                maxLength: 52
+        to:
+          description: Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.
+          type: array
+          items:
+            type: object
+            required:
+              - address
+              - value
+            properties:
+              address:
+                description: Destination address.
+                type: string
+                example: 2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7
+                minimum: 30
+                maximum: 60
+              value:
+                description: 'Amount to be sent, in BTC.'
+                type: number
+                minimum: 0
+                example: 0.02969944
+    BtcTransactionFromAddressKMS:
+      type: object
+      required:
+        - to
+        - fromAddress
+      properties:
+        fromAddress:
+          description: Array of addresses and corresponding private keys. Tatum will automatically scan last 100 transactions for each address and will use all of the unspent values. We advise to use this option if you have 1 address per 1 transaction only.
+          type: array
+          items:
+            type: object
+            required:
+              - address
+              - signatureId
+            properties:
+              signatureId:
+                type: string
+                minimum: 36
+                maximum: 36
+                format: uuid
+                example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+                description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+              address:
+                description: Address to send assets from.
+                type: string
+                example: 2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS
+                minimum: 30
+                maximum: 50
+        to:
+          description: Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.
+          type: array
+          items:
+            type: object
+            required:
+              - address
+              - value
+            properties:
+              address:
+                description: Destination address.
+                type: string
+                example: 2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7
+                minimum: 30
+                maximum: 60
+              value:
+                description: 'Amount to be sent, in BTC.'
+                type: number
+                minimum: 0
+                example: 0.02969944
+    BtcTransactionFromUTXOKMS:
+      type: object
+      required:
+        - to
+        - fromUTXO
+      properties:
+        fromUTXO:
+          description: 'Array of transaction hashes, index of UTXO in it and corresponding private keys. Use this option if you want to calculate amount to send manually. Either fromUTXO or fromAddress must be present.'
+          type: array
+          items:
+            type: object
+            required:
+              - txHash
+              - signatureId
+              - index
+            properties:
+              txHash:
+                description: Transaction hash of the UTXO to be spent.
+                type: string
+                example: 53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc
+                minLength: 64
+                maxLength: 64
+              index:
+                description: Index of the UTXO to be spent.
+                type: number
+                example: 0
+                minimum: 0
+                maximum: 2147483647
+              signatureId:
+                type: string
+                minimum: 36
+                maximum: 36
+                format: uuid
+                example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+                description: Identifier of the private key associated in signing application.
+        to:
+          description: Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.
+          type: array
+          items:
+            type: object
+            required:
+              - address
+              - value
+            properties:
+              address:
+                description: Destination address.
+                type: string
+                example: 2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7
+                minimum: 30
+                maximum: 60
+              value:
+                description: 'Amount to be sent, in BTC.'
+                type: number
+                minimum: 0
+                example: 0.02969944
+    PrivKey:
+      type: object
+      properties:
+        key:
+          description: Generated private key.
+          example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
+          type: string
+    PrivKeyRequest:
+      type: object
+      properties:
+        index:
+          description: Derivation index of private key to generate.
+          example: 0
+          maximum: 2147483647
+          type: integer
+        mnemonic:
+          maxLength: 500
+          minLength: 1
+          description: Mnemonic to generate private key from.
+          example: urge pulp usage sister evidence arrest palm math please chief egg abuse
+          type: string
+      required:
+        - mnemonic
+        - index
+    SignatureId:
+      type: object
+      properties:
+        signatureId:
+          format: uuid
+          description: 'ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.'
+          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+          type: string
+      required:
+        - signatureId
+    TransactionHashKMS:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+        failed:
+          description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+          example: false
+          type: boolean
+      required:
+        - txId
+    Wallet:
+      type: object
+      properties:
+        address:
+          maxLength: 58
+          minLength: 58
+          description: address of Algorand account.
+          example: NTAESFCB3WOD7SAOL42KSPVARLB3JFA3MNX3AESWHYVT2RMYDVZI6YLG4Y
+          type: string
+        secret:
+          maxLength: 103
+          minLength: 103
+          description: 'secretKey can generate Mnemonic, similar to private Key.'
+          type: string
+          example: NBYMCVEEDFYV3TPWVRE6APE7PKHUJD4XAKXCKNCLKGUXOC3LFNJGZQCJCRA53HB7ZAHF6NFJH2QIVQ5USQNWG35QCJLD4KZ5IWMB24Q
+    Error403AccountIncompatibleXpubBtc:
+      properties:
+        errorCode:
+          description: Address.generation.failed.wrong.xpub
+          example: address.generation.failed.wrong.xpub
+          type: string
+        message:
+          description: 'Unable to generate address, wrong xpub and account type.'
+          example: 'Unable to generate address, wrong xpub and account type.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403AccountAddressGeneral:
+      properties:
+        errorCode:
+          description: Address.generation.failed
+          example: address.generation.failed
+          type: string
+        message:
+          description: Unable to generate address.
+          example: Unable to generate address.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BtcBlockchain:
+      properties:
+        errorCode:
+          description: blockchain.error.code
+          example: blockchain.error.code
+          type: string
+        message:
+          description: '${error.message} Code: ${error.code}'
+          example: '${error.message} Code: ${error.code}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BlockNotExists:
+      properties:
+        errorCode:
+          description: block.hash.not.exists
+          example: block.hash.not.exists
+          type: string
+        message:
+          description: No such block.
+          example: No such block.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403Broadcast:
+      properties:
+        errorCode:
+          description: blockchain.broadcast.error
+          example: blockchain.broadcast.error
+          type: string
+        message:
+          description: 'Unable to broadcast transaction, wrong input data.'
+          example: 'Unable to broadcast transaction, wrong input data.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BlockchainPrivateFailed:
+      properties:
+        errorCode:
+          description: key.generation.failed.wrong.mnemonic
+          example: key.generation.failed.wrong.mnemonic
+          type: string
+        message:
+          description: 'Unable to generate address, wrong mnemonic and index.'
+          example: 'Unable to generate address, wrong mnemonic and index.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BtcUTXO:
+      properties:
+        errorCode:
+          description: tx.hash.index.spent
+          example: tx.hash.index.spent
+          type: string
+        message:
+          description: No such UTXO for transaction and index.
+          example: No such UTXO for transaction and index.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BtcTx:
+      properties:
+        errorCode:
+          description: transaction.invalid.body
+          example: transaction.invalid.body
+          type: string
+        message:
+          description: 'Either UTXO, or addresses must be present.'
+          example: 'Either UTXO, or addresses must be present.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BtcTxFailed:
+      properties:
+        errorCode:
+          description: transaction.failed
+          example: transaction.failed
+          type: string
+        message:
+          description: No spendable inputs.
+          example: No spendable inputs.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403TxNotFound:
+      properties:
+        errorCode:
+          description: tx.missing
+          example: tx.missing
+          type: string
+        message:
+          description: No such tx.
+          example: No such tx.
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+    Error400:
+      properties:
+        errorCode:
+          example: validation.failed
+          description: validation.failed
+          type: string
+        message:
+          example: Request validation failed. Please see data for additional information.
+          description: Request validation failed. Please see data for additional information.
+          type: string
+        statusCode:
+          example: 400
+          description: '400'
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - target
+            properties:
+              target:
+                type: object
+                additionalProperties: true
+                description: Request object present in the body of the HTTP request
+              value:
+                type: number
+                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                example: 12345
+              property:
+                type: string
+                description: Property name of the target object which validation is wrong
+                example: fromPrivateKey
+              constraints:
+                type: object
+                additionalProperties: true
+                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                example:
+                  isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error500:
+      properties:
+        message:
+          example: Internal server error
+          description: Internal server error
+          type: string
+        statusCode:
+          example: 500
+          description: '500'
+          type: number
+        errorCode:
+          example: internal.error
+          description: Internal server error
+          type: string
+      required:
+        - statusCode
+        - message
+      type: object
+  securitySchemes:
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
+      in: header
+      name: x-api-key
+      type: apiKey

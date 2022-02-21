@@ -1,0 +1,855 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  title: Binance chain 
+  version: 3.9.2
+  x-logo:
+    url: 'https://tatum.io/images/logo.svg'
+    altText: Tatum
+  description: |-
+          <p>Binance Blockchain enables access to most commonly used Binance methods.<br/>
+          Tatum supports 2 chains:
+          <ul><li>Mainnet - a regular live chain
+          <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+          a faucet, e.g. <a target="_blank" href="https://www.binance.com/en/dex/testnet/address">https://www.binance.com/en/dex/testnet/address</a></li></ul>
+          Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+servers:
+  - url: 'https://api-eu1.tatum.io'
+  - url: 'https://api-us-west1.tatum.io'
+tags:
+  - description: ''
+    name: Account
+  - description: ''
+    name: Block
+  - description: ''
+    name: Transaction
+  - description: ''
+    name: Utilities
+paths:
+  /v3/bnb/account:
+    get:
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Generate BNB account. Tatum does not support HD wallet for BNB, only specific address and private key can be generated.</p>
+      operationId: BnbGenerateWallet
+      summary: Generate Binance wallet
+      tags:
+        - Account
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BnbWallet'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/bnb/block/current:
+    get:
+      description: <h4>5 credits per API call.</h4><br/><p>Get Binance current block number.</p>
+      operationId: BnbGetCurrentBlock
+      summary: Get Binance current block
+      tags:
+        - Block
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: number
+                description: Current block number
+                example: 6491272
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BnbFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/bnb/block/{height}':
+    get:
+      description: <h4>5 credits per API call.</h4><br/><p>Get Transactions in block by block height.</p>
+      operationId: BnbGetBlock
+      summary: Get Binance Transactions in Block
+      tags:
+        - Transaction
+      parameters:
+        - description: Block height
+          in: path
+          name: height
+          required: true
+          schema:
+            type: number
+            example: 6470657
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BnbBlock'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BnbFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/bnb/account/{address}':
+    get:
+      description: <h4>5 credits per API call.</h4><br/><p>Get Binance Account Detail by address.</p>
+      operationId: BnbGetAccount
+      summary: Get Binance Account
+      tags:
+        - Account
+      parameters:
+        - description: Account address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: tbnb185tqzq3j6y7yep85lncaz9qeectjxqe5054cgn
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BnbAccount'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BnbFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/bnb/transaction/{hash}':
+    get:
+      description: <h4>5 credits per API call.</h4><br/><p>Get Binance Transaction by transaction hash.</p>
+      operationId: BnbGetTransaction
+      summary: Get Binance Transaction
+      tags:
+        - Transaction
+      parameters:
+        - description: Transaction hash
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+            example: 4B944BBF78F3ADE3A377551B5EA7AD0FEDBDA13165D932F94B106EF7A8E16C1A
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BnbTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BnbFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/bnb/transaction:
+    post:
+      description: |
+        <h4>10 credits per API call.</h4><br/>
+        <p>Send Binance or Binance Token token from account to account.<br/><br/>
+        This operation needs the <strong>private key</strong> of the blockchain address.
+        <strong>Warning:</strong> Do not expose private keys to the internet because there is a strong possibility of stealing keys and loss of funds. 
+        </br>
+        </br>
+        In this method, it is possible to enter privateKey
+        or signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
+        Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.
+        </p>
+      operationId: BnbBlockchainTransfer
+      summary: Send Binance / Binance Token from account to account
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/TransferBnbBlockchain'
+                - $ref: '#/components/schemas/TransferBnbBlockchainKMS'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403BnbTxFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/bnb/broadcast:
+    post:
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Broadcast signed transaction to Binance blockchain. This method is used internally from Tatum Middleware or Tatum client libraries.
+        It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
+      operationId: BnbBroadcast
+      summary: Broadcast signed BNB transaction
+      tags:
+        - Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Broadcast'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error403BnbFailed'
+                  - $ref: '#/components/schemas/Error403BnbBroadcatSigFailed'
+                  - $ref: '#/components/schemas/Error403BnbTxStateFailed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+components:
+  schemas:
+    BnbBlock:
+      type: object
+      properties:
+        blockHeight:
+          type: number
+          example: 44925860
+        tx:
+          type: array
+          items:
+            type: object
+            properties:
+              txHash:
+                type: string
+                example: 4B944BBF78F3ADE3A377551B5EA7AD0FEDBDA13165D932F94B106EF7A8E16C1A
+              blockHeight:
+                type: number
+                example: 44925860
+              txType:
+                type: string
+                example: TRANSFER
+              timeStamp:
+                type: string
+                example: '2019-10-17T18:58:01.423Z'
+              fromAddr:
+                type: string
+                example: tbnb138u9djee6fwphhd2a3628q2h0j5w97yx48zqex
+              toAddr:
+                type: string
+                example: tbnb14wu3a8pmauj2kjswyvxtvhdrjktx60efq227uw
+              value:
+                type: string
+                example: '200.00000000'
+              txAsset:
+                type: string
+                example: BNB
+              txFee:
+                type: string
+                example: '0.00037500'
+              code:
+                type: number
+                example: 0
+              memo:
+                type: string
+                example: ''
+              source:
+                type: number
+                example: 0
+              sequence:
+                type: number
+                example: 47816
+    BnbTx:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 0
+        hash:
+          type: string
+          example: 4B944BBF78F3ADE3A377551B5EA7AD0FEDBDA13165D932F94B106EF7A8E16C1A
+        height:
+          type: string
+          example: '44925860'
+        log:
+          type: string
+          example: 'Msg 0: '
+        ok:
+          type: boolean
+          example: true
+        tx:
+          properties:
+            type:
+              type: string
+              example: auth/StdTx
+            value:
+              properties:
+                memo:
+                  type: string
+                  example: ''
+                msg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: cosmos-sdk/Send
+                      value:
+                        properties:
+                          inputs:
+                            description: 'List of transactions, from which assets are being sent.'
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                address:
+                                  type: string
+                                  example: tbnb138u9djee6fwphhd2a3628q2h0j5w97yx48zqex
+                                coins:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      amount:
+                                        type: string
+                                        example: '20000000000'
+                                      denom:
+                                        type: string
+                                        example: BNB
+                          outputs:
+                            description: List of recipient addresses and amounts to send to each of them.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                address:
+                                  type: string
+                                  example: tbnb14wu3a8pmauj2kjswyvxtvhdrjktx60efq227uw
+                                coins:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      amount:
+                                        type: string
+                                        example: '20000000000'
+                                      denom:
+                                        type: string
+                                        example: BNB
+                        type: object
+                signatures:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_number:
+                        type: string
+                        example: '14'
+                      pub_key:
+                        properties:
+                          type:
+                            type: string
+                            example: tendermint/PubKeySecp256k1
+                          value:
+                            type: string
+                            example: A4q95eEn4cR1bbxVRqYc8pbLvKYyaMxjzaTSmkTJQUr6
+                        type: object
+                      sequence:
+                        type: string
+                        example: '47816'
+                      signature:
+                        type: string
+                        example: VhewxOCPucjrtrpRbQMbl05i5MyJMrw12nUJ4ATssB1qvCqIO2+Fgqa/WTHaYpkhjJuIbpK620e0zpIQ56a5nw==
+                source:
+                  type: string
+                  example: '0'
+              type: object
+          type: object
+    BnbAccount:
+      type: object
+      properties:
+        account_number:
+          type: number
+          example: 696215
+        address:
+          type: string
+          example: tbnb185tqzq3j6y7yep85lncaz9qeectjxqe5054cgn
+        balances:
+          type: array
+          items:
+            type: object
+            properties:
+              free:
+                type: string
+                example: '207.00000000'
+              frozen:
+                type: string
+                example: '0.00000000'
+              locked:
+                type: string
+                example: '0.00000000'
+              symbol:
+                type: string
+                example: BNB
+        flags:
+          type: number
+          example: 0
+        sequence:
+          type: number
+          example: 0
+    Broadcast:
+      properties:
+        txData:
+          description: Raw signed transaction to be published to network.
+          example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
+          maxLength: 500000
+          minLength: 1
+          type: string
+      required:
+        - txData
+      type: object
+    TransferBnbBlockchain:
+      type: object
+      properties:
+        to:
+          description: Blockchain address to send assets.
+          example: tbnb138u9djee6fwphhd2a3628q2h0j5w97yx48zqex
+          maxLength: 100
+          minLength: 1
+          type: string
+        currency:
+          description: Currency to transfer from Binance Blockchain Account.
+          enum:
+            - BNB
+          example: BNB
+          type: string
+        amount:
+          description: Amount to be sent in BNB.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+        fromPrivateKey:
+          type: string
+          maxLength: 100
+          minLength: 1
+          example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
+          description: Private key of sender address.
+        message:
+          maxLength: 50
+          minLength: 1
+          description: Message to recipient.
+          example: Message to recipient
+          type: string
+      required:
+        - to
+        - amount
+        - fromPrivateKey
+        - currency
+    TransferBnbBlockchainKMS:
+      type: object
+      properties:
+        to:
+          description: Blockchain address to send assets.
+          example: tbnb138u9djee6fwphhd2a3628q2h0j5w97yx48zqex
+          maxLength: 100
+          minLength: 1
+          type: string
+        currency:
+          description: Currency to transfer from Binance Blockchain Account.
+          enum:
+            - BNB
+          example: BNB
+          type: string
+        amount:
+          description: Amount to be sent in BNB.
+          example: '100000'
+          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+          type: string
+        signatureId:
+          type: string
+          minLength: 36
+          maxLength: 36
+          format: uuid
+          example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
+          description: |
+            Signature hash of the mnemonic, which will be used to sign transactions locally.
+            All signature Ids should be present, which might be used to sign transaction.
+        fromAddress:
+          description: Blockchain address to send from
+          example: tbnb1q82g2h9q0kfe7sysnj5w7nlak92csfjztymp39
+          maxLength: 50
+          minLength: 42
+          type: string
+        message:
+          maxLength: 50
+          minLength: 1
+          description: Message to recipient.
+          example: Message to recipient
+          type: string
+      required:
+        - to
+        - amount
+        - signatureId
+        - fromAddress
+        - currency
+    TransactionHash:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+      required:
+        - txId
+    BnbWallet:
+      type: object
+      properties:
+        address:
+          description: Generated account address.
+          example: tbnb1sfj9981j2eo1ij2e09
+          type: string
+        privateKey:
+          description: Generated private key for account.
+          example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
+          type: string
+    Error403BnbFailed:
+      properties:
+        errorCode:
+          description: bnb.failed
+          example: bnb.failed
+          type: string
+        message:
+          description: 'Unable to communicate with blockchain. ${error}'
+          example: 'Unable to communicate with blockchain. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BnbBroadcatSigFailed:
+      properties:
+        errorCode:
+          description: bnb.broadcast.bad.signature
+          example: bnb.broadcast.bad.signature
+          type: string
+        message:
+          description: 'Unable to broadcast BNB transaction, bad signature.'
+          example: 'Unable to broadcast BNB transaction, bad signature.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BnbTxStateFailed:
+      properties:
+        errorCode:
+          description: bnb.broadcast.failed.tx.state
+          example: bnb.broadcast.failed.tx.state
+          type: string
+        message:
+          description: 'Unable to broadcast BNB transaction, tx ${hash} state not OK.'
+          example: 'Unable to broadcast BNB transaction, tx ${hash} state not OK.'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403BnbTxFailed:
+      properties:
+        errorCode:
+          description: bnb.transfer.failed
+          example: bnb.transfer.failed
+          type: string
+        message:
+          description: 'Unable to transfer funds. ${error}'
+          example: 'Unable to transfer funds. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error400:
+      properties:
+        errorCode:
+          example: validation.failed
+          description: validation.failed
+          type: string
+        message:
+          example: Request validation failed. Please see data for additional information.
+          description: Request validation failed. Please see data for additional information.
+          type: string
+        statusCode:
+          example: 400
+          description: '400'
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - target
+            properties:
+              target:
+                type: object
+                additionalProperties: true
+                description: Request object present in the body of the HTTP request
+              value:
+                type: number
+                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                example: 12345
+              property:
+                type: string
+                description: Property name of the target object which validation is wrong
+                example: fromPrivateKey
+              constraints:
+                type: object
+                additionalProperties: true
+                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                example:
+                  isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error500:
+      properties:
+        message:
+          example: Internal server error
+          description: Internal server error
+          type: string
+        statusCode:
+          example: 500
+          description: '500'
+          type: number
+        errorCode:
+          example: internal.error
+          description: Internal server error
+          type: string
+      required:
+        - statusCode
+        - message
+      type: object
+  securitySchemes:
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
+      in: header
+      name: x-api-key
+      type: apiKey

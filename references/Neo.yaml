@@ -1,0 +1,1241 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  title: Neo
+  version: 3.9.2
+  x-logo:
+    url: 'https://tatum.io/images/logo.svg'
+    altText: Tatum
+  description: |-
+      <p>NEO Blockchain enables access to the most commonly used NEO methods. Tatum does not support off-chain capabilities for the NEO blockchain.
+      Tatum KMS is not supported for NEO transactions. NEO supports 2 native assets - NEO and GAS. GAS is used for paying transaction fees.<br/>
+      Tatum supports 2 chains:
+      <ul><li>Mainnet - a regular live chain
+      <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+      a faucet, e.g. <a target="_blank" href="http://neo.mywish.io/">http://neo.mywish.io/</a></li></ul></p>
+servers:
+  - url: 'https://api-eu1.tatum.io'
+  - url: 'https://api-us-west1.tatum.io'
+tags:
+  - description: ''
+    name: Account
+  - description: ''
+    name: Block
+  - description: ''
+    name: Transaction
+  - description: ''
+    name: Utilities
+paths:
+  /v3/neo/wallet:
+    get:
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Generate NEO account. Tatum does not support HD wallet for NEO, only specific address and private key can be generated.</p>
+      operationId: NeoGenerateWallet
+      tags:
+        - Account
+      summary: Generate NEO account
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoWallet'
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/neo/block/current:
+    get:
+      tags:
+        - Block
+      summary: Get current NEO block
+      description: <h4>5 credits per API call.</h4><br/><p>Get current NEO block.</p>
+      operationId: NeoGetCurrentBlock
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: number
+                example: 654321
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/block/{hash}':
+    get:
+      tags:
+        - Block
+      summary: Get NEO block
+      description: <h4>5 credits per API call.</h4><br/><p>Get NEO block by hash or height.</p>
+      operationId: NeoGetBlock
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          description: Block hash or height.
+          schema:
+            type: string
+            example: '0xc32b61db088e9fe20acd592ebd06f5ccde5726b17f31633dca2909a646109e07'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoBlock'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/account/balance/{address}':
+    get:
+      tags:
+        - Account
+      summary: Get NEO Account balance
+      description: '<h4>5 credits per API call.</h4><br/><p>Get Balance of all assets (NEO, GAS, etc.) and tokens for the Account.</p>'
+      operationId: NeoAccountDetail
+      parameters:
+        - in: path
+          name: address
+          required: true
+          description: Address to get balance
+          schema:
+            type: string
+            example: AKL19WwiJ2fiTDkAnYQ7GJSTUBoJPTQKhn
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoAccount'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/asset/{asset}':
+    get:
+      tags:
+        - Utilities
+      summary: Get Neo Asset details
+      description: <h4>5 credits per API call.</h4><br/><p>Get information about asset.</p>
+      operationId: NeoAsset
+      parameters:
+        - in: path
+          name: asset
+          required: true
+          description: Asset ID
+          schema:
+            type: string
+            example: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoAsset'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/transaction/out/{txId}/{index}':
+    get:
+      tags:
+        - Transaction
+      summary: Get NEO unspent transaction outputs
+      description: <h4>5 credits per API call.</h4><br/><p>Get NEO unspent transaction outputs.</p>
+      operationId: NeoTxOut
+      parameters:
+        - in: path
+          name: txId
+          required: true
+          description: Transaction ID.
+          schema:
+            type: string
+            example: 45af182a0ffab58e5ba32fee57b297b2260c6e23a1de5ddc76c7ee22d72dea99
+        - in: path
+          name: index
+          required: true
+          description: Index of output.
+          schema:
+            type: number
+            example: 0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoTxOut'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/account/tx/{address}':
+    get:
+      tags:
+        - Account
+      summary: Get NEO Account transactions
+      description: <h4>5 credits per API call.</h4><br/><p>Get NEO Account transactions.</p>
+      operationId: NeoAccountTx
+      parameters:
+        - in: path
+          name: address
+          required: true
+          schema:
+            type: string
+            example: AKL19WwiJ2fiTDkAnYQ7GJSTUBoJPTQKhn
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NeoAccountTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/contract/{scriptHash}':
+    get:
+      tags:
+        - Utilities
+      summary: Get NEO contract details
+      description: <h4>5 credits per API call.</h4><br/><p>Get NEO contract details.</p>
+      operationId: NeoContractDetail
+      parameters:
+        - in: path
+          name: scriptHash
+          required: true
+          description: Hash of smart contract
+          schema:
+            type: string
+            example: '0xdc675afc61a7c0f7b3d2682bf6e1d8ed865a0e5f'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoContract'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  '/v3/neo/transaction/{hash}':
+    get:
+      tags:
+        - Transaction
+      summary: Get NEO transaction by hash
+      description: <h4>5 credits per API call.</h4><br/><p>Get NEO transaction by hash.</p>
+      operationId: NeoGetTransaction
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          description: Transaction hash.
+          schema:
+            type: string
+            example: 45af182a0ffab58e5ba32fee57b297b2260c6e23a1de5ddc76c7ee22d72dea99
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoTx'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/neo/transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Send NEO assets
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Send NEO assets from address to address. It is possible to send NEO and GAS in the same transaction.<br/><br/>
+        This operation needs the <strong>private key</strong> of the blockchain address.
+        <strong>Warning:</strong> Do not expose private keys to the internet because there is a strong possibility of stealing keys and loss of funds. 
+        </br>
+        </br>
+        In this method, it is possible to enter privateKey
+        or signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
+        Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.
+        </p>
+        </p>
+      operationId: NeoTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferNeoBlockchain'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/neo/claim:
+    post:
+      tags:
+        - Transaction
+      summary: Claim GAS
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Claim GAS for NEO account. Every account owner can claim for the GAS, which is produced for owning NEO on the address.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: NeoClaimGas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NeoClaimGas'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/neo/invoke:
+    post:
+      tags:
+        - Transaction
+      summary: Send NEO smart contract tokens
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Send NEO smart contract tokens. It is possible to transfer custom NEO-based tokens to another account.<br/><br/>
+        This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
+        No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey.
+        PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
+        it is possible to use the Tatum client library for supported languages or Tatum Middleware with a custom key management system.
+        </p>
+      operationId: NeoInvokeSmart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NeoInvokeSmart'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Libra'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+  /v3/neo/broadcast:
+    post:
+      tags:
+        - Transaction
+      summary: Broadcast NEO transaction
+      description: |
+        <h4>5 credits per API call.</h4><br/>
+        <p>Broadcast NEO transaction. This method is used internally from Tatum Middleware or Tatum client libraries.
+        It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
+      operationId: NeoBroadcast
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Broadcast'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHash'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
+        '401':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error401NotActive'
+                  - $ref: '#/components/schemas/Error401Invalid'
+          description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
+        '403':
+          description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Neo'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal server error. There was an error on the server while processing the request.
+      security:
+        - X-Api-Key: []
+components:
+  schemas:
+    Broadcast:
+      properties:
+        txData:
+          description: Raw signed transaction to be published to network.
+          example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
+          maxLength: 500000
+          minLength: 1
+          type: string
+      required:
+        - txData
+      type: object
+    NeoBlock:
+      type: object
+      properties:
+        hash:
+          type: string
+          example: '0xc32b61db088e9fe20acd592ebd06f5ccde5726b17f31633dca2909a646109e07'
+        size:
+          type: number
+          example: 686
+        version:
+          type: number
+          example: 0
+        previousblockhash:
+          type: string
+          example: '0xc2705a7e34b7068bcad2efbc963408c990a25ef285144ae09d89d6c2e57ac2b8'
+        merkleroot:
+          type: string
+          example: '0x521e0666d2abc6f4154cb29542f5e39d8be5a797638ae6caa2e606e962dba447'
+        time:
+          type: number
+          example: 1574492311
+        index:
+          type: number
+          example: 3467078
+        nonce:
+          type: string
+          example: d41900f603da3d01
+        nextconsensus:
+          type: string
+          example: AUNSizuErA3dv1a2ag2ozvikkQS7hhPY1X
+        script:
+          properties:
+            invocation:
+              type: string
+              example: 40f54c4c2294edf574bdef7d5ac02e89ef49d59b81c1954bbc597d05368d88d5aa11305771602dd218d920089b384329bd77126bcc01bf1600074638403434fc6340ab9c71ded36c6b05b14663c5c8229b3a7d72efc4587909c93378a54a6ba706f446e709f579ee94e4b994bc203bcfd3884870c8e3ab9c8c9f3e5806273cbce714403c6505b726b0ed6cab4eaa406a82044c8ba2ed7ec0f9d13161325e98e36dd40dc602dcc4896641cb3b343b6838d937102bbcb78c7eccd70c0cdfb5b33f6aa1b4408672c3387274cb9c511fbf4514efc0a30797fc1dc419bb7cab2a2ac99c7ee2561a66ceb58316108309a82c5740f89d84d967be90d8bfb4accc30da12eef88ed04060d6f71e3ddd8f7d9fa404181265dc36f9705d1d691ffb0b453e2fa7cd6c48fe85182001538960a824f66ac6ba3af4200892d396ce43ddd6e0d6f57ae19193e3
+            verification:
+              type: string
+              example: 552103028007d683ceb4dc9084300d0cf16fe6d47a726e586bf3d63559cec13305565221030ef96257401b803da5dd201233e2be828795672b775dd674d69df83f7aec1e3621025bdf3f181f53e9696227843950deb72dcd374ded17c057159513c3d0abe20b64210266b588e350ab63b850e55dbfed0feeda44410a30966341b371014b803a15af072103c089d7122b840a4935234e82e26ae5efd0c2acb627239dc9f207311337b6f2c12103fd95a9cb3098e6447d0de9f76cc97fd5e36830f9c7044457c15a0e81316bf28f2103fea219d4ccfd7641cebbb2439740bb4bd7c4730c1abd6ca1dc44386533816df957ae
+          type: object
+        tx:
+          type: array
+          items:
+            type: object
+            properties:
+              txid:
+                type: string
+                example: '0x521e0666d2abc6f4154cb29542f5e39d8be5a797638ae6caa2e606e962dba447'
+              size:
+                type: number
+                example: 10
+              type:
+                type: string
+                example: MinerTransaction
+              version:
+                type: number
+                example: 0
+              attributes:
+                type: array
+                items:
+                  type: object
+                example: []
+              vin:
+                type: array
+                items:
+                  type: object
+                example: []
+              vout:
+                type: array
+                items:
+                  type: object
+                example: []
+              sys_fee:
+                type: string
+                example: '0'
+              net_fee:
+                type: string
+                example: '0'
+              scripts:
+                type: array
+                items:
+                  type: object
+                example: []
+              nonce:
+                type: number
+                example: 64634113
+        confirmations:
+          type: number
+          example: 86
+        nextblockhash:
+          type: string
+          example: '0x1e259632dfa77665a9ce0789143dc4fe32a559b183b26370c8e8d7ab9d75526c'
+    NeoTx:
+      type: object
+      properties:
+        txid:
+          type: string
+          example: '0x45af182a0ffab58e5ba32fee57b297b2260c6e23a1de5ddc76c7ee22d72dea99'
+        size:
+          type: number
+          example: 262
+        type:
+          type: string
+          example: ContractTransaction
+        version:
+          type: number
+          example: 0
+        attributes:
+          type: array
+          items:
+            type: object
+          example: []
+        vin:
+          type: array
+          items:
+            type: object
+            properties:
+              txid:
+                type: string
+                example: '0x3e8465222a0abd40d0415038342ac1ebf5526f026a128a28a5a5e297e6aec022'
+              vout:
+                type: number
+                example: 1
+        vout:
+          type: array
+          items:
+            type: object
+            properties:
+              'n':
+                type: number
+                example: 0
+              asset:
+                type: string
+                example: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
+              value:
+                type: string
+                example: '1000'
+              address:
+                type: string
+                example: AVVqVCyTfpwu8Qu4EoK4jwCkzw1Vkopt1f
+        sys_fee:
+          type: string
+          example: '0'
+        net_fee:
+          type: string
+          example: '0'
+        scripts:
+          type: array
+          items:
+            type: object
+            properties:
+              invocation:
+                type: string
+                example: 4069da4ceda68943513fe32fd55abfa04cdf3b16b00329c4974136d9e1472575b036f8e9fa0cf915327975f76b3c7a4434b463955603fa799b180df78bbbc9826f
+              verification:
+                type: string
+                example: 2103594a25a82366d003d815de0462d9a265a82e3c6e1e10583454199673dfd611ceac
+        blockhash:
+          type: string
+          example: '0x099d263a881f39da89f60f4132737ac18ebd3ac2ead7414a3453b43cb97ca411'
+        confirmations:
+          type: number
+          example: 385
+        blocktime:
+          type: number
+          example: 1574502564
+    NeoAccountTx:
+      type: object
+      properties:
+        txid:
+          type: string
+          example: cd5f60a20e1bb3dacca107118099b11e60fe7e495e18ac30e477ee81a624ef67
+        blockHeight:
+          type: number
+          example: 3467142
+        change:
+          properties:
+            NEO:
+              type: string
+              example: '1000'
+            GAS:
+              type: string
+              example: '10'
+          type: object
+    NeoAccount:
+      type: object
+      properties:
+        address:
+          type: string
+          example: AKL19WwiJ2fiTDkAnYQ7GJSTUBoJPTQKhn
+        assets:
+          properties:
+            GAS:
+              type: string
+              example: '1000'
+            NEO:
+              type: string
+              example: '1001'
+          type: object
+        tokens:
+          properties: {}
+          type: object
+    NeoAsset:
+      type: object
+      properties:
+        version:
+          type: number
+          example: 0
+        id:
+          type: string
+          example: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
+        type:
+          type: string
+          example: UtilityToken
+        name:
+          type: array
+          items:
+            type: object
+            properties:
+              lang:
+                type: string
+                example: zh-CN
+              name:
+                type: string
+                example: 小蚁币
+        amount:
+          type: string
+          example: '100000000'
+        available:
+          type: string
+          example: '0'
+        precision:
+          type: number
+          example: 8
+        owner:
+          type: string
+          example: '00'
+        admin:
+          type: string
+          example: AWKECj9RD8rS8RPcpCgYVjk1DeYyHwxZm3
+        issuer:
+          type: string
+          example: AWKECj9RD8rS8RPcpCgYVjk1DeYyHwxZm3
+        expiration:
+          type: number
+          example: 4000000
+        frozen:
+          type: boolean
+          example: false
+    NeoTxOut:
+      type: object
+      properties:
+        asset:
+          type: string
+          description: Address of the asset.
+          example: '0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
+        value:
+          type: string
+          description: Amount of the unspent asset.
+          example: '47000'
+        address:
+          type: string
+          description: Address of the Account.
+          example: Aenzj5NnVgPUo3hAVy9cyFN9CbrgREyyJ1
+        'n':
+          type: number
+          example: 1
+    NeoContract:
+      type: object
+      properties:
+        version:
+          type: number
+          example: 0
+        hash:
+          type: string
+          example: '0xdc675afc61a7c0f7b3d2682bf6e1d8ed865a0e5f'
+        script:
+          type: string
+          example: 5fc56b6c766b00527ac46c766b51527ac46107576f6f6c6f6e676c766b52527ac403574e476c766b53527ac4006c766b54527ac4210354ae498221046c666efebbaee9bd0eb4823469c98e748494a92a71f346b1a6616c766b55527ac46c766b00c3066465706c6f79876c766b56527ac46c766b56c36416006c766b55c36165f2026c766b57527ac462d8016c766b55c36165d801616c766b00c30b746f74616c537570706c79876c766b58527ac46c766b58c36440006168164e656f2e53746f726167652e476574436f6e7465787406737570706c79617c680f4e656f2e53746f726167652e4765746c766b57527ac46270016c766b00c3046e616d65876c766b59527ac46c766b59c36412006c766b52c36c766b57527ac46247016c766b00c30673796d626f6c876c766b5a527ac46c766b5ac36412006c766b53c36c766b57527ac4621c016c766b00c308646563696d616c73876c766b5b527ac46c766b5bc36412006c766b54c36c766b57527ac462ef006c766b00c30962616c616e63654f66876c766b5c527ac46c766b5cc36440006168164e656f2e53746f726167652e476574436f6e746578746c766b51c351c3617c680f4e656f2e53746f726167652e4765746c766b57527ac46293006c766b51c300c36168184e656f2e52756e74696d652e436865636b5769746e657373009c6c766b5d527ac46c766b5dc3640e00006c766b57527ac46255006c766b00c3087472616e73666572876c766b5e527ac46c766b5ec3642c006c766b51c300c36c766b51c351c36c766b51c352c36165d40361527265c9016c766b57527ac4620e00006c766b57527ac46203006c766b57c3616c756653c56b6c766b00527ac4616168164e656f2e53746f726167652e476574436f6e746578746c766b00c3617c680f4e656f2e53746f726167652e4765746165700351936c766b51527ac46168164e656f2e53746f726167652e476574436f6e746578746c766b00c36c766b51c361651103615272680f4e656f2e53746f726167652e507574616168164e656f2e53746f726167652e476574436f6e7465787406737570706c79617c680f4e656f2e53746f726167652e4765746165f40251936c766b52527ac46168164e656f2e53746f726167652e476574436f6e7465787406737570706c796c766b52c361659302615272680f4e656f2e53746f726167652e50757461616c756653c56b6c766b00527ac461516c766b51527ac46168164e656f2e53746f726167652e476574436f6e746578746c766b00c36c766b51c361654002615272680f4e656f2e53746f726167652e507574616168164e656f2e53746f726167652e476574436f6e7465787406737570706c796c766b51c361650202615272680f4e656f2e53746f726167652e50757461516c766b52527ac46203006c766b52c3616c756659c56b6c766b00527ac46c766b51527ac46c766b52527ac4616168164e656f2e53746f726167652e476574436f6e746578746c766b00c3617c680f4e656f2e53746f726167652e4765746c766b53527ac46168164e656f2e53746f726167652e476574436f6e746578746c766b51c3617c680f4e656f2e53746f726167652e4765746c766b54527ac46c766b53c3616576016c766b52c3946c766b55527ac46c766b54c3616560016c766b52c3936c766b56527ac46c766b55c300a2640d006c766b52c300a2620400006c766b57527ac46c766b57c364ec00616168164e656f2e53746f726167652e476574436f6e746578746c766b00c36c766b55c36165d800615272680f4e656f2e53746f726167652e507574616168164e656f2e53746f726167652e476574436f6e746578746c766b51c36c766b56c361659c00615272680f4e656f2e53746f726167652e5075746155c57600135472616e73666572205375636365737366756cc476516c766b00c3c476526c766b51c3c476536c766b52c3c476546168184e656f2e426c6f636b636861696e2e476574486569676874c46168124e656f2e52756e74696d652e4e6f7469667961516c766b58527ac4620e00006c766b58527ac46203006c766b58c3616c756653c56b6c766b00527ac4616c766b00c36c766b51527ac46c766b51c36c766b52527ac46203006c766b52c3616c756653c56b6c766b00527ac461516c766b00c36a527a527ac46c766b51c36c766b52527ac46203006c766b52c3616c7566
+        parameters:
+          type: array
+          items:
+            type: string
+          example:
+            - ByteArray
+        returntype:
+          type: string
+          example: ByteArray
+        name:
+          type: string
+          example: Woolong
+        code_version:
+          type: string
+          example: 0.9.2
+        author:
+          type: string
+          example: lllwvlvwlll
+        email:
+          type: string
+          example: lllwvlvwlll@gmail.com
+        description:
+          type: string
+          example: GO NEO!!!
+        properties:
+          properties:
+            storage:
+              type: boolean
+              example: true
+            dynamic_invoke:
+              type: boolean
+              example: false
+          type: object
+    NeoClaimGas:
+      type: object
+      properties:
+        privateKey:
+          type: string
+          example: 0ee69b443c740982e31ac64f8ab06006c24b7aab9e6ebe81b4663eafc72e13c9
+          maxLength: 64
+          description: Private key of address to claim for GAS.
+      required:
+        - privateKey
+    NeoWallet:
+      type: object
+      properties:
+        privateKey:
+          type: string
+          example: 0ee69b443c740982e31ac64f8ab06006c24b7aab9e6ebe81b4663eafc72e13c9
+          description: Private key of generated address.
+        address:
+          type: string
+          example: Abfm15QX2JCjtHPsgBwiHwMcZXWofUwCLZ
+          description: Newly created address.
+    NeoInvokeSmart:
+      type: object
+      properties:
+        numOfDecimals:
+          type: number
+          example: 8
+          minimum: 1
+          description: Number of decimals of asset being transferred.
+        additionalInvocationGas:
+          type: number
+          example: 1
+          minimum: 0
+          description: Additional GAS to be paid for smart contract invocation.
+        amount:
+          type: number
+          minimum: 0
+          example: 10
+          description: Amount to be sent.
+        scriptHash:
+          type: string
+          maxLength: 50000
+          description: Function to be invoked on Smart Contract.
+        to:
+          maxLength: 100
+          description: Recipient address.
+          type: string
+          example: Abfm15QX2JCjtHPsgBwiHwMcZXWofUwCLZ
+        fromPrivateKey:
+          type: string
+          example: 0ee69b443c740982e31ac64f8ab06006c24b7aab9e6ebe81b4663eafc72e13c9
+          maxLength: 64
+          description: Private key of address to invoke smart contract.
+      required:
+        - fromPrivateKey
+        - to
+        - amount
+        - scriptHash
+        - numOfDecimals
+    TransferNeoBlockchain:
+      type: object
+      properties:
+        to:
+          maxLength: 100
+          description: Recipient address.
+          type: string
+          example: Abfm15QX2JCjtHPsgBwiHwMcZXWofUwCLZ
+        assets:
+          type: object
+          description: Assets to send.
+          properties:
+            NEO:
+              type: number
+              example: 10
+              description: Amount of NEO to be sent.
+              minimum: 0
+            GAS:
+              type: number
+              example: 10
+              description: Amount of GAS to be sent.
+              minimum: 0
+        fromPrivateKey:
+          type: string
+          example: 0ee69b443c740982e31ac64f8ab06006c24b7aab9e6ebe81b4663eafc72e13c9
+          maxLength: 64
+          description: Private key of address to send assets from.
+      required:
+        - fromPrivateKey
+        - to
+        - assets
+    TransactionHash:
+      type: object
+      properties:
+        txId:
+          description: TX hash of successful transaction.
+          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+          type: string
+      required:
+        - txId
+    Error403Libra:
+      properties:
+        errorCode:
+          description: libra.request.failed
+          example: libra.request.failed
+          type: string
+        message:
+          description: '${error}'
+          example: '${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error403Neo:
+      properties:
+        errorCode:
+          description: neo.failed
+          example: neo.failed
+          type: string
+        message:
+          description: 'Unable to communicate to blockchain. ${error}'
+          example: 'Unable to communicate to blockchain. ${error}'
+          type: string
+        statusCode:
+          description: '403'
+          example: 403
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error400:
+      properties:
+        errorCode:
+          example: validation.failed
+          description: validation.failed
+          type: string
+        message:
+          example: Request validation failed. Please see data for additional information.
+          description: Request validation failed. Please see data for additional information.
+          type: string
+        statusCode:
+          example: 400
+          description: '400'
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - target
+            properties:
+              target:
+                type: object
+                additionalProperties: true
+                description: Request object present in the body of the HTTP request
+              value:
+                type: number
+                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                example: 12345
+              property:
+                type: string
+                description: Property name of the target object which validation is wrong
+                example: fromPrivateKey
+              constraints:
+                type: object
+                additionalProperties: true
+                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                example:
+                  isNotEmpty: fromPrivateKey should not be empty
+    Error401Invalid:
+      properties:
+        errorCode:
+          example: subscription.invalid
+          description: subscription.invalid
+          type: string
+        message:
+          example: 'Unable to find valid subscription for ''${apiKey}'''
+          description: 'Unable to find valid subscription for ''${apiKey}'''
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error401NotActive:
+      properties:
+        errorCode:
+          example: subscription.not.active
+          description: subscription.not.active
+          type: string
+        message:
+          example: Subscription not active anymore.
+          description: Subscription not active anymore.
+          type: string
+        statusCode:
+          example: 401
+          description: '401'
+          type: number
+      required:
+        - errorCode
+        - message
+        - statusCode
+      type: object
+    Error500:
+      properties:
+        message:
+          example: Internal server error
+          description: Internal server error
+          type: string
+        statusCode:
+          example: 500
+          description: '500'
+          type: number
+        errorCode:
+          example: internal.error
+          description: Internal server error
+          type: string
+      required:
+        - statusCode
+        - message
+      type: object
+  securitySchemes:
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
+      in: header
+      name: x-api-key
+      type: apiKey
