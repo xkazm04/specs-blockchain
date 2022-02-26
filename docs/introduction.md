@@ -26,11 +26,9 @@ Table of features
  Neo | ✓| ✓ | ✓| -
  Polygon (Matic) | ✓| ✓ | ✓|✓ 
  Quantum (QTUM) | ✓| ✓ | ✓| -
- Quorum  | ✓| ✓ | ✓| ✓
- Scrypta | ✓| ✓ | ✓| -
  Solana | ✓| ✓ | ✓| ✓
  Tron | ✓| ✓ | ✓| -
- VeChain | ✓| ✓ | ✓| -
+ VeChain | ✓| ✓ | ✓|  ✓
  XinFin (XDC) | ✓| ✓ | ✓| ✓
  XLM | ✓| ✓ | ✓| -
  XRP | ✓| ✓ | ✓| -

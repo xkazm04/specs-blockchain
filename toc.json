@@ -5,6 +5,15 @@
       "title": "Supported services",
       "uri": "/docs/introduction.md"
     },
+        {
+      "type": "divider",
+      "title": "RPC node"
+    },
+    {
+      "type": "item",
+      "title": "HTTP driver",
+      "uri": "/references/Node.yaml"
+    },
     {
       "type": "divider",
       "title": "APIS"
@@ -112,11 +121,6 @@
     },
         {
       "type": "item",
-      "title": "Scrypta",
-      "uri": "/references/Scrypta.yaml"
-    },
-        {
-      "type": "item",
       "title": "Tron",
       "uri": "/references/Tron.yaml"
     },
@@ -124,11 +128,6 @@
       "type": "item",
       "title": "Quantum (QTUM)",
       "uri": "/references/Qtum.yaml"
-    },
-    {
-      "type": "item",
-      "title": "Quorum",
-      "uri": "/references/Quorum.yaml"
     },
     {
       "type": "item",
