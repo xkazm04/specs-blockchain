@@ -21,6 +21,7 @@ Table of features
  Ethereum | ✓ | ✓ | ✓| ✓
  Flow | ✓ | ✓ | ✓| -
  Harmony (ONE) | ✓ | ✓ | ✓ | ✓ 
+ Klaytn | ✓ | ✓ | ✓ | ✓
  KuCoin (KCS) | ✓ | ✓ | ✓ | ✓
  Litecoin | ✓ | ✓ | ✓ | ✓
  Neo | ✓| ✓ | ✓| -
