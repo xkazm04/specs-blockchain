@@ -11,7 +11,7 @@ Table of features
 -----|----------|---------|---------|---------
  Algorand | ✓| ✓ | ✓| ✓
  Binance  | ✓ | ✓ | ✓| -
- Binance Smart Chain (BSC) | ✓ || ✓ | ✓| ✓
+ Binance Smart Chain (BSC) | ✓ | ✓ | ✓| ✓
  Bitcoin | ✓ | ✓ | ✓| ✓
  Bitcoin Cash | ✓ | ✓ | ✓| ✓
  Cardano | ✓ | ✓ | ✓| GraphQL
@@ -28,8 +28,9 @@ Table of features
  Polygon (Matic) | ✓| ✓ | ✓|✓ 
  Quantum (QTUM) | ✓| ✓ | ✓| -
  Solana | ✓| ✓ | ✓| ✓
+  Tron | -| - | -| ✓
  Tron | ✓| ✓ | ✓| -
  VeChain | ✓| ✓ | ✓|  ✓
  XinFin (XDC) | ✓| ✓ | ✓| ✓
- XLM | ✓| ✓ | ✓| -
+ XLM | ✓| ✓ | ✓| ✓
  XRP | ✓| ✓ | ✓| -

@@ -40,6 +40,7 @@ paths:
           <li><b><a href="https://ethereum.org/en/developers/" target="_blank">Klaytn</a></b></li>
           <li><b><a href="https://ethereum.org/en/developers/" target="_blank">Harmony.ONE</a></b></li>
           <li><b><a href="https://ethereum.org/en/developers/" target="_blank">Binance Smart Chain</a></b></li>
+          <li><b><a href="https://developers.stellar.org/api" target="_blank">Stellar</a></b></li>
         </ul>
         </p>
       operationId: NodeJsonPostRpcDriver
@@ -77,6 +78,7 @@ paths:
               - KLAY
               - KCS
               - LUNA
+              - XLM
         - description: Type of the node to access for Algorand.
           in: query
           name: nodeType
@@ -242,6 +244,7 @@ paths:
         Tatum now supports JSON RPC nodes on these blockchains:<br/>
         <ul>
           <li><b><a href="https://docs.terra.money/docs/develop/reference/README.html" target="_blank">Terra Luna</a></b></li>
+          <li><b><a href="https://developers.stellar.org/api" target="_blank">Stellar</a></b></li>
           <li><b><a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">Elrond</a></b></li>
           <li><b><a href="https://developer.algorand.org/docs/rest-apis/restendpoints/" target="_blank">Algorand</a></b></li>
         </ul>
@@ -261,25 +264,11 @@ paths:
           required: true
           schema:
             type: string
-            example: ETH
+            example: ALGO
             enum:
-              - BTC
-              - ONE
-              - ADA
-              - BSC
-              - XDC
-              - LTC
-              - DOGE
-              - BCH
-              - ETH
-              - CELO
-              - MATIC
-              - VET
               - EGLD
               - ALGO
-              - SOL
-              - KLAY
-              - KCS
+              - XLM
               - LUNA
         - description: Type of the node to access for Algorand.
           in: query
@@ -446,6 +435,7 @@ paths:
         Tatum now supports JSON RPC nodes on these blockchains:<br/>
         <ul>
           <li><b><a href="https://docs.terra.money/docs/develop/reference/README.html" target="_blank">Terra Luna</a></b></li>
+          <li><b><a href="https://developers.stellar.org/api" target="_blank">Stellar</a></b></li>
           <li><b><a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">Elrond</a></b></li>
           <li><b><a href="https://developer.algorand.org/docs/rest-apis/restendpoints/" target="_blank">Algorand</a></b></li>
         </ul>
@@ -465,25 +455,11 @@ paths:
           required: true
           schema:
             type: string
-            example: ETH
+            example: ALGO
             enum:
-              - BTC
-              - ONE
-              - ADA
-              - BSC
-              - XDC
-              - LTC
-              - DOGE
-              - BCH
-              - ETH
-              - CELO
-              - MATIC
-              - VET
               - EGLD
               - ALGO
-              - SOL
-              - KLAY
-              - KCS
+              - XLM
               - LUNA
         - description: Type of the node to access for Algorand.
           in: query

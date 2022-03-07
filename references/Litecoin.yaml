@@ -1317,7 +1317,7 @@ components:
         address:
           maxLength: 58
           minLength: 58
-          description: address of Algorand account.
+          description: address of Litecoin account.
           example: NTAESFCB3WOD7SAOL42KSPVARLB3JFA3MNX3AESWHYVT2RMYDVZI6YLG4Y
           type: string
         secret:
