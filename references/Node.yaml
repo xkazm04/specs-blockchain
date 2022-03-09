@@ -102,8 +102,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - type: object
+                  type: object
                   description: Any valid Web3 RPC method content body.
                   example:
                     jsonrpc: '2.0'
@@ -293,14 +292,13 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - type: object
-                  description: Any valid Web3 RPC method content body.
-                  example:
-                    jsonrpc: '2.0'
-                    method: web3_clientVersion
-                    params: []
-                    id: 2
+                type: object
+                description: Any valid Web3 RPC method content body.
+                example:
+                  jsonrpc: '2.0'
+                  method: web3_clientVersion
+                  params: []
+                  id: 2
         required: true
       responses:
         '200':
