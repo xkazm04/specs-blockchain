@@ -501,7 +501,7 @@ paths:
         <h4>1 credit per API call.</h4><br/>
         <p>This endpoint allows one to retrieve the latest 20 transactions sent from an address.</p>
       operationId: EgldGetTransactionAddress
-      summary: Get count of outgoing Elrond transactions
+      summary: Get Elrond transactions by address
       tags:
         - Transaction
       parameters:
