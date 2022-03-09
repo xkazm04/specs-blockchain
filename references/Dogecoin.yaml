@@ -393,7 +393,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Get Dogecoin Transaction ids in the mempool.</p>
       operationId: DogeGetMempool
-      summary: Get Mempool Transactions
+      summary: Get Dogecoin mempool transactions
       tags:
         - Transaction
       responses:
@@ -636,7 +636,7 @@ paths:
         Use this endpoint URL as an http-based JSON RPC driver to connect directly to the node provided by Tatum. <br/>
         To learn more about JSON RPC, please visit <a href=\"https://developer.bitcoin.org/reference/rpc/index.html\" target=\"_blank\">Bitcoin developers' guide.</a>
       operationId: BzcRpcDriver
-      summary: JSON RPC HTTP Driver
+      summary: Dogecoin RPC node
       tags:
         - Transaction
       requestBody:

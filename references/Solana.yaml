@@ -133,7 +133,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal server error. There was an error on the server during the processing of the request.
-      summary: JSON RPC HTTP driver
+      summary: Solana RPC node
       tags:
         - Utilities
   /v3/solana/block/current:
@@ -165,7 +165,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Get current block number
+      summary: Get Solana current block number
       tags:
         - Block
   '/v3/solana/block/{height}':

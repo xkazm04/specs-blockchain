@@ -183,7 +183,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Get QTUM current block number. This is the number of the latest block in the blockchain.</p>
       operationId: QtumGetCurrentBlock
-      summary: Get current block number
+      summary: Get current QTUM block number
       tags:
         - Block
       responses:

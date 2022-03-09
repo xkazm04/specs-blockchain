@@ -193,7 +193,7 @@ paths:
         <p>Use this endpoint URL as a http-based web3 driver to connect directly to the XDC node provided by Tatum.
         To learn more about XDC Web3, please visit <a href="https://howto.xinfin.org/" target="_blank">XDC developer's guide.</a></p>
       operationId: XdcWeb3Driver
-      summary: Web3 HTTP driver
+      summary: XDC RPC node
       tags:
         - Utilities
       parameters:
@@ -252,7 +252,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/> <p>Get XDC current block number. This is the number of the latest block in the blockchain.</p>
       operationId: XdcGetCurrentBlock
-      summary: Get current block number
+      summary: Get current XDC block number
       tags:
         - Block
       responses:
@@ -623,7 +623,7 @@ paths:
         <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
         Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.</p>
       operationId: XdcBlockchainSmartContractInvocation
-      summary: Invoke Smart Contract method
+      summary: Invoke XDC Smart Contract method
       tags:
         - Utilities
       requestBody:

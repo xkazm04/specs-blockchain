@@ -202,7 +202,7 @@ paths:
     get:
       description: '<h4>1 credit per API call.</h4><br/><p>Gets Bitcoin blockchain information. Obtains basic info like the testnet / mainnet version of the chain, the current block number and its hash.</p>'
       operationId: BtcGetBlockChainInfo
-      summary: Get Blockchain information
+      summary: Get Bitcoin blockchain information
       tags:
         - Block
       responses:
@@ -238,7 +238,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Gets a Bitcoin block hash. Returns the hash of the block to get the block's details.</p>
       operationId: BtcGetBlockHash
-      summary: Get Block hash
+      summary: Get Bitcoin block hash
       tags:
         - Block
       parameters:
@@ -293,7 +293,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Gets Bitcoin block detail by block hash or height.</p>
       operationId: BtcGetBlock
-      summary: Get Block by hash or height
+      summary: Get Bitcoin by hash or height
       tags:
         - Block
       parameters:
@@ -343,7 +343,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Get Bitcoin Transaction detail by transaction hash.</p>
       operationId: BtcGetRawTransaction
-      summary: Get transaction by hash
+      summary: Get Bitcoin transaction by hash
       tags:
         - Transaction
       parameters:
@@ -395,7 +395,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Gets Bitcoin transaction IDs in the mempool.</p>
       operationId: BtcGetMempool
-      summary: Get mempool transactions
+      summary: Get Bitcoin mempool transactions
       tags:
         - Transaction
       responses:
@@ -442,7 +442,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Gets a Bitcoin transaction by address.</p>
       operationId: BtcGetTxByAddress
-      summary: Get transactions by address
+      summary: Get Bitcoin transactions by address
       tags:
         - Transaction
       parameters:
@@ -509,7 +509,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Gets the Bitcoin balance of the address.</p>
       operationId: BtcGetBalanceOfAddress
-      summary: Get the balance of an address
+      summary: Get the balance of an Bitcoin address
       tags:
         - Account
       parameters:
@@ -566,7 +566,7 @@ paths:
         a UTXO T1 with a total value of 10 BTC in the next transaction. The user can spend multiple UTXOs from different addresses in one transaction.<br/>
         If the UTXO is not spent, the data are returned, or a 404 error code is generated.</p>
       operationId: BtcGetUTXO
-      summary: Get UTXO of transaction
+      summary: Get UTXO of Bitcoin transaction
       tags:
         - Transaction
       parameters:
@@ -757,7 +757,7 @@ paths:
         Use this endpoint URL as an http-based JSON RPC driver to connect directly to the node provided by Tatum. <br/>
         To learn more about JSON RPC, please visit <a href=\"https://developer.bitcoin.org/reference/rpc/index.html\" target=\"_blank\">Bitcoin developers' guide.</a>
       operationId: BzcRpcDriver
-      summary: JSON RPC HTTP Driver
+      summary: Bitcoin RPC node
       tags:
         - Transaction
       requestBody:

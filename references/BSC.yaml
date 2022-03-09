@@ -234,14 +234,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal server error. There was an error on the server during the processing of the request.
-      summary: Web3 HTTP driver
+      summary: BSC RPC node
       tags:
         - Utilities
   /v3/bsc/block/current:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Get BSC current block number. This is the number of the latest block in the blockchain.</p>
       operationId: BscGetCurrentBlock
-      summary: Get current block number
+      summary: Get current BSC block number
       tags:
         - Block
       responses:
@@ -612,7 +612,7 @@ paths:
         <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
         Alternatively, using the Tatum client library for supported languages or Tatum Middleware with a custom key management system is possible.</p>
       operationId: BscBlockchainSmartContractInvocation
-      summary: Invoke Smart Contract method
+      summary: Invoke BSC Smart Contract method
       tags:
         - Utilities
       requestBody:

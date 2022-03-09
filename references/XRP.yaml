@@ -109,7 +109,7 @@ paths:
         <p>Get XRP Blockchain fee. Standard fee for the transaction is available in the drops.base_fee section and is 10 XRP drops by default.
         When there is a heavy traffic on the blockchain, fees are increasing according to current traffic.</p>
       operationId: XrpGetFee
-      summary: Get actual Blockchain fee
+      summary: Get XRP Blockchain fee
       tags:
         - Transaction
       responses:
@@ -145,7 +145,7 @@ paths:
     get:
       description: <h4>5 credits per API call.</h4><br/><p>List all Account transactions.</p>
       operationId: XrpGetAccountTx
-      summary: Get Account transactions
+      summary: Get XRP Account transactions
       tags:
         - Transaction
       parameters:
@@ -208,7 +208,7 @@ paths:
     get:
       description: <h4>5 credits per API call.</h4><br/><p>Get ledger by sequence.</p>
       operationId: XrpGetLedger
-      summary: Get Ledger
+      summary: Get XRP Ledger info
       tags:
         - Block
       parameters:
@@ -314,7 +314,7 @@ paths:
     get:
       description: <h4>5 credits per API call.</h4><br/><p>Get XRP Account info.</p>
       operationId: XrpGetAccountInfo2
-      summary: Get Account info
+      summary: Get XRP Account info
       tags:
         - Account
       parameters:
@@ -366,7 +366,7 @@ paths:
     get:
       description: <h4>5 credits per API call.</h4><br/><p>Get XRP Account Balance. Obtain balance of the XRP and other assets on the account.</p>
       operationId: XrpGetAccountBalance
-      summary: Get Account Balance
+      summary: Get XRP Account Balance
       tags:
         - Account
       parameters:

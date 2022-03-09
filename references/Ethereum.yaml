@@ -219,7 +219,7 @@ paths:
         <p>Use this endpoint URL as an http-based web3 driver to connect directly to the Ethereum node provided by Tatum.
         To learn more about Ethereum Web3, please visit <a href="https://ethereum.org/en/developers/" target="_blank">Ethereum developers' guide.</a></p>
       operationId: EthWeb3Driver
-      summary: Web3 HTTP driver
+      summary: Ethereum RPC node
       tags:
         - Utilities
       parameters:
@@ -288,7 +288,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/><p>Gets the current Ethereum block number. This is the number of the latest block in the blockchain.</p>
       operationId: EthGetCurrentBlock
-      summary: Get current block number
+      summary: Get Ethereum current block
       tags:
         - Block
       parameters:
@@ -871,7 +871,7 @@ paths:
         <a href="https://github.com/tatumio/tatum-kms" target="_blank">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.
         Alternatively, using the Tatum client library for supported languages.</p>
       operationId: EthBlockchainSmartContractInvocation
-      summary: Invoke Smart Contract method
+      summary: Invoke Ethereum Smart Contract method
       tags:
         - Utilities
       parameters:
@@ -1082,7 +1082,7 @@ paths:
         Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state. The <b>fast</b> one is used by default.<br/>
         Result is calculated  in the order of the request array items.
       operationId: EthEstimateGasBatch
-      summary: Estimate multiple transaction fees
+      summary: Estimate multiple Ethereum transaction fees
       tags:
         - Transaction
       parameters:

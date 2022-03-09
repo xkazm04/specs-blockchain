@@ -629,7 +629,7 @@ paths:
                   - message
                 type: object
           description: Internal server error. There was an error on the server during the processing of the request.
-      summary: Web3 HTTP driver
+      summary: Klaytn RPC node
       tags:
         - Utilities
   /v3/klaytn/block/current:
@@ -707,7 +707,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Get current block number
+      summary: Get Klaytn current block number
       tags:
         - Block
   '/v3/klaytn/block/{hash}':
@@ -1026,7 +1026,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Get Klaytn block by hash
+      summary: Get Klaytn block detail
       tags:
         - Block
   '/v3/klaytn/account/balance/{address}':
@@ -1431,7 +1431,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Get Klaytn Transaction
+      summary: Get Klaytn Transaction detail
       tags:
         - Transaction
   '/v3/klaytn/transaction/count/{address}':
@@ -1574,7 +1574,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Get count of outgoing Klaytn transactions
+      summary: Get Klaytn Transaction count
       tags:
         - Transaction
   /v3/klaytn/transaction:
@@ -1977,7 +1977,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Send KLAY from account to account
+      summary: Send KLAY
       tags:
         - Transaction
   /v3/klaytn/gas:
@@ -2193,7 +2193,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Estimate Klaytn transaction fees
+      summary: Estimate Klaytn transaction fee
       tags:
         - Transaction
   /v3/klaytn/smartcontract:
@@ -2653,7 +2653,7 @@ paths:
           description: Internal server error. There was an error on the server during the processing of the request.
       security:
         - X-Api-Key: []
-      summary: Invoke Smart Contract method
+      summary: Invoke Klaytn Smart Contract method
       tags:
         - Utilities
   /v3/klaytn/broadcast:

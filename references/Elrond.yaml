@@ -42,7 +42,7 @@ paths:
         More about BIP44 HD wallets can be found here - <a target="_blank" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.
         Generate BIP44 compatible EGLD wallet.</p>
       operationId: EgldGenerateWallet
-      summary: Generate EGLD wallet
+      summary: Generate Elrond wallet
       tags:
         - Account
       parameters:
@@ -94,7 +94,7 @@ paths:
         <p>Generate EGLD account deposit address from mnemonic phrase. Deposit address is generated for the specific
         index - each mnemonic phrase can generate up to 2^31 addresses starting from index 0 until 2^31.</p>
       operationId: EgldGenerateAddress
-      summary: Generate EGLD account address from mnemonic
+      summary: Generate Elrond account address from mnemonic
       tags:
         - Account
       parameters:
@@ -153,7 +153,7 @@ paths:
         <p>Generate private key of address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic
         can generate up to 2^31 private keys starting from index 0 until 2^31.</p>
       operationId: EgldGenerateAddressPrivateKey
-      summary: Generate EGLD private key
+      summary: Generate Elrond private key
       tags:
         - Account
       requestBody:
@@ -198,7 +198,7 @@ paths:
         <p>Use this endpoint URL as a http-based driver to connect directly to the EGLD node provided by Tatum.
         To learn more about EGLD, please visit <a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">EGLD developer's guide.</a></p>
       operationId: EgldNodePost
-      summary: Node HTTP driver
+      summary: Elrond RPC node - POST
       tags:
         - Utilities
       parameters:
@@ -261,7 +261,7 @@ paths:
         <p>Use this endpoint URL as a http-based driver to connect directly to the EGLD node provided by Tatum.
         To learn more about EGLD, please visit <a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">EGLD developer's guide.</a></p>
       operationId: EgldNodeGet
-      summary: Node HTTP driver
+      summary: Elrond RPC node - GET
       tags:
         - Utilities
       parameters:
@@ -320,7 +320,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/> <p>Get EGLD current block number. This is the number of the latest block in the blockchain.</p>
       operationId: EGldGetCurrentBlock
-      summary: Get current block number
+      summary: Get current Elrond block number
       tags:
         - Block
       responses:
@@ -352,7 +352,7 @@ paths:
     get:
       description: '<h4>1 credit per API call.</h4><br/> <p>Get EGLD block by block hash or block number. <a href=''https://docs.elrond.com/sdk-and-tools/rest-api/blocks/'' target=''_blank''> EGLD docs </a></p>'
       operationId: EgldGetBlock
-      summary: Get EGLD block by hash
+      summary: Get Elrond block by hash
       tags:
         - Block
       parameters:
@@ -396,7 +396,7 @@ paths:
     get:
       description: <h4>1 credit per API call.</h4><br/> <p>Get account balance in EGLD.</p>
       operationId: EgldGetBalance
-      summary: Get EGLD Account balance
+      summary: Get Elrond Account balance
       tags:
         - Account
       parameters:
@@ -445,7 +445,7 @@ paths:
     get:
       description: '<h4>1 credit per API call.</h4><br/> <p>Get EGLD transaction by transaction hash. Detail result please find here <a href=''https://docs.elrond.com/sdk-and-tools/rest-api/transactions/#get-transaction'' target=''_blank''> EGLD docs </a></p>'
       operationId: EgldGetTransaction
-      summary: Get EGLD Transaction
+      summary: Get Elrond Transaction
       tags:
         - Transaction
       parameters:
@@ -501,7 +501,7 @@ paths:
         <h4>1 credit per API call.</h4><br/>
         <p>This endpoint allows one to retrieve the latest 20 transactions sent from an address.</p>
       operationId: EgldGetTransactionAddress
-      summary: Get count of outgoing EGLD transactions
+      summary: Get count of outgoing Elrond transactions
       tags:
         - Transaction
       parameters:
@@ -673,7 +673,7 @@ paths:
         <p>Broadcast signed transaction to EGLD blockchain. This method is used internally from Tatum KMS or Tatum client libraries.
         It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
       operationId: EgldBroadcast
-      summary: Broadcast signed EGLD transaction
+      summary: Broadcast signed Elrond transaction
       tags:
         - Transaction
       requestBody:

@@ -557,7 +557,7 @@ paths:
         Use this endpoint URL as an http-based JSON RPC driver to connect directly to the node provided by Tatum. <br/>
         To learn more about JSON RPC, please visit <a href=\"https://developer.bitcoin.org/reference/rpc/index.html\" target=\"_blank\">Bitcoin developers' guide.</a>
       operationId: BzcRpcDriver
-      summary: JSON RPC HTTP Driver
+      summary: Bitcoin Cash RPC node
       tags:
         - Transaction
       requestBody:
