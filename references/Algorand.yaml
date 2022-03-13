@@ -809,6 +809,7 @@ components:
             $ref: '#/components/schemas/AlgoTx'
     TransferAlgorandBlockchain:
       type: object
+      title: PrivateKey
       properties:
         from:
           description: Blockchain sender address.
@@ -840,6 +841,7 @@ components:
         - fromPrivateKey
     TransferAlgorandBlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           description: Blockchain sender address.
@@ -896,6 +898,7 @@ components:
       type: object
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -906,6 +909,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.
