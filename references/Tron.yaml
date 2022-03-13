@@ -1027,6 +1027,7 @@ components:
         - txId
     TransferTronBlockchain:
       type: object
+      title: PrivateKey
       properties:
         fromPrivateKey:
           type: string
@@ -1051,6 +1052,7 @@ components:
         - amount
     TransferTronBlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           type: string
@@ -1088,6 +1090,7 @@ components:
         - index
     TransferTronTrc10Blockchain:
       type: object
+      title: PrivateKey
       properties:
         fromPrivateKey:
           type: string
@@ -1119,6 +1122,7 @@ components:
         - amount
     TransferTronTrc10BlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           type: string
@@ -1163,6 +1167,7 @@ components:
         - amount
     TransferTronTrc20Blockchain:
       type: object
+      title: PrivateKey
       properties:
         fromPrivateKey:
           type: string
@@ -1200,6 +1205,7 @@ components:
         - feeLimit
     TransferTronTrc20BlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           type: string
@@ -1250,6 +1256,7 @@ components:
         - feeLimit
     CreateTronTrc20Blockchain:
       type: object
+      title: PrivateKey
       properties:
         fromPrivateKey:
           type: string
@@ -1295,6 +1302,7 @@ components:
         - decimals
     CreateTronTrc20BlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           type: string
@@ -1353,6 +1361,7 @@ components:
         - decimals
     CreateTronTrc10Blockchain:
       type: object
+      title: PrivateKey
       properties:
         fromPrivateKey:
           type: string
@@ -1412,6 +1421,7 @@ components:
         - decimals
     CreateTronTrc10BlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           type: string
@@ -1527,6 +1537,7 @@ components:
           example: 5
     FreezeTron:
       type: object
+      title: PrivateKey
       properties:
         fromPrivateKey:
           type: string
@@ -1565,6 +1576,7 @@ components:
         - amount
     FreezeTronKMS:
       type: object
+      title: Signature
       properties:
         from:
           type: string

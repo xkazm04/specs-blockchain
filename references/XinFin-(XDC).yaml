@@ -1009,6 +1009,7 @@ components:
       type: object
     CallXdcSmartContractMethod:
       type: object
+      title: PrivateKey
       properties:
         contractAddress:
           maxLength: 43
@@ -1079,6 +1080,7 @@ components:
         - methodName
     CallXdcReadSmartContractMethod:
       type: object
+      title: Read method
       properties:
         contractAddress:
           maxLength: 43
@@ -1116,6 +1118,7 @@ components:
         - methodName
     CallXdcSmartContractMethodKMS:
       type: object
+      title: Signature
       properties:
         contractAddress:
           maxLength: 43
@@ -1177,6 +1180,7 @@ components:
         - methodName
     TransferXdcBlockchain:
       type: object
+      title: PrivateKey
       properties:
         data:
           type: string
@@ -1262,6 +1266,7 @@ components:
         - from
     TransferXdcBlockchainKMS:
       type: object
+      title: Signature
       properties:
         data:
           type: string
@@ -1366,6 +1371,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1376,6 +1382,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

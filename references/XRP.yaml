@@ -686,6 +686,7 @@ components:
       type: object
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -696,6 +697,7 @@ components:
         - signatureId
     TrustLineXrpBlockchain:
       type: object
+      title: Secret
       properties:
         fromAccount:
           maxLength: 34
@@ -740,6 +742,7 @@ components:
         - fromSecret
     TrustLineXrpBlockchainKMS:
       type: object
+      title: Signature
       properties:
         fromAccount:
           maxLength: 34
@@ -785,6 +788,7 @@ components:
         - signatureId
     AccountSettingsXrpBlockchain:
       type: object
+      title: Secret
       properties:
         fromAccount:
           maxLength: 34
@@ -816,6 +820,7 @@ components:
         - fromSecret
     AccountSettingsXrpBlockchainKMS:
       type: object
+      title: Signature
       properties:
         fromAccount:
           maxLength: 34
@@ -848,6 +853,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.
@@ -861,6 +867,7 @@ components:
         - txId
     TransferXrpBlockchain:
       type: object
+      title: Native + Secret
       properties:
         fromAccount:
           maxLength: 34
@@ -905,6 +912,7 @@ components:
         - fromSecret
     TransferXrpBlockchainAsset:
       type: object
+      title: Asset + Secret
       properties:
         fromAccount:
           maxLength: 34
@@ -964,6 +972,7 @@ components:
         - token
     TransferXrpBlockchainKMS:
       type: object
+      title: Native + Signature
       properties:
         fromAccount:
           maxLength: 34
@@ -1009,6 +1018,7 @@ components:
         - signatureId
     TransferXrpBlockchainAssetKMS:
       type: object
+      title: Asset + PrivateKey
       properties:
         fromAccount:
           maxLength: 34

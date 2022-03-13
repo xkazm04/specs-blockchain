@@ -7,11 +7,11 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                  <p>Binance Smart Chain (BSC) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
-                  Tatum supports 2 chains:
-                  <ul><li>Mainnet - a regular live chain
-                  <li> Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-                  a faucet, e.g. <a target="_blank" href="https://testnet.binance.org/faucet-smart/">https://testnet.binance.org/faucet-smart</a></li></ul></p>
+    <p>Binance Smart Chain (BSC) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
+    Tatum supports 2 chains:
+    <ul><li>Mainnet - a regular live chain
+    <li> Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://testnet.binance.org/faucet-smart/">https://testnet.binance.org/faucet-smart</a></li></ul></p>
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
@@ -841,6 +841,7 @@ components:
                 example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
     CallBscSmartContractMethod:
       type: object
+      title: PrivateKey
       properties:
         contractAddress:
           maxLength: 42
@@ -911,6 +912,7 @@ components:
         - methodName
     CallBscSmartContractReadMethod:
       type: object
+      title: Call SC read method
       properties:
         contractAddress:
           maxLength: 42
@@ -948,6 +950,7 @@ components:
         - methodName
     CallBscSmartContractMethodKMS:
       type: object
+      title: Signature
       properties:
         contractAddress:
           maxLength: 42
@@ -1219,6 +1222,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1229,6 +1233,7 @@ components:
         - signatureId
     TransferBscBlockchain:
       type: object
+      title: PrivateKey
       properties:
         data:
           type: string
@@ -1300,6 +1305,7 @@ components:
         - fromPrivateKey
     BscEstimateGas:
       type: object
+      title: Estimate gas
       properties:
         from:
           type: string
@@ -1327,6 +1333,7 @@ components:
         - from
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.
@@ -1340,6 +1347,7 @@ components:
         - txId
     TransferBscBlockchainKMS:
       type: object
+      title: Signature
       properties:
         data:
           type: string
@@ -1555,7 +1563,7 @@ components:
         - errorCode
         - message
         - statusCode
-      type: object    
+      type: object
     Error403BscTxHash:
       properties:
         errorCode:

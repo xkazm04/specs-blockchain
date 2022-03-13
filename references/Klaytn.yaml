@@ -1595,6 +1595,7 @@ paths:
             schema:
               oneOf:
                 - type: object
+                  title: PrivateKey
                   properties:
                     data:
                       type: string
@@ -1653,6 +1654,7 @@ paths:
                     - currency
                     - fromPrivateKey
                 - type: object
+                  title: Signature
                   properties:
                     data:
                       type: string
@@ -1729,6 +1731,7 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                    title: TransactionHashKMS
                     properties:
                       txId:
                         description: TX hash of successful transaction.
@@ -1741,6 +1744,7 @@ paths:
                     required:
                       - txId
                   - type: object
+                    title: SignatureId
                     properties:
                       signatureId:
                         format: uuid
@@ -2214,6 +2218,7 @@ paths:
             schema:
               oneOf:
                 - type: object
+                  title: Read method
                   properties:
                     contractAddress:
                       maxLength: 42
@@ -2252,6 +2257,7 @@ paths:
                     - methodABI
                     - methodName
                 - type: object
+                  title: PrivateKey
                   properties:
                     contractAddress:
                       maxLength: 42
@@ -2323,6 +2329,7 @@ paths:
                     - fromPrivateKey
                     - methodName
                 - type: object
+                  title: Signature
                   properties:
                     contractAddress:
                       maxLength: 42

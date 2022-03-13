@@ -1062,6 +1062,7 @@ components:
           example: 0
     LtcTransactionAddress:
       type: object
+      title: PrivateKey
       required:
         - to
         - fromAddress
@@ -1109,6 +1110,7 @@ components:
                 example: 0.02969944
     LtcTransactionUTXO:
       type: object
+      title: UTXO
       required:
         - to
         - fromUTXO
@@ -1163,6 +1165,7 @@ components:
                 example: 0.02969944
     LtcTransactionAddressKMS:
       type: object
+      title: Signature
       required:
         - to
         - fromAddress
@@ -1211,6 +1214,7 @@ components:
                 example: 0.02969944
     LtcTransactionUTXOKMS:
       type: object
+      title: UTXO + Signature
       required:
         - to
         - fromUTXO
@@ -1290,6 +1294,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1300,6 +1305,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

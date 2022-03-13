@@ -909,6 +909,7 @@ components:
           example: 5f83d51c8d3054012cea3011fa626b85d89442788721afd60719ab1f9ab8f78a
     DogeTransactionUTXOKMS:
       type: object
+      title: UTXO + Signature
       required:
         - to
         - fromUTXO
@@ -986,6 +987,7 @@ components:
           maximum: 60
     DogeTransactionUTXO:
       type: object
+      title: UTXO
       required:
         - to
         - fromUTXO
@@ -1088,6 +1090,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1098,6 +1101,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

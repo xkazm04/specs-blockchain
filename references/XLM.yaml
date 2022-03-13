@@ -605,6 +605,7 @@ components:
       type: object
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -615,6 +616,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.
@@ -628,6 +630,7 @@ components:
         - txId
     TransferXlmBlockchain:
       type: object
+      title: Native + PrivateKey
       properties:
         fromAccount:
           description: Blockchain account to send assets from
@@ -670,6 +673,7 @@ components:
         - amount
     TransferXlmBlockchainAsset:
       type: object
+      title: Asset + PrivateKey
       properties:
         fromAccount:
           description: Blockchain account to send assets from
@@ -727,6 +731,7 @@ components:
         - amount
     TransferXlmBlockchainKMS:
       type: object
+      title: Native + Signature
       properties:
         fromAccount:
           description: Blockchain account to send assets from
@@ -770,6 +775,7 @@ components:
         - amount
     TransferXlmBlockchainKMSAsset:
       type: object
+      title: Asset + Signature
       properties:
         fromAccount:
           description: Blockchain account to send assets from
@@ -828,6 +834,7 @@ components:
         - amount
     TrustLineXlmBlockchain:
       type: object
+      title: PrivateKey
       properties:
         fromAccount:
           maxLength: 56
@@ -866,6 +873,7 @@ components:
         - token
     TrustLineXlmBlockchainKMS:
       type: object
+      title: Signature
       properties:
         fromAccount:
           maxLength: 56

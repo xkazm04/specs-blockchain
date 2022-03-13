@@ -1136,6 +1136,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: Signature
       properties:
         signatureId:
           format: uuid
@@ -1146,6 +1147,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.
@@ -1311,6 +1313,7 @@ components:
       type: object
     CallPolygonSmartContractMethod:
       type: object
+      title: PrivateKey
       properties:
         contractAddress:
           maxLength: 42
@@ -1381,6 +1384,7 @@ components:
         - methodName
     CallPolygonSmartContractReadMethod:
       type: object
+      title: Read method
       properties:
         contractAddress:
           maxLength: 42
@@ -1418,6 +1422,7 @@ components:
         - methodName
     CallPolygonSmartContractMethodKMS:
       type: object
+      title: Signature
       properties:
         contractAddress:
           maxLength: 42
@@ -1479,6 +1484,7 @@ components:
         - methodName
     TransferPolygonBlockchain:
       type: object
+      title: PrivateKey
       properties:
         data:
           type: string
@@ -1566,6 +1572,7 @@ components:
         - from
     TransferPolygonBlockchainKMS:
       type: object
+      title: Signature
       properties:
         data:
           type: string

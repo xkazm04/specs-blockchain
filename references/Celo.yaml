@@ -7,16 +7,16 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-      <p>Celo is fork of Celo with more then 1000 tps and possibility to pay for
-      transactions in it's own stable coin, cUSD. Celo Blockchain enables access to most commonly used Celo methods.
-      These methods bring small level of abstraction,
-             and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-             to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>
-            Tatum supports 2 chains:
-            <ul><li>Mainnet - regular live chain
-            <li>Alfajorec - test chain used for testing purposes. Coins on test chain have no value and can be obtained from
-            Faucet, e.g. <a target="_blank" href="https://celo.org/developers/faucet">https://celo.org/developers/faucet</a></li></ul><br/>
-            Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <p>Celo is fork of Celo with more then 1000 tps and possibility to pay for
+    transactions in it's own stable coin, cUSD. Celo Blockchain enables access to most commonly used Celo methods.
+    These methods bring small level of abstraction,
+           and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+           to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>
+          Tatum supports 2 chains:
+          <ul><li>Mainnet - regular live chain
+          <li>Alfajorec - test chain used for testing purposes. Coins on test chain have no value and can be obtained from
+          Faucet, e.g. <a target="_blank" href="https://celo.org/developers/faucet">https://celo.org/developers/faucet</a></li></ul><br/>
+          Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
@@ -772,6 +772,7 @@ components:
       type: object
     CallCeloReadSmartContractMethod:
       type: object
+      title: Call SC read method
       properties:
         contractAddress:
           maxLength: 42
@@ -809,6 +810,7 @@ components:
         - methodName
     CallCeloSmartContractMethod:
       type: object
+      title: PrivateKey
       properties:
         contractAddress:
           maxLength: 42
@@ -887,6 +889,7 @@ components:
         - feeCurrency
     CallCeloSmartContractMethodKMS:
       type: object
+      title: Signature
       properties:
         contractAddress:
           maxLength: 42
@@ -1185,6 +1188,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1195,6 +1199,7 @@ components:
         - signatureId
     TransferCeloBlockchain:
       type: object
+      title: PrivateKey
       properties:
         data:
           type: string
@@ -1244,6 +1249,7 @@ components:
         - feeCurrency
     TransferCeloBlockchainKMS:
       type: object
+      title: Signature
       properties:
         data:
           type: string
@@ -1298,6 +1304,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.
@@ -1342,7 +1349,7 @@ components:
         - errorCode
         - message
         - statusCode
-      type: object   
+      type: object
     Error403EthGasPrice:
       properties:
         errorCode:
@@ -1361,7 +1368,7 @@ components:
         - errorCode
         - message
         - statusCode
-      type: object 
+      type: object
     Error403TxNotFound:
       properties:
         errorCode:
@@ -1380,7 +1387,7 @@ components:
         - errorCode
         - message
         - statusCode
-      type: object    
+      type: object
     Error403EthScBody:
       properties:
         errorCode:

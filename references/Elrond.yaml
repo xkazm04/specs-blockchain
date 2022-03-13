@@ -949,6 +949,7 @@ components:
       type: object
     TransferEgldBlockchain:
       type: object
+      title: PrivateKey
       properties:
         from:
           description: Account address of the sender
@@ -994,6 +995,7 @@ components:
         - fromPrivateKey
     TransferEgldBlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           description: Account address of the sender
@@ -1068,6 +1070,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1078,6 +1081,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

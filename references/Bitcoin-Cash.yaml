@@ -692,6 +692,7 @@ components:
           example: 375206303347.133
     BchTransaction:
       type: object
+      title: UTXO
       required:
         - to
         - fromUTXO
@@ -746,6 +747,7 @@ components:
                 example: 0.02969944
     BchTransactionKMS:
       type: object
+      title: Signature
       required:
         - to
         - fromUTXO
@@ -910,6 +912,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -920,6 +923,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

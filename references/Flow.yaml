@@ -825,6 +825,7 @@ components:
   schemas:
     FlowTransactionPK:
       type: object
+      title: PrivateKey
       properties:
         account:
           description: Blockchain account to send from
@@ -864,6 +865,7 @@ components:
         - amount
     FlowTransactionKMS:
       type: object
+      title: Signature
       properties:
         account:
           description: Blockchain account to send from
@@ -908,6 +910,7 @@ components:
         - signatureId
     FlowTransactionMnemonic:
       type: object
+      title: Mnemonic
       properties:
         account:
           description: Blockchain account to send from
@@ -952,6 +955,7 @@ components:
         - index
     FlowCustomTransactionPK:
       type: object
+      title: PrivateKey
       properties:
         account:
           description: Blockchain account to send from
@@ -1071,6 +1075,7 @@ components:
         - args
     FlowCustomTransactionKMS:
       type: object
+      title: Signature
       properties:
         account:
           description: Blockchain account to send from
@@ -1195,6 +1200,7 @@ components:
         - signatureId
     FlowCustomTransactionMnemonic:
       type: object
+      title: Mnemonic
       properties:
         account:
           description: Blockchain account to send from
@@ -1318,6 +1324,7 @@ components:
         - index
     FlowCreateAddressFromPubKeySecret:
       type: object
+      title: PrivateKey
       properties:
         account:
           description: Blockchain account to send from
@@ -1343,6 +1350,7 @@ components:
         - publicKey
     FlowCreateAddressFromPubKeyKMS:
       type: object
+      title: Signature
       properties:
         account:
           description: Blockchain account to send from
@@ -1373,6 +1381,7 @@ components:
         - signatureId
     FlowCreateAddressFromPubKeyMnemonic:
       type: object
+      title: Mnemonic
       properties:
         account:
           description: Blockchain account to send from
@@ -1901,6 +1910,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1920,6 +1930,7 @@ components:
         - txId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

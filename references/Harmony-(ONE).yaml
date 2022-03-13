@@ -1116,6 +1116,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1126,6 +1127,7 @@ components:
         - signatureId
     TransferOneBlockchainKMS:
       type: object
+      title: Signature
       properties:
         data:
           type: string
@@ -1188,6 +1190,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: Signature
       properties:
         txId:
           description: TX hash of successful transaction.
@@ -1349,6 +1352,7 @@ components:
       type: object
     CallOneSmartContractMethod:
       type: object
+      title: Write - PrivateKey
       properties:
         contractAddress:
           maxLength: 42
@@ -1419,6 +1423,7 @@ components:
         - methodName
     CallOneReadSmartContractMethod:
       type: object
+      title: Call SC read method
       properties:
         contractAddress:
           maxLength: 42
@@ -1456,6 +1461,7 @@ components:
         - methodName
     CallOneSmartContractMethodKMS:
       type: object
+      title: Signature
       properties:
         contractAddress:
           maxLength: 42
@@ -1517,6 +1523,7 @@ components:
         - methodName
     TransferOneBlockchain:
       type: object
+      title: PrivateKey
       properties:
         data:
           type: string

@@ -1587,6 +1587,7 @@ components:
           example: '0x5990081ef8515d561b50255af03c5d505f7725ddef27405dc67d23bfd0f47704'
     CallSmartContractMethod:
       type: object
+      title: PrivateKey
       properties:
         contractAddress:
           maxLength: 42
@@ -1657,6 +1658,7 @@ components:
         - methodName
     CallReadSmartContractMethod:
       type: object
+      title: Call SC read method
       properties:
         contractAddress:
           maxLength: 42
@@ -1694,6 +1696,7 @@ components:
         - methodName
     CallSmartContractMethodKMS:
       type: object
+      title: Signature
       properties:
         contractAddress:
           maxLength: 42
@@ -1949,6 +1952,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1959,6 +1963,7 @@ components:
         - signatureId
     TransferEthBlockchain:
       type: object
+      title: PrivateKey
       properties:
         data:
           type: string
@@ -2034,6 +2039,7 @@ components:
         - fromPrivateKey
     TransferEthBlockchainKMS:
       type: object
+      title: SignatureId
       properties:
         data:
           type: string
@@ -2115,6 +2121,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: 
       properties:
         txId:
           description: TX hash of successful transaction.

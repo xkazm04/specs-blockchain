@@ -571,6 +571,7 @@ components:
       type: object
     TransferBnbBlockchain:
       type: object
+      title: PrivateKey
       properties:
         to:
           description: Blockchain address to send assets.
@@ -608,6 +609,7 @@ components:
         - currency
     TransferBnbBlockchainKMS:
       type: object
+      title: Signature
       properties:
         to:
           description: Blockchain address to send assets.

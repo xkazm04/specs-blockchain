@@ -1047,6 +1047,7 @@ components:
           example: 0
     BtcTransactionFromAddress:
       type: object
+      title: Private Key
       required:
         - to
         - fromAddress
@@ -1094,6 +1095,7 @@ components:
                 example: 0.02969944
     BtcTransactionFromUTXO:
       type: object
+      title: UTXO
       required:
         - to
         - fromUTXO
@@ -1148,6 +1150,7 @@ components:
                 example: 0.02969944
     BtcTransactionFromAddressKMS:
       type: object
+      title: Signature
       required:
         - to
         - fromAddress
@@ -1196,6 +1199,7 @@ components:
                 example: 0.02969944
     BtcTransactionFromUTXOKMS:
       type: object
+      title: UTXO + Signature
       required:
         - to
         - fromUTXO
@@ -1293,6 +1297,7 @@ components:
         - index
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -1303,6 +1308,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: TransactionHashKMS
       properties:
         txId:
           description: TX hash of successful transaction.

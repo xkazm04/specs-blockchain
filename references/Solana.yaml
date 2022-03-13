@@ -705,6 +705,7 @@ components:
       type: object
     TransferSolanaBlockchain:
       type: object
+      title: PrivateKey
       properties:
         from:
           description: Blockchain address to send assets from
@@ -736,6 +737,7 @@ components:
         - fromPrivateKey
     TransferSolanaBlockchainKMS:
       type: object
+      title: Signature
       properties:
         from:
           description: Blockchain address to send assets from
@@ -787,6 +789,7 @@ components:
       type: object
     SignatureId:
       type: object
+      title: SignatureId
       properties:
         signatureId:
           format: uuid
@@ -797,6 +800,7 @@ components:
         - signatureId
     TransactionHashKMS:
       type: object
+      title: PrivateKey
       properties:
         txId:
           description: TX hash of successful transaction.
