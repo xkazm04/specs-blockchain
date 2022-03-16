@@ -28,7 +28,7 @@ Table of features
  Polygon (Matic) | ✓| ✓ | ✓|✓ 
  Quantum (QTUM) | ✓| ✓ | ✓| -
  Solana | ✓| ✓ | ✓| ✓
-  Tron | -| - | -| ✓
+ Terra Luna | -| - | -| ✓
  Tron | ✓| ✓ | ✓| -
  VeChain | ✓| ✓ | ✓|  ✓
  XinFin (XDC) | ✓| ✓ | ✓| ✓
