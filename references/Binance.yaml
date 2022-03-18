@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   contact: {}
   title: Binance chain 
-  version: 3.9.3
+  version: 3.9.4
   x-logo:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
@@ -317,7 +317,7 @@ paths:
     post:
       description: |
         <h4>5 credits per API call.</h4><br/>
-        <p>Broadcast signed transaction to Binance blockchain. This method is used internally from Tatum Middleware or Tatum client libraries.
+        <p>Broadcast signed transaction to Binance blockchain. This method is used internally or Tatum client libraries.
         It is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>
       operationId: BnbBroadcast
       summary: Broadcast signed BNB transaction
@@ -566,6 +566,12 @@ components:
           maxLength: 500000
           minLength: 1
           type: string
+        signatureId:
+          type: string
+          minLength: 24
+          maxLength: 24
+          example: 5e68c66581f2ee32bc354087
+          description: Identifier of KMS pending transaction ID to be completed with the broadcast.
       required:
         - txData
       type: object

@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   contact: {}
   title: XRP
-  version: 3.9.3
+  version: 3.9.4
   x-logo:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
@@ -1079,6 +1079,9 @@ components:
         - token
     XrpWallet:
       type: object
+      required:
+        - address
+        - secret
       properties:
         address:
           description: Generated account address.
