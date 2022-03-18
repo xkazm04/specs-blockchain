@@ -515,7 +515,7 @@ paths:
         When the UTXO enters into the transaction, the whole amount is included and must be spent. For example, address A receives 2 transactions, T1 with 1 DOGE and T2 with 2 DOGE.
         The transaction, which will consume UTXOs for T1 and T2, will have available amount to spent 3 DOGE = 1 DOGE (T1) + 2 DOGE(T2).<br/><br/>
         There can be multiple recipients of the transactions, not only one. In the <b>to</b> section, every recipient address has it's corresponding amount.
-        When the amount of funds, that should receive the recipient is lower than the number of funds from the UTXOs, the difference is used as a transaction fee.<br/><br/>
+        When the amount of funds, that should receive the recipient is lower than the number of funds from the UTXOs, the difference is sent to the change address.<br/><br/>
         This operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.
         No one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and losing funds. In this method, it is possible to enter privateKey
         or signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,
