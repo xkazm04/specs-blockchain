@@ -74,12 +74,7 @@
       "title": "Ethereum",
       "uri": "/references/Ethereum.yaml"
     },
-        {
-      "type": "item",
-      "title": "Fabric",
-      "uri": "/references/Fabric.yaml"
-    },
-        {
+    {
       "type": "item",
       "title": "Harmony (ONE)",
       "uri": "/references/Harmony-(ONE).yaml"
@@ -118,6 +113,11 @@
       "type": "item",
       "title": "VeChain",
       "uri": "/references/VeChain.yaml"
+    },
+    {
+      "type": "item",
+      "title": "Terra Luna",
+      "uri": "/references/Terra.yaml"
     },
         {
       "type": "item",
