@@ -51,6 +51,13 @@ paths:
           schema:
             type: number
             minimum: 0
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -108,6 +115,14 @@ paths:
             schema:
               $ref: '#/components/schemas/PrivKeyRequest'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -150,6 +165,14 @@ paths:
       summary: Get current block
       description: <h4>5 credits per API call.</h4><br/><p>Get current Tron block.</p>
       operationId: TronGetCurrentBlock
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -207,6 +230,13 @@ paths:
           schema:
             type: string
             example: 000000000195a8cfe2ea4ca60ce921b30e95980a96c6bb1da4a35aa03da9c5a8
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -264,6 +294,13 @@ paths:
           schema:
             type: string
             example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -333,6 +370,13 @@ paths:
           schema:
             type: string
             example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -395,6 +439,13 @@ paths:
           schema:
             type: string
             example: TGDqQAP5bduoPKVgdbk7fGyW4DwEt3RRn8
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -445,6 +496,13 @@ paths:
           schema:
             type: string
             example: 81d0524acf5967f3b361e03fd7d141ab511791cd7aad7ae406c4c8d408290991
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -507,6 +565,14 @@ paths:
                 - $ref: '#/components/schemas/TransferTronBlockchain'
                 - $ref: '#/components/schemas/TransferTronBlockchainKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -564,6 +630,14 @@ paths:
                 - $ref: '#/components/schemas/FreezeTron'
                 - $ref: '#/components/schemas/FreezeTronKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -621,6 +695,14 @@ paths:
                 - $ref: '#/components/schemas/TransferTronTrc10Blockchain'
                 - $ref: '#/components/schemas/TransferTronTrc10BlockchainKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -678,6 +760,14 @@ paths:
                 - $ref: '#/components/schemas/CreateTronTrc10Blockchain'
                 - $ref: '#/components/schemas/CreateTronTrc10BlockchainKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -730,6 +820,13 @@ paths:
           schema:
             type: number
             example: 1000540
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -787,6 +884,14 @@ paths:
                 - $ref: '#/components/schemas/TransferTronTrc20Blockchain'
                 - $ref: '#/components/schemas/TransferTronTrc20BlockchainKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -844,6 +949,14 @@ paths:
                 - $ref: '#/components/schemas/CreateTronTrc20Blockchain'
                 - $ref: '#/components/schemas/CreateTronTrc20BlockchainKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -895,6 +1008,14 @@ paths:
             schema:
               $ref: '#/components/schemas/TronBroadcast'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -946,7 +1067,7 @@ paths:
       summary: Generate Tron wallet
       tags:
         - Account
-      paramethers:
+      parameters:
         - description: "Mnemonic to use for generatui if extended public and private key."
           in: query
           name: mnemonic
@@ -954,6 +1075,13 @@ paths:
           schema:
             type: string
             maxLength: 500
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -2081,6 +2209,11 @@ components:
         To maintain the highest security level, Tatum requires X-API-Key HTTP header.
         This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
         Each X-API-Key is bound to the test or production blockchains.
+
+        Connecting without an X-API-Key results in the creation of an API Key tied to your IP Address.
+        This API Key is limited to 5req/s and 10M credits, these limits are renewed the 1st day of each month and are applicable to both testnet and mainnet.
+        To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls, otherwise the api key will default to mainnet.
+        You do not need to supply an API key in the X-API-Key header.
       in: header
       name: x-api-key
       type: apiKey
