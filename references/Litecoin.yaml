@@ -42,6 +42,13 @@ paths:
           schema:
             type: string
             maxLength: 500
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -84,6 +91,14 @@ paths:
       summary: Get Litecoin Blockchain Information
       tags:
         - Block
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -128,6 +143,13 @@ paths:
           schema:
             type: number
             example: 1234314
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -183,6 +205,13 @@ paths:
           schema:
             type: string
             example: '1234314'
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -233,6 +262,13 @@ paths:
           schema:
             type: string
             example: d60631d8e5c8b6eb0557b5181cf28564d771c628a08abc414e87ad7c05ff2fc2
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -277,6 +313,14 @@ paths:
       summary: Get Litecoin mempool transactions
       tags:
         - Transaction
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -347,6 +391,13 @@ paths:
           schema:
             type: number
             example: 0
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -399,6 +450,13 @@ paths:
           schema:
             type: string
             example: n4YNG8q5JyxkeWf7zMi1bMyRZbRKK1W7or
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -466,6 +524,13 @@ paths:
             type: number
             example: 0
             minimum: 0
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -526,6 +591,13 @@ paths:
           example: 0
           schema:
             type: number
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -584,6 +656,14 @@ paths:
             schema:
               $ref: '#/components/schemas/PrivKeyRequest'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -653,6 +733,14 @@ paths:
                 - $ref: '#/components/schemas/LtcTransactionUTXO'
                 - $ref: '#/components/schemas/LtcTransactionUTXOKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -711,6 +799,14 @@ paths:
             schema:
               $ref: '#/components/schemas/BroadcastKMS'
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -782,6 +878,14 @@ paths:
                     description: "Params to the method call, if required."
                     example: []
         required: true
+      parameters:
+        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+          in: query
+          name: type
+          required: false
+          schema:
+            type: boolean
+            example: false
       responses:
         '200':
           content:
@@ -1623,6 +1727,11 @@ components:
         To maintain the highest security level, Tatum requires X-API-Key HTTP header.
         This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
         Each X-API-Key is bound to the test or production blockchains.
+
+        Connecting without an X-API-Key results in the creation of an API Key tied to your IP Address.
+        This API Key is limited to 5req/s and 10M credits, these limits are renewed the 1st day of each month and are applicable to both testnet and mainnet.
+        To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls, otherwise the api key will default to mainnet.
+        You do not need to supply an API key in the X-API-Key header.
       in: header
       name: x-api-key
       type: apiKey
