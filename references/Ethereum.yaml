@@ -6,18 +6,27 @@ info:
   x-logo:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
-  description: '
-                  <p>Ethereum Blockchain enables access to the most commonly used Ethereum methods. These methods bring a small level of abstraction
-                  and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-                  to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
-                  Tatum supports 3 chains:
-                  <ul><li>Mainnet - a regular live chain
-                  <li>Ropsten - a chain used for testing purposes. Default testnet chain. Coins on the test chain have no value and can be obtained from
-                        a faucet, e.g. <a target="_blank" href="https://faucet.ropsten.be/">https://faucet.ropsten.be/</a></li>
-                  <li>Rinkeby - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-                        a faucet, e.g. <a target="_blank" href="https://faucet.rinkeby.io/">https://faucet.rinkeby.io/</a> To use Rinkeby, you need to add HTTP Header
-                  <b>-x-testnet-type:rinkeby</b></li></ul><br/>
-                  Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>'
+  description: 
+    '
+    <h3>What is Ethereum?</h3>
+    Ethereum is a decentralized, open-source blockchain that supports smart contract functionality. It was the first network that allowed developers to create smart contracts and is still the most popular blockchain for building dApps.<br/>
+    <h3>How to use Ethereum?</h3>
+    <p>Ethereum Blockchain enables access to the most commonly used Ethereum methods. These methods bring a small level of abstraction
+    and are used for applications that communicate with the blockchain directly. <br/>
+    Some of the methods are used alongside Tatum Private Ledger
+    to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
+    Tatum supports 3 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li><b>Ropsten</b> - a chain used for testing purposes. Default testnet chain. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://faucet.ropsten.be/">https://faucet.ropsten.be/</a></li>
+    <li><b>Rinkeby</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://faucet.rinkeby.io/">https://faucet.rinkeby.io/</a> To use Rinkeby, you need to add HTTP Header
+    <b>-x-testnet-type:rinkeby</b></li></ul><br/>
+    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>Ethereum stats</h3>
+    <b> Number of active addresses</b>: Around 500k (<a href="https://studio.glassnode.com/metrics?a=ETH&category=Addresses&m=addresses.ActiveCount">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>high</b>, but it also depends on the current market situation. (<a href="https://ycharts.com/indicators/ethereum_average_gas_price">Lets have a look at newest data here.</a>)'
+
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
