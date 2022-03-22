@@ -7,8 +7,8 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                <p>Algorand is a decentralized blockchain technology network. Algorand is enabling the simple creation of next generation financial products, protocols and exchange of value across defi, financial institutions and governments.<br/>
-                Tatum supports 2 chains:
+                <p>Algorand is a secure, scalable, and decentralized blockchain platform that supports smart contract functionality. The platform has been used in different verticals such as real estate, microfinance, and is a rich environment for creating NFT-based applications and marketplaces.<br/>
+                Tatum supports:
                 <ul><li>Mainnet - a regular live chain
                 <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
                 a faucet, e.g. <a target="_blank" href="https://bank.testnet.algorand.network/">https://bank.testnet.algorand.network/</a></li></ul></p>
