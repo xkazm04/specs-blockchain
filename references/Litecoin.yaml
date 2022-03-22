@@ -20,7 +20,7 @@ info:
     Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
     <h3>Litecoin stats</h3>
     <b> Number of active addresses</b>: Around 300k (<a href="https://studio.glassnode.com/metrics?a=LTC&m=addresses.ActiveCount">Lets have a look at newest data here.</a>)<br/>
-    <b> Gas fee</b>: Prices are <b>medium</b>, but it also depends on the current market situation. (<a href="https://bitinfocharts.com/comparison/litecoin-transactionfees.html#3y">Lets have a look at newest data here.</a>).
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://bitinfocharts.com/comparison/litecoin-transactionfees.html#3y">Lets have a look at newest data here.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
