@@ -49,8 +49,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -117,8 +118,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -183,8 +185,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -233,8 +236,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -284,8 +288,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -346,8 +351,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -403,8 +409,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -455,8 +462,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -532,8 +540,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -591,8 +600,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -665,8 +675,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -742,8 +753,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -807,8 +819,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
@@ -886,8 +899,9 @@ paths:
           name: type
           required: false
           schema:
-            type: boolean
-            example: false
+            type: string
+            example: mainnet
+            default: testnet
       responses:
         '200':
           content:
