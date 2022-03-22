@@ -1429,18 +1429,19 @@ components:
     Wallet:
       type: object
       properties:
-        address:
-          maxLength: 58
-          minLength: 58
-          description: address of Algorand account.
-          example: NTAESFCB3WOD7SAOL42KSPVARLB3JFA3MNX3AESWHYVT2RMYDVZI6YLG4Y
+        mnemonic:
+          description: Generated mnemonic for wallet.
+          example: >-
+            urge pulp usage sister evidence arrest palm math please chief egg
+            abuse
           type: string
-        secret:
-          maxLength: 103
-          minLength: 103
-          description: 'secretKey can generate Mnemonic, similar to private Key.'
+        xpub:
+          description: >-
+            Generated Extended public key for wallet with derivation path
+            according to BIP44. This key can be used to generate addresses.
+          example: >-
+            xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid
           type: string
-          example: NBYMCVEEDFYV3TPWVRE6APE7PKHUJD4XAKXCKNCLKGUXOC3LFNJGZQCJCRA53HB7ZAHF6NFJH2QIVQ5USQNWG35QCJLD4KZ5IWMB24Q
     Error403EthBroadcast:
       properties:
         errorCode:
