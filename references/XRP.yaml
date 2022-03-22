@@ -7,14 +7,20 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+      <h3>What is Ripple XRP?</h3>
+      XRP is the native cryptocurrency and brainchild of Ripple Labs, a technology company that develops the Ripple payment protocol and exchange network. 
+      The Ripple Labs products are used for payment settlement, asset exchange, and remittance systems that are similar to SWIFT, the global network that processes payments between different countries.<br/>
+      <h3>How to use Ripple XRP?</h3>
       <p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction
        and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
        to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
        Tatum supports 2 chains:
-      <ul><li>Mainnet - a regular live chain</li>
-      <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://developers.ripple.com/xrp-test-net-faucet.html" target="_blank">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>
+      <ul><li><b>Mainnet</b> - a regular live chain</li>
+      <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://developers.ripple.com/xrp-test-net-faucet.html" target="_blank">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>
       <p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>
       When an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>
+      <h3>Ripple XRP stats</h3>
+      <b> Gas fee</b>: Prices are <b>medium</b>, but it also depends on the current market situation. (<a href="https://bitinfocharts.com/comparison/xrp-transactionfees.html#3y">Lets have a look at newest data here.</a>)'
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
