@@ -45,7 +45,7 @@ paths:
         </p>
       operationId: NodeJsonPostRpcDriver
       parameters:
-        - description: Tatum X-API-Key used for authorization.
+        - description: 'Tatum X-API-Key used for authorization. You can omit this path parameter and either use the X-Api-Key header, or the API key tied to your IP address without any header.'
           in: path
           name: xApiKey
           required: true
@@ -258,7 +258,7 @@ paths:
         </p>
       operationId: NodeJsonRpcPutDriver
       parameters:
-        - description: Tatum X-API-Key used for authorization.
+        - description: 'Tatum X-API-Key used for authorization. You can omit this path parameter and either use the X-Api-Key header, or the API key tied to your IP address without any header.'
           in: path
           name: xApiKey
           required: true
@@ -456,7 +456,7 @@ paths:
         </p>
       operationId: NodeJsonRpcGetDriver
       parameters:
-        - description: Tatum X-API-Key used for authorization.
+        - description: 'Tatum X-API-Key used for authorization. You can omit this path parameter and either use the X-Api-Key header, or the API key tied to your IP address without any header.'
           in: path
           name: xApiKey
           required: true
