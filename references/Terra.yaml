@@ -7,7 +7,11 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                    Some description
+      <p>Terra is a public blockchain protocol with algorithmic stablecoins, cross-chain bridges, and smart contract support that seeks to create an open financial ecosystem to bring DeFi to the masses. It features low gas fees and a unique algorithmic market module that manages the expansion and contraction of on-chain assets to maintain consistent stablecoin values. It is an ideal platform for building DeFi and cross-chain solutions.<br/>
+      Tatum supports 2 chains:
+      <ul><li>Mainnet Columbus-5 - a regular live chain</li>
+      <li>Testnet Bombay-12- a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://faucet.terra.money/" target="_blank">https://faucet.terra.money/</a>.</li></ul>
+      </p>
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
