@@ -7,12 +7,19 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                        <p>Elrond (EGLD) is a distributed transactional computation protocol which relies on a sharded state architecture and a secure Proof of Stake consensus mechanism.
-                        <br/>
-                        Tatum supports 2 chains:
-                        <ul><li>Mainnet - a regular live chain
-                        <li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-                        a faucet, e.g. <a target="_blank" href="https://r3d4.fr/elrond/devnet/index.php">https://r3d4.fr/elrond/devnet/</a></li></ul></p>
+    <h3>What is Elrond?</h3>
+    Elrond is a blockchain platform built for speed, security, and scalability. 
+    The platform uses sharding, a database segregation method used to enable more transactions per second, in order to achieve low costs and instant finality.<br/>
+    <h3>How to use Elrond?</h3>
+    Elrond (EGLD) is a distributed transactional computation protocol which relies on a sharded state architecture and a secure Proof of Stake consensus mechanism.
+    <br/>
+    Tatum supports 2 chains:
+    <ul><li>Mainnet - a regular live chain
+    <li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://r3d4.fr/elrond/devnet/index.php">https://r3d4.fr/elrond/devnet/</a></li></ul></p>
+    <h3>Elrond stats</h3>
+    <b> Number of active addresses</b>: Around 100k (<a href="https://explorer.elrond.com/">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation.
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
