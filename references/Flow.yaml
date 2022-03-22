@@ -57,8 +57,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -127,8 +127,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -202,8 +202,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -269,8 +269,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -320,8 +320,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -373,8 +373,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -497,8 +497,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -557,8 +557,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -631,8 +631,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -711,8 +711,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -791,8 +791,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
@@ -879,8 +879,8 @@ paths:
           required: false
           schema:
             type: string
-            example: mainnet
-            default: testnet
+            example: testnet
+            default: mainnet
       responses:
         '200':
           content:
