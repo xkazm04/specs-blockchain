@@ -7,14 +7,21 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                  <p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction
-                  and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-                  to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
-                  Tatum supports 2 chains:
-                  <ul><li> Mainnet - a regular live chain</li>
-                  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://friendbot.stellar.org/?addr=address" target="_blank">https://friendbot.stellar.org/?addr=address</a>.</li></ul>
-                  <br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>
-                  When an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>
+    <h3>What is Stellar XLM?</h3>
+    Stellar is an open source, decentralized protocol that supports digital currency to fiat money transfers and cross-border transactions at a low cost. 
+    Their goal is to connect banks, payment systems, and people by moving money quickly, reliably, and at almost no cost. Stellar’s native cryptocurrency is called the lumen. <br/>
+    <h3>How to use Stellar XLM?</h3>
+    <p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction
+    and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+    to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
+    Tatum supports 2 chains:
+    <ul><li> <b>Mainnet</b> - a regular live chain</li>
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://friendbot.stellar.org/?addr=address" target="_blank">https://friendbot.stellar.org/?addr=address</a>.</li></ul>
+    <br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>
+    When an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>
+    <h3>Stellar XLM stats</h3>
+    <b> Number of users</b>: Around 4,3 milion<br/>
+    <b> Gas fee</b>: Prices are <b>medium</b>, but it also depends on the current market situation. (<a href="https://developers.stellar.org/docs/glossary/fees/">Lets have a look at officiall Stellar developer portal to see more information.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
