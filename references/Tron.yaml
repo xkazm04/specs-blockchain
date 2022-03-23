@@ -15,10 +15,9 @@ info:
     <ul><li><b>Mainnet</b> - regular live chain
     <li><b>Shasta Testnet</b> - test chain used for testing purposes. Coins on test chain have no value and can be obtained from
     Faucet, e.g. <a target="_blank" href="https://www.trongrid.io/shasta/">https://www.trongrid.io/shasta/</a></li></ul>
-
     <h3>Tron stats</h3>
-      <b> Total accounts</b>: Around 82 milions (<a href="https://tronscan.org/#/">Lets have a look at newest data here.</a>)<br/>
-      <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://developers.tron.network/docs/energy-costs-calculation">Lets have a look at official fee documentation.</a>)
+    <b> Total accounts</b>: Around 82 milions (<a href="https://tronscan.org/#/">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://developers.tron.network/docs/energy-costs-calculation">Lets have a look at official fee documentation.</a>)
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

@@ -7,12 +7,20 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-      <p>XDC Network (XinFin) is enterprise ready hybrid blockchain for global trade and finance, combining the power of Public & Private blockchains with interoperable Smart Contracts.
-      <br/>
-      Tatum supports 2 chains:
-      <ul><li>Mainnet - a regular live chain
-      <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-      a faucet, e.g. <a target="_blank" href="https://apothem.network/#getTestXDC">https://apothem.network/#getTestXDC</a></li></ul></p>
+    <h3>What is XinFin XDC?</h3>
+    The XDC Network is a blockchain powered by its native cryptocurrency — XinFin Digital Contract (XDC). 
+    It’s designed to improve the global trade finance market and is most commonly used in a financial context, providing built-in KYC compliance solutions. 
+    The blockchain helps increase speed of transactions and settlement thanks to the use of smart contracts, reduces the fraud risk of fraud and clears ownership of who owns what at each point in time. <br/>
+    <h3>How to use XinFin XDC?</h3>
+    <p>XDC Network (XinFin) is enterprise ready hybrid blockchain for global trade and finance, combining the power of Public & Private blockchains with interoperable Smart Contracts.
+    <br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://apothem.network/#getTestXDC">https://apothem.network/#getTestXDC</a></li></ul></p>
+    <h3>XinFin XDC stats</h3>
+    <b> Number of users</b>: Around 400k <br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>,around $0.0001.
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
