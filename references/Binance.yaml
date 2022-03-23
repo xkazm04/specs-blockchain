@@ -7,12 +7,19 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-          <p>Binance Blockchain enables access to most commonly used Binance methods.<br/>
-          Tatum supports 2 chains:
-          <ul><li>Mainnet - a regular live chain
-          <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-          a faucet, e.g. <a target="_blank" href="https://www.binance.com/en/dex/testnet/address">https://www.binance.com/en/dex/testnet/address</a></li></ul>
-          Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>What is Binance Chain?</h3>
+    Binance Chain is the native chain of the Binance exchange, created with a focus on performance, ease of use, and liquidity. BNB is the native token of the blockchain and is used by traders to pay transaction and trading fees on the Binance exchange. 
+    It is also used by developers to power applications on Binance Smart Chain. <br/>
+    <h3>How to use Binance Chain?</h3> 
+    <p>Binance Blockchain enables access to most commonly used Binance methods.<br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://www.binance.com/en/dex/testnet/address">https://www.binance.com/en/dex/testnet/address</a></li></ul>
+    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>Binance Chain stats</h3>
+    <b> Number of users</b>: Around 28 milions<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://docs.binance.org/trading-spec.html#current-fees-table-on-testnet">Lets have a look at official documentation.</a>)
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
