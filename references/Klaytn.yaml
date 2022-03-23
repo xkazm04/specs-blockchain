@@ -7,11 +7,18 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-      <p>Klaytn is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
-      Tatum supports 2 chains:
-      <ul><li>Mainnet - a regular live chain
-      <li>Baobab Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-      a faucet, e.g. <a target="_blank" href="https://baobab.wallet.klaytn.com/access?next=faucet">https://baobab.wallet.klaytn.com/access?next=faucet</a></li></ul></p>
+    <h3>What is Klaytn?</h3> 
+    Kakao’s global public blockchain project Klaytn is an enterprise-grade, service-centric platform that brings user-friendly blockchain experience to millions. It combines the best features of both public blockchains (decentralized data & control, distributed governance) and private blockchains (low latency, high scalability) via an efficient 'hybrid' design. 
+    Klaytn is secured by participation from numerous highly-reputable brands around the globe, working together to create a reliable business platform atop a robust system of decentralized trust.<br/>
+    <h3>How to use Klaytn?</h3>
+    <p>Klaytn is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li><b>Baobab Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://baobab.wallet.klaytn.com/access?next=faucet">https://baobab.wallet.klaytn.com/access?next=faucet</a></li></ul></p>
+    <h3>Klaytn stats</h3>
+    <b> Number of users</b>: Around 1 milion <br/>
+    <b> Gas fee</b>: Prices are <b>low</b>, but it also depends on the current market situation. (<a href="https://docs.klaytn.com/klaytn/design/transaction-fees">Lets have a look at official documentation.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
