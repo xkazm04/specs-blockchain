@@ -7,11 +7,18 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+      <h3>What is Terra Luna?</h3>
+      Terra is an open-source blockchain payment platform for algorithmic stablecoins, which are cryptocurrencies that track the price of currencies or other assets.
+      The Terra blockchain enables users to spend, save, trade, or exchange Terra stablecoins instantly on it.<br/>
+      <h3>How to use Terra Luna?</h3>
       <p>Terra is a public blockchain protocol with algorithmic stablecoins, cross-chain bridges, and smart contract support that seeks to create an open financial ecosystem to bring DeFi to the masses. It features low gas fees and a unique algorithmic market module that manages the expansion and contraction of on-chain assets to maintain consistent stablecoin values. It is an ideal platform for building DeFi and cross-chain solutions.<br/>
       Tatum supports 2 chains:
-      <ul><li>Mainnet Columbus-5 - a regular live chain</li>
-      <li>Testnet Bombay-12- a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://faucet.terra.money/" target="_blank">https://faucet.terra.money/</a>.</li></ul>
+      <ul><li><b>Mainnet Columbus-5</b> - a regular live chain</li>
+      <li><b>Testnet Bombay-12</b>- a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href="https://faucet.terra.money/" target="_blank">https://faucet.terra.money/</a>.</li></ul>
       </p>
+      <h3>Terra Lunna stats</h3>
+      <b>Total accounts</b>: Around 2 milions<br/>
+      <b>Gas fee</b>: Prices are <b>low</b>, but it also depends on the current market situation. (<a href="https://docs.terra.money/docs/learn/fees.html">Lets have a look at official fee documentation.</a>)
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
