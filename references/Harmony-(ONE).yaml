@@ -7,11 +7,18 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+      <h3>What is Harmony.ONE?</h3> 
+      Harmony is a fast and open blockchain hosted on Ethereum focusing on cross-chain compatibility. With 2-second transaction finality and 100 times lower fees than Ethereum, it is a highly coveted platform for blockchain developers.
+      With Tatum’s unified API you can use its powerful functionality without coding. <br/>
+      <h3>How to use Harmony.ONE?</h3> 
       <p>Harmony.ONE is an Oneeum L2 scaling solution 100% EVM compatible, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
       Tatum supports 2 chains:
-      <ul><li>Mainnet - a regular live chain
-      <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+      <ul><li><b>Mainnet</b> - a regular live chain
+      <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
       a faucet, e.g. <a target="_blank" href="https://faucet.pops.one/">https://faucet.pops.one/</a></li></ul></p>
+      <h3>Harmony.ONE stats</h3>
+      <b> Number of users</b>: Around 80k <br/>
+      <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://docs.harmony.one/home/general/technology/transactions">Lets have a look at official documentation.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

@@ -7,11 +7,18 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                <p>Algorand is a secure, scalable, and decentralized blockchain platform that supports smart contract functionality. The platform has been used in different verticals such as real estate, microfinance, and is a rich environment for creating NFT-based applications and marketplaces.<br/>
-                Tatum supports:
-                <ul><li>Mainnet - a regular live chain
-                <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-                a faucet, e.g. <a target="_blank" href="https://bank.testnet.algorand.network/">https://bank.testnet.algorand.network/</a></li></ul></p>
+    <h3>What is Algorand?</h3>
+    Algorand is a secure, scalable, and decentralized blockchain platform that supports smart contract functionality. 
+    The platform has been used in different verticals such as real estate, microfinance, and is a rich environment for creating NFT-based applications and marketplaces.<br/>
+    <h3>How to use Algorand?</h3> 
+    <p>Algorand is a secure, scalable, and decentralized blockchain platform that supports smart contract functionality. The platform has been used in different verticals such as real estate, microfinance, and is a rich environment for creating NFT-based applications and marketplaces.<br/>
+    Tatum supports:
+    <ul><li>Mainnet - a regular live chain
+    <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://bank.testnet.algorand.network/">https://bank.testnet.algorand.network/</a></li></ul></p>
+    <h3>Algorand stats</h3>
+    <b> Number of active addresses</b>: Around 30k (<a href="https://app.intotheblock.com/coin/ALGO/deep-dive?group=network&chart=addressStats">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. Minimum fee for a transaction is .001 ALGO.
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

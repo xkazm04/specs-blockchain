@@ -7,11 +7,17 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+    <h3>What is QTUM?</h3>
+    QTUM is defined by its founders as “the public blockchain for business applications.” Combining Ethereum's smart contract functionality with the security of Bitcoin's unspent transaction output model (UTXO), QTUM offers the best of both worlds, creating a platform that is ideal for big corporations and large organizations. <br/>
+    <h3>How to use QTUM?</h3>
     <p>Qtum is a cryptocurrency that combines properties of bitcoin and ethereum. It uses a UTXO-based smart contract system with a proof-of-stake (PoS) consensus model. Qtum is designed to be suitable for use by large organizations.<br/>
     Tatum supports 2 chains:
-    <ul><li>Mainnet - a regular live chain
-    <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
     a faucet, e.g. <a target="_blank" href="http://testnet-faucet.qtum.info/#!/">http://testnet-faucet.qtum.info/</a></li></ul></p>
+    <h3>QTUM stats</h3>
+    <b> Number of wallets</b>: Around 100k<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://medium.com/@Qtum/introduction-to-qtum-economics-a-beginners-guide-to-gas-60d2cd7ac98e">Lets have a look at gas policy guide.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

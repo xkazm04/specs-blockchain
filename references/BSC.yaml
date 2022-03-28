@@ -7,11 +7,17 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+    <h3>What is Binance Smart Chain?</h3>
+    Binance Smart Chain is an alternative to Ethereum and other leading DeFi platforms that features high throughput, low gas fees, and is primarily focused on facilitating fast, decentralized trading. <br/>
+    <h3>How to use Binance Smart Chain?</h3> 
     <p>Binance Smart Chain (BSC) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>
     Tatum supports 2 chains:
-    <ul><li>Mainnet - a regular live chain
-    <li> Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li> <b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
     a faucet, e.g. <a target="_blank" href="https://testnet.binance.org/faucet-smart/">https://testnet.binance.org/faucet-smart</a></li></ul></p>
+    <h3>Binance Smart Chain stats</h3>
+    <b> Number of active addresses</b>: Around 1 milion (<a href="https://ycharts.com/indicators/binance_smart_chain_daily_active_addresses">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://ycharts.com/indicators/binance_smart_chain_average_gas_price">Lets have a look at newest data here.</a>)
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

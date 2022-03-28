@@ -7,20 +7,28 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                          <p>Flow Blockchain enables access to the most commonly used Flow methods. These methods bring a small level of abstraction
-                          and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-                          to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
-                          Tatum supports FLOW and FUSD stable coin.
-                          <b>FLOW is in beta phase.</b><br/>
-                          Tatum supports 2 chains:
-                            <ul><li>Mainnet - a regular live chain</li>
-                            <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://testnet-faucet.onflow.org/">https://testnet-faucet.onflow.org/</a>
-                          <br/>To obtain FUSD on testnet, you can swap them using <a target="_blank" href="https://swap-testnet.blocto.app/#/swap">https://swap-testnet.blocto.app/#/swap</a></li></ul>
-                          To create accounts or mint NFTs on <b>mainnet</b>, you have to have paid API Key. Tatum covers the transaction fees on FLOW blockchain out of the box, so mainnet operations are available only on the paid API Key.<br/>
-                          Tatum handles automatically proposal key management - we internally rotate the proposal keys for you, so you don't have to take care of that and can easily scale your transaction troughput.<br/>
-                          Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.<br/>
-                          It's not possible to pregenrate addresses on the Flow blockchain. You can generate only public keys, which are used to generate address using a create account transaction to the Flow blockchain.
-                          You have to have existing account on the Flow to initialize new address creation. Transactions on the Flow blockchain are free.</p>
+    <h3>What is Flow?</h3>
+    Flow is a blockchain built to revolutionize the world of entertainment. 
+    The brainchild of Dapper Labs, it is the ecosystem behind the highly successful NBA Top Shot Flow’s unique architecture and smart contracts in combination with Tatum’s auto-scaler functionality make it ideal for building scalable dApps<br/>
+    <h3>How to use Flow?</h3>
+    <p>Flow Blockchain enables access to the most commonly used Flow methods. These methods bring a small level of abstraction
+    and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+    to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
+    Tatum supports FLOW and FUSD stable coin.
+    <b>FLOW is in beta phase.</b><br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain</li>
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://testnet-faucet.onflow.org/">https://testnet-faucet.onflow.org/</a>
+    <br/>To obtain FUSD on testnet, you can swap them using <a target="_blank" href="https://swap-testnet.blocto.app/#/swap">https://swap-testnet.blocto.app/#/swap</a></li></ul>
+    To create accounts or mint NFTs on <b>mainnet</b>, you have to have paid API Key. Tatum covers the transaction fees on FLOW blockchain out of the box, so mainnet operations are available only on the paid API Key.<br/>
+    Tatum handles automatically proposal key management - we internally rotate the proposal keys for you, so you don't have to take care of that and can easily scale your transaction troughput.<br/>
+    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.<br/>
+    It's not possible to pregenrate addresses on the Flow blockchain. You can generate only public keys, which are used to generate address using a create account transaction to the Flow blockchain.
+    You have to have existing account on the Flow to initialize new address creation. Transactions on the Flow blockchain are free.</p>
+    <h3>Flow stats</h3>
+    <b> Number of active addresses</b>: Around 300k (<a href="https://studio.glassnode.com/metrics?a=LTC&m=addresses.ActiveCount">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation (<a href="https://docs.onflow.org/flow-token/concepts/">Lets have a look at officiall Flow documentation.</a>). <br/> <br/>
+    <i>For example: Account creation cost 0.001 FLOW and transaction fee could be 0.00001 FLOW.</i>
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

@@ -7,14 +7,21 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-          <p>VeChain Blockchain enables access to the most commonly used VeChain methods. Tatum does not support off-chain capabilities for the VET blockchain.
-          Tatum KMS is not supported for VET transactions. VET supports 2 native assets - VET and VTHO. VTHO is used for paying transaction fees.
-          <br/>
-          Tatum supports 2 chains:
-          <ul><li>Mainnet - a regular live chain
-          <li>Testnet - a test chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-          a faucet, e.g. <a target="_blank" href="https://faucet.vecha.in/">https://faucet.vecha.in/</a></li></ul>
-          Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>What is VeChain?</h3>
+    VeChain is a blockchain whose fundamental function is to enhance supply chain management and streamline business processes. 
+    It is seen as a foundational piece for a scalable and long-lasting business blockchain ecosystem. <br/>
+    <h3>How to use VeChain?</h3>
+    <p>VeChain Blockchain enables access to the most commonly used VeChain methods. Tatum does not support off-chain capabilities for the VET blockchain.
+    Tatum KMS is not supported for VET transactions. VET supports 2 native assets - VET and VTHO. VTHO is used for paying transaction fees.
+    <br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain
+    <li><b>Testnet</b> - a test chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://faucet.vecha.in/">https://faucet.vecha.in/</a></li></ul>
+    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>VeChain stats</h3>
+    <b> Number of active addresses</b>: Around 1 milion (<a href="https://vechainstats.com/">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>medium</b>, but it also depends on the current market situation. (<a href="https://docs.vechain.org/thor/learn/transaction-calculation.html">Lets have a look at official documentation.</a>)
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

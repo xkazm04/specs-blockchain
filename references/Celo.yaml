@@ -7,16 +7,22 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+    <h3>What is Celo?</h3>
+    Celo is a mobile-first, Ethereum-compatible blockchain, primarily known for its simple and intuitive user experience. 
+    The platform is a global payments infrastructure that makes financial tools, features, and apps accessible to anyone who owns a smartphone. While it is based on Ethereum, Celo features significantly lower gas fees and faster transaction times than its predecessor.<br/>
+    <h3>How to use Celo?</h3> 
     <p>Celo is fork of Celo with more then 1000 tps and possibility to pay for
     transactions in it's own stable coin, cUSD. Celo Blockchain enables access to most commonly used Celo methods.
     These methods bring small level of abstraction,
-           and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-           to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>
-          Tatum supports 2 chains:
-          <ul><li>Mainnet - regular live chain
-          <li>Alfajorec - test chain used for testing purposes. Coins on test chain have no value and can be obtained from
-          Faucet, e.g. <a target="_blank" href="https://celo.org/developers/faucet">https://celo.org/developers/faucet</a></li></ul><br/>
-          Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>
+    and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+    to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - regular live chain
+    <li><b>Alfajorec</b> - test chain used for testing purposes. Coins on test chain have no value and can be obtained from
+    Faucet, e.g. <a target="_blank" href="https://celo.org/developers/faucet">https://celo.org/developers/faucet</a></li></ul><br/>
+    Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>Celo stats</h3>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://docs.celo.org/celo-codebase/protocol/transactions/gas-pricing">Lets have a look at official documentation.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

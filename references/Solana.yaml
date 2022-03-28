@@ -7,12 +7,19 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-          <p>Solana is a blockchain network focused on fast transactions and high throughput. It uses a unique method of ordering transactions to improve its speed. Users can pay their transaction fees and interact with smart contracts with SOL, the network's native cryptocurrency.<br/>
-          <b>For now, Solana is in <b>BETA</b> and there is a rate limitation applied for all projects for Solana to 40 req/s on the platform.</b><br/>
-          Tatum supports 2 chains:
-          <ul><li>Mainnet BETA - a regular live chain
-          <li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-          a faucet, e.g. <a target="_blank" href="https://solfaucet.com/">https://solfaucet.com/</a></li></ul></p>
+    <h3>What is Solana?</h3>
+    Solana is a blockchain platform designed to host decentralized, scalable applications. Founded in 2017, Solana is an open-source project currently run by Solana Foundation based in Geneva, while the blockchain was built by San Francisco-based Solana Labs.
+    Solana is much faster in terms of the number of transactions it can process and has significantly lower transaction fees compared to rival blockchains like Ethereum.<br/>
+    <h3>How to use Solana?</h3>
+    <p>Solana is a blockchain network focused on fast transactions and high throughput. It uses a unique method of ordering transactions to improve its speed. Users can pay their transaction fees and interact with smart contracts with SOL, the network's native cryptocurrency.<br/>
+    <b>For now, Solana is in <b>BETA</b> and there is a rate limitation applied for all projects for Solana to 40 req/s on the platform.</b><br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet BETA</b> - a regular live chain
+    <li><b>Devnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+    a faucet, e.g. <a target="_blank" href="https://solfaucet.com/">https://solfaucet.com/</a></li></ul></p>
+    <h3>Solana stats</h3>
+    <b> Number of users</b>: Around 2 milions<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://docs.solana.com/transaction_fees">Lets have a look at official documentation.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

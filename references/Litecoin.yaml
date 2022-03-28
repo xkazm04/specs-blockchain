@@ -7,13 +7,20 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-          <p>Litecoin Blockchain enables access to the most commonly used Litecoin methods. These methods bring a small level of abstraction
-            and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-            to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
-            Tatum supports 2 chains:
-            <ul><li>Mainnet - a regular live chain</li>
-            <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="http://testnet.litecointools.com/">http://testnet.litecointools.com/</a></li></ul>
-            Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>What is Litecoin?</h3>
+    Litecoin is a peer-to-peer, digital currency that allows users to initiate instant, low-cost payments across the globe. 
+    It is technically similar to Bitcoin, using a UTXO transaction model, and its main purpose is to provide cheaper transactions, more useability, and faster mining than its predecessor. <br/>
+    <h3>How to use Litecoin?</h3>
+    <p>Litecoin Blockchain enables access to the most commonly used Litecoin methods. These methods bring a small level of abstraction
+    and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+    to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain</li>
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="http://testnet.litecointools.com/">http://testnet.litecointools.com/</a></li></ul>
+    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>Litecoin stats</h3>
+    <b> Number of active addresses</b>: Around 300k (<a href="https://studio.glassnode.com/metrics?a=LTC&m=addresses.ActiveCount">Lets have a look at newest data here.</a>)<br/>
+    <b> Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://bitinfocharts.com/comparison/litecoin-transactionfees.html#3y">Lets have a look at newest data here.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

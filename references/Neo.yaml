@@ -7,12 +7,17 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
+      <h3>What is Neo?</h3>
+      The purpose of the NEO blockchain is to register, trade, and circulate different asset types. Additional features include a file storage system, an identity system, and a system for feeding external information.<br/> 
+      <h3>How to use Neo?</h3>
       <p>NEO Blockchain enables access to the most commonly used NEO methods. Tatum does not support off-chain capabilities for the NEO blockchain.
       Tatum KMS is not supported for NEO transactions. NEO supports 2 native assets - NEO and GAS. GAS is used for paying transaction fees.<br/>
       Tatum supports 2 chains:
-      <ul><li>Mainnet - a regular live chain
-      <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
+      <ul><li><b>Mainnet</b> - a regular live chain
+      <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
       a faucet, e.g. <a target="_blank" href="http://neo.mywish.io/">http://neo.mywish.io/</a></li></ul></p>
+      <h3>Neo stats</h3>
+      <b>Gas fee</b>: Prices are <b>very low</b>, but it also depends on the current market situation. (<a href="https://docs.neo.org/docs/en-us/reference/fees.html">Lets have a look at official documentation.</a>)
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'

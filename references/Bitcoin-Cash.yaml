@@ -7,14 +7,21 @@ info:
     url: 'https://tatum.io/images/logo.svg'
     altText: Tatum
   description: |-
-                        <p>Bitcoin Cash Blockchain enables access to the most commonly used Bitcoin Cash methods. These methods bring a small level of abstraction
-                        and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
-                        to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
-                        Tatum supports 2 chains:
-                          <ul><li>Mainnet - a regular live chain</li>
-                          <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://faucet.fullstack.cash/">https://faucet.fullstack.cash/</a></li></ul>
-                          </ul>
-                        Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>What is Bitcon Cash?</h3> 
+     Bitcoin Cash is an offshoot of Bitcoin created in 2017. It was created to facilitate more transactions into a single block and help Bitcoin scale. 
+     The two blockchains use the same technology but Bitcoin Cash is not as widely used and doesn't suffer from the same network congestion as Bitcoin. <br/>
+    <h3>How to use Bitcon Cash?</h3> 
+    <p>Bitcoin Cash Blockchain enables access to the most commonly used Bitcoin Cash methods. These methods bring a small level of abstraction
+    and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger
+    to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
+    Tatum supports 2 chains:
+    <ul><li><b>Mainnet</b> - a regular live chain</li>
+    <li><b>Testnet</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://faucet.fullstack.cash/">https://faucet.fullstack.cash/</a></li></ul>
+    </ul>
+    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
+    <h3>Bitcoin Cash stats</h3>
+      <b> Number of active addresses</b>: Around 100k (<a href="https://bitinfocharts.com/comparison/bitcoin%20cash-activeaddresses.html#3y">Lets have a look at newest data here.</a>)<br/>
+      <b> Gas fee</b>: Prices are <b>medium</b>, but it also depends on the current market situation. (<a href="https://bitinfocharts.com/comparison/bitcoin%20cash-transactionfees.html#3y">Lets have a look at newest data here.</a>).
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
