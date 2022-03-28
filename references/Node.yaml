@@ -41,6 +41,7 @@ paths:
           <li><b><a href="https://ethereum.org/en/developers/" target="_blank">Harmony.ONE</a></b></li>
           <li><b><a href="https://ethereum.org/en/developers/" target="_blank">Binance Smart Chain</a></b></li>
           <li><b><a href="https://developers.stellar.org/api" target="_blank">Stellar</a></b></li>
+          <li><b><a href="https://lisk.com/documentation/lisk-service/references/api.html" target="_blank">Lisk</a></b></li>
         </ul>
         </p>
       operationId: NodeJsonPostRpcDriver
@@ -78,6 +79,7 @@ paths:
               - KLAY
               - KCS
               - LUNA
+              - LISK
               - XLM
         - description: Type of the node to access for Algorand.
           in: query
@@ -452,6 +454,7 @@ paths:
           <li><b><a href="https://developers.stellar.org/api" target="_blank">Stellar</a></b></li>
           <li><b><a href="https://docs.elrond.com/sdk-and-tools/rest-api/nodes/" target="_blank">Elrond</a></b></li>
           <li><b><a href="https://developer.algorand.org/docs/rest-apis/restendpoints/" target="_blank">Algorand</a></b></li>
+          <li><b><a href="https://lisk.com/documentation/lisk-service/references/api.html" target="_blank">Lisk</a></b></li>
         </ul>
         </p>
       operationId: NodeJsonRpcGetDriver
@@ -475,6 +478,7 @@ paths:
               - ALGO
               - XLM
               - LUNA
+              - LISK
         - description: Type of the node to access for Algorand.
           in: query
           name: nodeType
