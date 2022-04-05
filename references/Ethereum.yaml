@@ -67,7 +67,7 @@ paths:
             enum:
               - ethereum-ropsten
               - ethereum-rinkeby
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -139,7 +139,7 @@ paths:
             enum:
               - ethereum-ropsten
               - ethereum-rinkeby
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -202,7 +202,7 @@ paths:
             enum:
               - ethereum-ropsten
               - ethereum-rinkeby
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -264,7 +264,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -323,7 +323,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -386,7 +386,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -454,7 +454,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -530,7 +530,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -633,7 +633,7 @@ paths:
             enum:
               - ethereum-ropsten
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -703,7 +703,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -784,7 +784,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -911,7 +911,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -1014,7 +1014,7 @@ paths:
             enum:
               - ethereum-ropsten
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -1075,7 +1075,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -1146,7 +1146,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false

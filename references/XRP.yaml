@@ -44,7 +44,7 @@ paths:
       tags:
         - Account
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -89,7 +89,7 @@ paths:
       tags:
         - Block
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -137,7 +137,7 @@ paths:
       tags:
         - Transaction
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -200,7 +200,7 @@ paths:
           required: false
           schema:
             type: string
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -260,7 +260,7 @@ paths:
           schema:
             type: number
             minimum: 0
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -322,7 +322,7 @@ paths:
             type: string
             minLength: 64
             maxLength: 64
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -382,7 +382,7 @@ paths:
           schema:
             example: rDA3DJBUBjA1X3PtLLFAEXxX31oA5nL3QF
             type: string
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -442,7 +442,7 @@ paths:
           schema:
             example: rDA3DJBUBjA1X3PtLLFAEXxX31oA5nL3QF
             type: string
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -517,7 +517,7 @@ paths:
                 - $ref: '#/components/schemas/TransferXrpBlockchainAssetKMS'
         required: true
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -593,7 +593,7 @@ paths:
                 - $ref: '#/components/schemas/TrustLineXrpBlockchainKMS'
         required: true
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -665,7 +665,7 @@ paths:
                 - $ref: '#/components/schemas/AccountSettingsXrpBlockchainKMS'
         required: true
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
@@ -730,7 +730,7 @@ paths:
               $ref: '#/components/schemas/BroadcastKMS'
         required: true
       parameters:
-        - description: For connection without API key. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls
+        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
           in: query
           name: type
           required: false
