@@ -3,30 +3,7 @@ info:
   contact: {}
   title: Ethereum
   version: 3.9.4
-  x-logo:
-    url: 'https://tatum.io/images/logo.svg'
-    altText: Tatum
-  description: 
-    '
-    <h3>What is Ethereum?</h3>
-    Ethereum is a decentralized, open-source blockchain that supports smart contract functionality. It was the first network that allowed developers to create smart contracts and is still the most popular blockchain for building dApps.<br/>
-    <h3>How to use Ethereum?</h3>
-    <p>Ethereum Blockchain enables access to the most commonly used Ethereum methods. These methods bring a small level of abstraction
-    and are used for applications that communicate with the blockchain directly. <br/>
-    Some of the methods are used alongside Tatum Private Ledger
-    to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>
-    Tatum supports 3 chains:
-    <ul><li><b>Mainnet</b> - a regular live chain
-    <li><b>Ropsten</b> - a chain used for testing purposes. Default testnet chain. Coins on the test chain have no value and can be obtained from
-    a faucet, e.g. <a target="_blank" href="https://faucet.ropsten.be/">https://faucet.ropsten.be/</a></li>
-    <li><b>Rinkeby</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from
-    a faucet, e.g. <a target="_blank" href="https://faucet.rinkeby.io/">https://faucet.rinkeby.io/</a> To use Rinkeby, you need to add HTTP Header
-    <b>-x-testnet-type:rinkeby</b></li></ul><br/>
-    Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>
-    <h3>Ethereum stats</h3>
-    <b> Number of active addresses</b>: Around 500k (<a href="https://studio.glassnode.com/metrics?a=ETH&category=Addresses&m=addresses.ActiveCount">Lets have a look at newest data here.</a>)<br/>
-    <b> Gas fee</b>: Prices are <b>high</b>, but it also depends on the current market situation. (<a href="https://ycharts.com/indicators/ethereum_average_gas_price">Lets have a look at newest data here.</a>)'
-
+  description: ' <h3>What is Ethereum?</h3> Ethereum is a decentralized, open-source blockchain that supports smart contract functionality. It was the first network that allowed developers to create smart contracts and is still the most popular blockchain for building dApps.<br/> <h3>How to use Ethereum?</h3> <p>Ethereum Blockchain enables access to the most commonly used Ethereum methods. These methods bring a small level of abstraction and are used for applications that communicate with the blockchain directly. <br/> Some of the methods are used alongside Tatum Private Ledger to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/> Tatum supports 3 chains: <ul><li><b>Mainnet</b> - a regular live chain <li><b>Ropsten</b> - a chain used for testing purposes. Default testnet chain. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://faucet.ropsten.be/">https://faucet.ropsten.be/</a></li> <li><b>Rinkeby</b> - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target="_blank" href="https://faucet.rinkeby.io/">https://faucet.rinkeby.io/</a> To use Rinkeby, you need to add HTTP Header <b>-x-testnet-type:rinkeby</b></li></ul><br/> Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p> <h3>Ethereum stats</h3> <b> Number of active addresses</b>: Around 500k (<a href="https://studio.glassnode.com/metrics?a=ETH&category=Addresses&m=addresses.ActiveCount">Lets have a look at newest data here.</a>)<br/> <b> Gas fee</b>: Prices are <b>high</b>, but it also depends on the current market situation. (<a href="https://ycharts.com/indicators/ethereum_average_gas_price">Lets have a look at newest data here.</a>)'
 servers:
   - url: 'https://api-eu1.tatum.io'
   - url: 'https://api-us-west1.tatum.io'
@@ -67,7 +44,7 @@ paths:
             enum:
               - ethereum-ropsten
               - ethereum-rinkeby
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -80,27 +57,127 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Wallet'
+                type: object
+                properties:
+                  mnemonic:
+                    description: Generated mnemonic for wallet.
+                    example: urge pulp usage sister evidence arrest palm math please chief egg abuse
+                    type: string
+                  xpub:
+                    description: Generated Extended public key for wallet with derivation path according to BIP44. This key can be used to generate addresses.
+                    example: xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid
+                    type: string
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -139,7 +216,7 @@ paths:
             enum:
               - ethereum-ropsten
               - ethereum-rinkeby
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -163,21 +240,112 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -202,7 +370,7 @@ paths:
             enum:
               - ethereum-ropsten
               - ethereum-rinkeby
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -214,34 +382,145 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PrivKeyRequest'
+              type: object
+              properties:
+                index:
+                  description: Derivation index of private key to generate.
+                  example: 0
+                  maximum: 2147483647
+                  type: integer
+                mnemonic:
+                  maxLength: 500
+                  minLength: 1
+                  description: Mnemonic to generate private key from.
+                  example: urge pulp usage sister evidence arrest palm math please chief egg abuse
+                  type: string
+              required:
+                - mnemonic
+                - index
         required: true
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PrivKey'
+                type: object
+                properties:
+                  key:
+                    description: Generated private key.
+                    example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
+                    type: string
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -264,7 +543,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -286,14 +565,60 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -323,7 +648,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -336,27 +661,286 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EthBlock'
+                type: object
+                properties:
+                  difficulty:
+                    description: Difficulty for this block.
+                    type: string
+                    example: '3296820833'
+                  extraData:
+                    description: The 'extra data' field of this block.
+                    type: string
+                    example: 0x
+                  gasLimit:
+                    description: The maximum gas allowed in this block.
+                    type: number
+                    example: 8000000
+                  gasUsed:
+                    description: The total used gas by all transactions in this block.
+                    type: number
+                    example: 7985124
+                  hash:
+                    description: Hash of the block. 'null' when its pending block.
+                    type: string
+                    example: '0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc'
+                  logsBloom:
+                    description: The bloom filter for the logs of the block. 'null' when its pending block.
+                    type: string
+                    example: '0x042080004210492080800001610060ad9600005bc81502020800000043e302020381a404000100409102040240300641108004000400007000008000c049558055a800000a0001800748900806502004200400108205005418c0218802281a0408060000533210462021050470810a010140102809011814018281115020090201068401847000a04010000c00084062000485640d00020220181150020008589105a41c0880001112034100010882545410240011402a3480050104004c310204000002009490d0012022a040c20c20011020401020140250805100410060008280200008181a220114102800001648640828200c00a94c1003a2060e001000'
+                  miner:
+                    description: The address of the beneficiary to whom the mining rewards were given.
+                    type: string
+                    example: '0xD8869d9E3d497323561Fbca2319a9FC3F6f10c4B'
+                  mixHash:
+                    description: ''
+                    type: string
+                    example: '0x7a44a1f56f12ae825fdc04550d7c3af2344daab987691771c06235f25fafcaa6'
+                  nonce:
+                    description: Hash of the generated proof-of-work. 'null' when its pending block.
+                    type: string
+                    example: '0xfa1692f52a7ac672'
+                  number:
+                    description: The block number. 'null' when its pending block.
+                    type: number
+                    example: 6470657
+                  parentHash:
+                    description: Hash of the parent block.
+                    type: string
+                    example: '0xd34aab8a455027086ac54034e68608c84d984401a883b7b5d91f9ae0bbefda15'
+                  receiptsRoot:
+                    description: ''
+                    type: string
+                    example: '0x4a496b6b7f2a1c5850bf9eebbea7193807be0067b1c06f17b9dde4eef7b2f960'
+                  sha3Uncles:
+                    description: SHA3 of the uncles data in the block.
+                    type: string
+                    example: '0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347'
+                  size:
+                    description: The size of this block in bytes.
+                    type: number
+                    example: 15296
+                  stateRoot:
+                    description: The root of the final state trie of the block.
+                    type: string
+                    example: '0x32757c92f10c6c5a106c6fb4b9ca3ff301e413a59ca3d0513b4bf98c72efddba'
+                  timestamp:
+                    description: The unix timestamp for when the block was collated.
+                    type: number
+                    example: 1569600592
+                  totalDifficulty:
+                    description: Total difficulty of the chain until this block.
+                    type: string
+                    example: '23329673338013873'
+                  transactions:
+                    description: Array of transactions.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        blockHash:
+                          description: Hash of the block where this transaction was in.
+                          type: string
+                          example: '0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137'
+                        status:
+                          type: boolean
+                          example: true
+                          description: 'TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction.'
+                        blockNumber:
+                          type: number
+                          description: Block number where this transaction was in.
+                          example: 6470854
+                        from:
+                          type: string
+                          description: Address of the sender.
+                          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                        gas:
+                          type: number
+                          description: Gas provided by the sender.
+                          example: 21000
+                        gasPrice:
+                          type: string
+                          description: Gas price provided by the sender in wei.
+                          example: '1000000000'
+                        transactionHash:
+                          type: string
+                          description: Hash of the transaction.
+                          example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+                        input:
+                          type: string
+                          description: The data sent along with the transaction.
+                          example: 0x
+                        nonce:
+                          type: number
+                          description: The number of transactions made by the sender prior to this one.
+                          example: 26836405
+                        to:
+                          type: string
+                          description: Address of the receiver. 'null' when its a contract creation transaction.
+                          example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
+                        transactionIndex:
+                          type: number
+                          description: Integer of the transactions index position in the block.
+                          example: 3
+                        value:
+                          type: string
+                          description: Value transferred in wei.
+                          example: '1000000000000000000'
+                        gasUsed:
+                          type: number
+                          description: The amount of gas used by this specific transaction alone.
+                          example: 21000
+                        cumulativeGasUsed:
+                          type: number
+                          description: The total amount of gas used when this transaction was executed in the block.
+                          example: 314159
+                        contractAddress:
+                          type: string
+                          description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
+                          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                        logs:
+                          type: array
+                          description: 'Log events, that happened in this transaction.'
+                          items:
+                            type: object
+                            properties:
+                              address:
+                                type: string
+                                description: From which this event originated from.
+                                example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                              topics:
+                                type: array
+                                description: 'An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.'
+                                items:
+                                  type: string
+                                  example: '0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234'
+                              data:
+                                type: string
+                                description: The data containing non-indexed log parameter.
+                              logIndex:
+                                type: number
+                                description: Integer of the event index position in the block.
+                              transactionIndex:
+                                type: number
+                                description: 'Integer of the transaction’s index position, the event was created in.'
+                              transactionHash:
+                                type: string
+                                description: Hash of the transaction this event was created in.
+                                example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+                  transactionsRoot:
+                    description: The root of the transaction trie of the block.
+                    type: string
+                    example: '0x5990081ef8515d561b50255af03c5d505f7725ddef27405dc67d23bfd0f47704'
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -386,7 +970,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -410,21 +994,112 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -454,7 +1129,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -467,21 +1142,190 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EthTx'
+                type: object
+                properties:
+                  blockHash:
+                    description: Hash of the block where this transaction was in.
+                    type: string
+                    example: '0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137'
+                  status:
+                    type: boolean
+                    example: true
+                    description: 'TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction.'
+                  blockNumber:
+                    type: number
+                    description: Block number where this transaction was in.
+                    example: 6470854
+                  from:
+                    type: string
+                    description: Address of the sender.
+                    example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                  gas:
+                    type: number
+                    description: Gas provided by the sender.
+                    example: 21000
+                  gasPrice:
+                    type: string
+                    description: Gas price provided by the sender in wei.
+                    example: '1000000000'
+                  transactionHash:
+                    type: string
+                    description: Hash of the transaction.
+                    example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+                  input:
+                    type: string
+                    description: The data sent along with the transaction.
+                    example: 0x
+                  nonce:
+                    type: number
+                    description: The number of transactions made by the sender prior to this one.
+                    example: 26836405
+                  to:
+                    type: string
+                    description: Address of the receiver. 'null' when its a contract creation transaction.
+                    example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
+                  transactionIndex:
+                    type: number
+                    description: Integer of the transactions index position in the block.
+                    example: 3
+                  value:
+                    type: string
+                    description: Value transferred in wei.
+                    example: '1000000000000000000'
+                  gasUsed:
+                    type: number
+                    description: The amount of gas used by this specific transaction alone.
+                    example: 21000
+                  cumulativeGasUsed:
+                    type: number
+                    description: The total amount of gas used when this transaction was executed in the block.
+                    example: 314159
+                  contractAddress:
+                    type: string
+                    description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
+                    example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                  logs:
+                    type: array
+                    description: 'Log events, that happened in this transaction.'
+                    items:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          description: From which this event originated from.
+                          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                        topics:
+                          type: array
+                          description: 'An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.'
+                          items:
+                            type: string
+                            example: '0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234'
+                        data:
+                          type: string
+                          description: The data containing non-indexed log parameter.
+                        logIndex:
+                          type: number
+                          description: Integer of the event index position in the block.
+                        transactionIndex:
+                          type: number
+                          description: 'Integer of the transaction’s index position, the event was created in.'
+                        transactionHash:
+                          type: string
+                          description: Hash of the transaction this event was created in.
+                          example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '403':
           description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
@@ -489,12 +1333,41 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403TxNotFound'
+                  - properties:
+                      errorCode:
+                        description: tx.missing
+                        example: tx.missing
+                        type: string
+                      message:
+                        description: No such tx.
+                        example: No such tx.
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -530,7 +1403,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -551,21 +1424,112 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -633,7 +1597,7 @@ paths:
             enum:
               - ethereum-ropsten
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -648,27 +1612,208 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EthTx'
+                  type: object
+                  properties:
+                    blockHash:
+                      description: Hash of the block where this transaction was in.
+                      type: string
+                      example: '0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137'
+                    status:
+                      type: boolean
+                      example: true
+                      description: 'TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction.'
+                    blockNumber:
+                      type: number
+                      description: Block number where this transaction was in.
+                      example: 6470854
+                    from:
+                      type: string
+                      description: Address of the sender.
+                      example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                    gas:
+                      type: number
+                      description: Gas provided by the sender.
+                      example: 21000
+                    gasPrice:
+                      type: string
+                      description: Gas price provided by the sender in wei.
+                      example: '1000000000'
+                    transactionHash:
+                      type: string
+                      description: Hash of the transaction.
+                      example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+                    input:
+                      type: string
+                      description: The data sent along with the transaction.
+                      example: 0x
+                    nonce:
+                      type: number
+                      description: The number of transactions made by the sender prior to this one.
+                      example: 26836405
+                    to:
+                      type: string
+                      description: Address of the receiver. 'null' when its a contract creation transaction.
+                      example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
+                    transactionIndex:
+                      type: number
+                      description: Integer of the transactions index position in the block.
+                      example: 3
+                    value:
+                      type: string
+                      description: Value transferred in wei.
+                      example: '1000000000000000000'
+                    gasUsed:
+                      type: number
+                      description: The amount of gas used by this specific transaction alone.
+                      example: 21000
+                    cumulativeGasUsed:
+                      type: number
+                      description: The total amount of gas used when this transaction was executed in the block.
+                      example: 314159
+                    contractAddress:
+                      type: string
+                      description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
+                      example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                    logs:
+                      type: array
+                      description: 'Log events, that happened in this transaction.'
+                      items:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                            description: From which this event originated from.
+                            example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                          topics:
+                            type: array
+                            description: 'An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.'
+                            items:
+                              type: string
+                              example: '0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234'
+                          data:
+                            type: string
+                            description: The data containing non-indexed log parameter.
+                          logIndex:
+                            type: number
+                            description: Integer of the event index position in the block.
+                          transactionIndex:
+                            type: number
+                            description: 'Integer of the transaction’s index position, the event was created in.'
+                          transactionHash:
+                            type: string
+                            description: Hash of the transaction this event was created in.
+                            example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -703,7 +1848,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -716,8 +1861,162 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/TransferEthBlockchain'
-                - $ref: '#/components/schemas/TransferEthBlockchainKMS'
+                - type: object
+                  title: PrivateKey
+                  properties:
+                    data:
+                      type: string
+                      maxLength: 50000
+                      description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
+                      example: My note to recipient.
+                    nonce:
+                      type: number
+                      minimum: 0
+                      description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
+                    to:
+                      description: Blockchain address to send assets
+                      example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                      maxLength: 42
+                      minLength: 42
+                      type: string
+                    currency:
+                      description: Currency to transfer from Ethereum Blockchain Account.
+                      enum:
+                        - USDT
+                        - LEO
+                        - LINK
+                        - UNI
+                        - FREE
+                        - GMC
+                        - GMC_BSC
+                        - RMD
+                        - MKR
+                        - USDC
+                        - BAT
+                        - TUSD
+                        - BUSD
+                        - PAX
+                        - PAXG
+                        - PLTC
+                        - MMY
+                        - WBTC
+                        - XCON
+                        - ETH
+                      example: ETH
+                      type: string
+                    fee:
+                      description: 'Custom defined fee. If not present, it will be calculated automatically.'
+                      type: object
+                      required:
+                        - gasLimit
+                        - gasPrice
+                      properties:
+                        gasLimit:
+                          type: string
+                          description: Gas limit for transaction in gas price.
+                          example: '40000'
+                          pattern: '^[+]?\d+$'
+                        gasPrice:
+                          type: string
+                          description: Gas price in Gwei.
+                          example: '20'
+                          pattern: '^[+]?\d+$'
+                    amount:
+                      description: Amount to be sent in Ether.
+                      example: '100000'
+                      pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+                      type: string
+                    fromPrivateKey:
+                      type: string
+                      maxLength: 66
+                      example: '0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2'
+                      minLength: 66
+                      description: 'Private key of sender address. Private key, or signature Id must be present.'
+                  required:
+                    - to
+                    - currency
+                    - fromPrivateKey
+                - type: object
+                  title: SignatureId
+                  properties:
+                    data:
+                      type: string
+                      maxLength: 50000
+                      description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
+                      example: My note to recipient.
+                    nonce:
+                      type: number
+                      minimum: 0
+                      description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
+                    to:
+                      description: Blockchain address to send assets
+                      example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                      maxLength: 42
+                      minLength: 42
+                      type: string
+                    currency:
+                      description: Currency to transfer from Ethereum Blockchain Account.
+                      enum:
+                        - USDT
+                        - LEO
+                        - LINK
+                        - UNI
+                        - FREE
+                        - GMC
+                        - GMC_BSC
+                        - RMD
+                        - MKR
+                        - USDC
+                        - BAT
+                        - TUSD
+                        - BUSD
+                        - PAX
+                        - PAXG
+                        - PLTC
+                        - MMY
+                        - WBTC
+                        - XCON
+                        - ETH
+                      example: ETH
+                      type: string
+                    fee:
+                      description: 'Custom defined fee. If not present, it will be calculated automatically.'
+                      type: object
+                      required:
+                        - gasLimit
+                        - gasPrice
+                      properties:
+                        gasLimit:
+                          type: string
+                          description: Gas limit for transaction in gas price.
+                          example: '40000'
+                          pattern: '^[+]?\d+$'
+                        gasPrice:
+                          type: string
+                          description: Gas price in Gwei.
+                          example: '20'
+                          pattern: '^[+]?\d+$'
+                    amount:
+                      description: Amount to be sent in Ether.
+                      example: '100000'
+                      pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+                      type: string
+                    signatureId:
+                      type: string
+                      minLength: 36
+                      maxLength: 36
+                      format: uuid
+                      example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
+                      description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+                    index:
+                      type: number
+                      minimum: 0
+                      description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+                  required:
+                    - to
+                    - amount
+                    - currency
+                    - signatureId
         required: true
       responses:
         '200':
@@ -725,22 +2024,122 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/TransactionHashKMS'
-                  - $ref: '#/components/schemas/SignatureId'
+                  - type: object
+                    title: null
+                    properties:
+                      txId:
+                        description: TX hash of successful transaction.
+                        example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+                        type: string
+                      failed:
+                        description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+                        example: false
+                        type: boolean
+                    required:
+                      - txId
+                  - type: object
+                    title: SignatureId
+                    properties:
+                      signatureId:
+                        format: uuid
+                        description: 'ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.'
+                        example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+                        type: string
+                    required:
+                      - signatureId
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '403':
           description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
@@ -748,17 +2147,131 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403EthBroadcast'
-                  - $ref: '#/components/schemas/Error403EthGasPrice'
-                  - $ref: '#/components/schemas/Error403EthTxBody'
-                  - $ref: '#/components/schemas/Error403EthGasCalculation'
-                  - $ref: '#/components/schemas/Error403EthTxHash'
-                  - $ref: '#/components/schemas/Error403EthTxSign'
+                  - properties:
+                      errorCode:
+                        description: ethereum.broadcast.failed
+                        example: ethereum.broadcast.failed
+                        type: string
+                      message:
+                        description: 'Unable to broadcast transaction due to ${error}.'
+                        example: 'Unable to broadcast transaction due to ${error}.'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: gas.price.failed
+                        example: gas.price.failed
+                        type: string
+                      message:
+                        description: Unable to obtain current GAS price.
+                        example: Unable to obtain current GAS price.
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: ethereum.transaction.body
+                        example: ethereum.transaction.body
+                        type: string
+                      message:
+                        description: 'Either currency, or tokenAddress must be defined.'
+                        example: 'Either currency, or tokenAddress must be defined.'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.gas
+                        example: eth.transaction.gas
+                        type: string
+                      message:
+                        description: 'Unable to calculate gas limit for transaction. ${error}'
+                        example: 'Unable to calculate gas limit for transaction. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.hash
+                        example: eth.transaction.hash
+                        type: string
+                      message:
+                        description: 'Unable to calculate transaction hash. ${error}'
+                        example: 'Unable to calculate transaction hash. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.sign
+                        example: eth.transaction.sign
+                        type: string
+                      message:
+                        description: 'Unable to sign transaction. ${error}'
+                        example: 'Unable to sign transaction. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -784,7 +2297,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -796,7 +2309,40 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EthEstimateGas'
+              type: object
+              properties:
+                from:
+                  type: string
+                  maxLength: 42
+                  example: '0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef'
+                  minLength: 42
+                  description: Sender address.
+                to:
+                  description: Blockchain address to send assets
+                  example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                  maxLength: 42
+                  minLength: 42
+                  type: string
+                contractAddress:
+                  description: 'Contract address of ERC20 token, if transaction is ERC20 token'
+                  example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                  maxLength: 42
+                  minLength: 42
+                  type: string
+                amount:
+                  description: Amount to be sent in Ether or ERC20.
+                  example: '100000'
+                  pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+                  type: string
+                data:
+                  type: string
+                  maxLength: 50000
+                  description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
+                  example: My note to recipient.
+              required:
+                - to
+                - amount
+                - from
         required: true
       responses:
         '200':
@@ -858,15 +2404,94 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '403':
           description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
@@ -874,13 +2499,59 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403EthTxBody'
-                  - $ref: '#/components/schemas/Error403EthGasCalculation'
+                  - properties:
+                      errorCode:
+                        description: ethereum.transaction.body
+                        example: ethereum.transaction.body
+                        type: string
+                      message:
+                        description: 'Either currency, or tokenAddress must be defined.'
+                        example: 'Either currency, or tokenAddress must be defined.'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.gas
+                        example: eth.transaction.gas
+                        type: string
+                      message:
+                        description: 'Unable to calculate gas limit for transaction. ${error}'
+                        example: 'Unable to calculate gas limit for transaction. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -911,7 +2582,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -924,9 +2595,179 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/CallSmartContractMethod'
-                - $ref: '#/components/schemas/CallReadSmartContractMethod'
-                - $ref: '#/components/schemas/CallSmartContractMethodKMS'
+                - type: object
+                  title: PrivateKey
+                  properties:
+                    contractAddress:
+                      maxLength: 42
+                      minLength: 42
+                      description: Address of ERC20 token
+                      example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                      type: string
+                    methodName:
+                      minLength: 1
+                      maxLength: 500
+                      description: Name of the method to invoke on smart contract.
+                      type: string
+                      example: transfer
+                    methodABI:
+                      type: object
+                      example:
+                        inputs:
+                          - internalType: uint256
+                            name: amount
+                            type: uint256
+                        name: stake
+                        outputs: []
+                        stateMutability: nonpayable
+                        type: function
+                      description: ABI of the method to invoke.
+                    params:
+                      type: array
+                      items:
+                        type: object
+                      description: Parameters of the method to be invoked.
+                    amount:
+                      description: Amount of the assets to be sent.
+                      example: '100000'
+                      pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+                      type: string
+                    fromPrivateKey:
+                      type: string
+                      maxLength: 66
+                      example: '0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2'
+                      minLength: 66
+                      description: 'Private key of sender address. Private key, or signature Id must be present.'
+                    nonce:
+                      type: number
+                      minimum: 0
+                      description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
+                    fee:
+                      description: 'Custom defined fee. If not present, it will be calculated automatically.'
+                      type: object
+                      required:
+                        - gasLimit
+                        - gasPrice
+                      properties:
+                        gasLimit:
+                          type: string
+                          description: Gas limit for transaction in gas price.
+                          pattern: '^[+]?\d+$'
+                          example: '40000'
+                        gasPrice:
+                          type: string
+                          description: Gas price in Gwei.
+                          pattern: '^[+]?\d+$'
+                          example: '20'
+                  required:
+                    - contractAddress
+                    - params
+                    - methodABI
+                    - fromPrivateKey
+                    - methodName
+                - type: object
+                  title: Call SC read method
+                  properties:
+                    contractAddress:
+                      maxLength: 42
+                      minLength: 42
+                      description: Address of ERC20 token
+                      example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                      type: string
+                    methodName:
+                      minLength: 1
+                      maxLength: 500
+                      description: Name of the method to invoke on smart contract.
+                      type: string
+                      example: transfer
+                    methodABI:
+                      type: object
+                      example:
+                        inputs:
+                          - internalType: uint256
+                            name: amount
+                            type: uint256
+                        name: stake
+                        outputs: []
+                        stateMutability: nonpayable
+                        type: function
+                      description: ABI of the method to invoke.
+                    params:
+                      type: array
+                      items:
+                        type: object
+                      description: Parameters of the method to be invoked.
+                  required:
+                    - contractAddress
+                    - params
+                    - methodABI
+                    - methodName
+                - type: object
+                  title: Signature
+                  properties:
+                    contractAddress:
+                      maxLength: 42
+                      minLength: 42
+                      description: Address of ERC20 token
+                      example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                      type: string
+                    amount:
+                      description: Amount of the assets to be sent.
+                      example: '100000'
+                      pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+                      type: string
+                    methodName:
+                      minLength: 1
+                      maxLength: 500
+                      description: Name of the method to invoke on smart contract.
+                      type: string
+                      example: transfer
+                    methodABI:
+                      type: object
+                      description: ABI of the method to invoke.
+                    params:
+                      type: array
+                      items:
+                        type: object
+                      description: Parameters of the method to be invoked.
+                    signatureId:
+                      type: string
+                      minLength: 36
+                      maxLength: 36
+                      format: uuid
+                      example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
+                      description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
+                    index:
+                      type: number
+                      minimum: 0
+                      description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
+                    nonce:
+                      type: number
+                      minimum: 0
+                      description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
+                    fee:
+                      description: 'Custom defined fee. If not present, it will be calculated automatically.'
+                      type: object
+                      required:
+                        - gasLimit
+                        - gasPrice
+                      properties:
+                        gasLimit:
+                          type: string
+                          description: Gas limit for transaction in gas price.
+                          pattern: '^[+]?\d+$'
+                          example: '40000'
+                        gasPrice:
+                          type: string
+                          description: Gas price in Gwei.
+                          pattern: '^[+]?\d+$'
+                          example: '20'
+                  required:
+                    - contractAddress
+                    - params
+                    - methodABI
+                    - signatureId
+                    - methodName
         required: true
       responses:
         '200':
@@ -934,23 +2775,135 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/TransactionHashKMS'
-                  - $ref: '#/components/schemas/SignatureId'
-                  - $ref: '#/components/schemas/Data'
+                  - type: object
+                    title: null
+                    properties:
+                      txId:
+                        description: TX hash of successful transaction.
+                        example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+                        type: string
+                      failed:
+                        description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+                        example: false
+                        type: boolean
+                    required:
+                      - txId
+                  - type: object
+                    title: SignatureId
+                    properties:
+                      signatureId:
+                        format: uuid
+                        description: 'ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.'
+                        example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+                        type: string
+                    required:
+                      - signatureId
+                  - type: object
+                    properties:
+                      data:
+                        description: 'Result of the method, if the method was read only.'
+                        example: 2
+                        oneOf:
+                          - type: object
+                          - type: string
+                          - type: number
+                          - type: array
+                          - type: boolean
+                    required:
+                      - data
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '403':
           description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
@@ -958,17 +2911,132 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403EthBroadcast'
-                  - $ref: '#/components/schemas/Error403EthGasPrice'
-                  - $ref: '#/components/schemas/Error403EthScBody'
-                  - $ref: '#/components/schemas/Error403EthGasCalculation'
-                  - $ref: '#/components/schemas/Error403EthTxHash'
-                  - $ref: '#/components/schemas/Error403EthTxSign'
+                  - type: object
+                    title: ethereum.sc.invalid
+                    properties:
+                      errorCode:
+                        description: ethereum.sc.invalid
+                        example: ethereum.sc.invalid
+                        type: string
+                      message:
+                        description: Invalid parameters for smart contract invocation.
+                        example: Invalid parameters for smart contract invocation.
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                  - properties:
+                      errorCode:
+                        description: ethereum.broadcast.failed
+                        example: ethereum.broadcast.failed
+                        type: string
+                      message:
+                        description: 'Unable to broadcast transaction due to ${error}.'
+                        example: 'Unable to broadcast transaction due to ${error}.'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: gas.price.failed
+                        example: gas.price.failed
+                        type: string
+                      message:
+                        description: Unable to obtain current GAS price.
+                        example: Unable to obtain current GAS price.
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.gas
+                        example: eth.transaction.gas
+                        type: string
+                      message:
+                        description: 'Unable to calculate gas limit for transaction. ${error}'
+                        example: 'Unable to calculate gas limit for transaction. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.hash
+                        example: eth.transaction.hash
+                        type: string
+                      message:
+                        description: 'Unable to calculate transaction hash. ${error}'
+                        example: 'Unable to calculate transaction hash. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.sign
+                        example: eth.transaction.sign
+                        type: string
+                      message:
+                        description: 'Unable to sign transaction. ${error}'
+                        example: 'Unable to sign transaction. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -1014,7 +3082,7 @@ paths:
             enum:
               - ethereum-ropsten
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -1029,27 +3097,175 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EthTxInternal'
+                  type: object
+                  properties:
+                    from:
+                      type: string
+                      description: Address of the sender.
+                      example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
+                    to:
+                      type: string
+                      description: Address of the receiver. 'null' when its a contract creation transaction.
+                      example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
+                    value:
+                      type: string
+                      description: Value transferred in wei.
+                      example: '1000000000000000000'
+                    blockNumber:
+                      type: number
+                      description: Block number where this transaction was in.
+                      example: 6470854
+                    timeStamp:
+                      type: string
+                      description: Time of the transaction in seconds.
+                      example: '1477837690'
+                    hash:
+                      type: string
+                      description: Hash of the transaction.
+                      example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
+                    input:
+                      type: string
+                      description: The data sent along with the transaction.
+                      example: ''
+                    traceId:
+                      type: string
+                      description: Trace ID.
+                      example: '0'
+                    type:
+                      type: string
+                      description: Type of the transaction.
+                      example: create
+                    errCode:
+                      type: string
+                      description: Error code.
+                      example: Bad jump destination
+                    gas:
+                      type: number
+                      description: Gas provided by the sender.
+                      example: 21000
+                    isError:
+                      type: string
+                      example: '0'
+                      description: '1 if the transaction was not successful, 0 otherwise.'
+                    gasUsed:
+                      type: number
+                      description: The amount of gas used by this specific transaction alone.
+                      example: 21000
+                    contractAddress:
+                      type: string
+                      description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
+                      example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -1075,7 +3291,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -1087,40 +3303,176 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BroadcastKMS'
+              properties:
+                txData:
+                  description: Raw signed transaction to be published to network.
+                  example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
+                  maxLength: 500000
+                  minLength: 1
+                  type: string
+                signatureId:
+                  description: 'ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.'
+                  format: uuid
+                  example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
+                  type: string
+                  minLength: 36
+                  maxLength: 36
+              required:
+                - txData
+              type: object
         required: true
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionHashKMS'
+                type: object
+                title: null
+                properties:
+                  txId:
+                    description: TX hash of successful transaction.
+                    example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
+                    type: string
+                  failed:
+                    description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
+                    example: false
+                    type: boolean
+                required:
+                  - txId
           description: OK
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '403':
           description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error403EthBroadcast'
+                properties:
+                  errorCode:
+                    description: ethereum.broadcast.failed
+                    example: ethereum.broadcast.failed
+                    type: string
+                  message:
+                    description: 'Unable to broadcast transaction due to ${error}.'
+                    example: 'Unable to broadcast transaction due to ${error}.'
+                    type: string
+                  statusCode:
+                    description: '403'
+                    example: 403
+                    type: number
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                type: object
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
@@ -1146,7 +3498,7 @@ paths:
               - ethereum-ropsten
               - ethereum-rinkeby
             maxLength: 50
-        - description: <b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.
+        - description: '<b>For requests WITHOUT API key in HTTP header</b>. To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls. If API key in http header, testnet/mainnet is recognized automatically.'
           in: query
           name: type
           required: false
@@ -1158,21 +3510,44 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EthEstimateGas'
+              type: object
+              properties:
+                from:
+                  type: string
+                  maxLength: 42
+                  example: '0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef'
+                  minLength: 42
+                  description: Sender address.
+                to:
+                  description: Blockchain address to send assets
+                  example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                  maxLength: 42
+                  minLength: 42
+                  type: string
+                contractAddress:
+                  description: 'Contract address of ERC20 token, if transaction is ERC20 token'
+                  example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
+                  maxLength: 42
+                  minLength: 42
+                  type: string
+                amount:
+                  description: Amount to be sent in Ether or ERC20.
+                  example: '100000'
+                  pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
+                  type: string
+                data:
+                  type: string
+                  maxLength: 50000
+                  description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
+                  example: My note to recipient.
+              required:
+                - to
+                - amount
+                - from
         required: true
       responses:
         '200':
-          headers:
-            x-current-block:
-              schema:
-                type: number
-                description: "Current bock of the blockchain."
-            x-current-block-time:
-              schema:
-                type: string
-                format: data-time
-                example: "2021-11-11T11:54:49.000Z"
-                description: "Current block time."
+          headers: {}
           content:
             application/json:
               schema:
@@ -1180,10 +3555,10 @@ paths:
                 required:
                   - error
                   - result
-                properties: 
+                properties:
                   error:
                     type: boolean
-                    description: "If all estimations succeeded."
+                    description: If all estimations succeeded.
                     example: false
                   result:
                     type: array
@@ -1194,14 +3569,14 @@ paths:
                       properties:
                         error:
                           type: boolean
-                          description: "If estimation succeeded."
+                          description: If estimation succeeded.
                           example: false
                         contractAddress:
-                          description: "Contract address of ERC20 token, if transaction is ERC20 token"
-                          example: "0x687422eEA2cB73B5d3e242bA5456b782919AFc85"
+                          description: 'Contract address of ERC20 token, if transaction is ERC20 token'
+                          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
                           maxLength: 42
                           minLength: 42
-                          type: "string"
+                          type: string
                         data:
                           type: object
                           required:
@@ -1211,14 +3586,14 @@ paths:
                           properties:
                             gasLimit:
                               type: string
-                              description: "Gas limit for transaction in gas price."
-                              example: "40000"
+                              description: Gas limit for transaction in gas price.
+                              example: '40000'
                             gasPrice:
                               type: string
-                              description: "Gas price in wei."
+                              description: Gas price in wei.
                             estimations:
                               type: object
-                              description: Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.
+                              description: 'Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.'
                               required:
                                 - safe
                                 - standard
@@ -1227,24 +3602,24 @@ paths:
                             properties:
                               safe:
                                 type: string
-                                description: "Safe gas price in wei."
-                                example: "20000000000"
+                                description: Safe gas price in wei.
+                                example: '20000000000'
                               standard:
                                 type: string
-                                description: "Standard gas price in wei."
-                                example: "40000000000"
+                                description: Standard gas price in wei.
+                                example: '40000000000'
                               fast:
                                 type: string
-                                description: "Fast gas price in wei."
-                                example: "55000000000"
+                                description: Fast gas price in wei.
+                                example: '55000000000'
                               baseFee:
                                 type: string
                                 description: Base fee for EIP-1559 transactions in wei.
                                 example: '55000000000'
                         msg:
                           type: string
-                          description: "Error message. Present only if error - type."
-                          example: "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
+                          description: Error message. Present only if error - type.
+                          example: 'Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it''s an indirect IBAN address which can''t be converted.'
                 example:
                   error: true
                   result:
@@ -1265,15 +3640,94 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error400'
+                properties:
+                  errorCode:
+                    example: validation.failed
+                    description: validation.failed
+                    type: string
+                  message:
+                    example: Request validation failed. Please see data for additional information.
+                    description: Request validation failed. Please see data for additional information.
+                    type: string
+                  statusCode:
+                    example: 400
+                    description: '400'
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - target
+                      properties:
+                        target:
+                          type: object
+                          additionalProperties: true
+                          description: Request object present in the body of the HTTP request
+                          example:
+                            property: 12345
+                        value:
+                          type: number
+                          description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
+                          example: 12345
+                        property:
+                          type: string
+                          description: Property name of the target object which validation is wrong
+                          example: property1
+                        constraints:
+                          type: object
+                          additionalProperties: true
+                          description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
+                          example:
+                            min: property1 must not be less than 50000
+                required:
+                  - errorCode
+                  - message
+                  - statusCode
+                  - data
+                type: object
           description: Bad Request. Validation failed for the given object in the HTTP Body or Request parameters.
         '401':
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error401NotActive'
-                  - $ref: '#/components/schemas/Error401Invalid'
+                  - properties:
+                      errorCode:
+                        example: subscription.not.active
+                        description: subscription.not.active
+                        type: string
+                      message:
+                        example: Subscription not active anymore.
+                        description: Subscription not active anymore.
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        example: subscription.invalid
+                        description: subscription.invalid
+                        type: string
+                      message:
+                        example: 'Unable to find valid subscription for ''${apiKey}'''
+                        description: 'Unable to find valid subscription for ''${apiKey}'''
+                        type: string
+                      statusCode:
+                        example: 401
+                        description: '401'
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
           description: Unauthorized. Not valid or inactive subscription key present in the HTTP Header.
         '403':
           description: 'Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.'
@@ -1281,977 +3735,74 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Error403EthTxBody'
-                  - $ref: '#/components/schemas/Error403EthGasCalculation'
+                  - properties:
+                      errorCode:
+                        description: ethereum.transaction.body
+                        example: ethereum.transaction.body
+                        type: string
+                      message:
+                        description: 'Either currency, or tokenAddress must be defined.'
+                        example: 'Either currency, or tokenAddress must be defined.'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
+                  - properties:
+                      errorCode:
+                        description: eth.transaction.gas
+                        example: eth.transaction.gas
+                        type: string
+                      message:
+                        description: 'Unable to calculate gas limit for transaction. ${error}'
+                        example: 'Unable to calculate gas limit for transaction. ${error}'
+                        type: string
+                      statusCode:
+                        description: '403'
+                        example: 403
+                        type: number
+                    required:
+                      - errorCode
+                      - message
+                      - statusCode
+                    type: object
         '500':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error500'
+                properties:
+                  message:
+                    example: Internal server error
+                    description: Internal server error
+                    type: string
+                  statusCode:
+                    example: 500
+                    description: '500'
+                    type: number
+                required:
+                  - statusCode
+                  - message
+                type: object2
           description: Internal server error. There was an error on the server while processing the request.
       security:
         - X-Api-Key: []
 components:
-  schemas:
-    Error400:
-      properties:
-        errorCode:
-          example: validation.failed
-          description: validation.failed
-          type: string
-        message:
-          example: Request validation failed. Please see data for additional information.
-          description: Request validation failed. Please see data for additional information.
-          type: string
-        statusCode:
-          example: 400
-          description: '400'
-          type: number
-        data:
-          type: array
-          items:
-            type: object
-            required:
-              - target
-            properties:
-              target:
-                type: object
-                additionalProperties: true
-                description: Request object present in the body of the HTTP request
-                example:
-                  property: 12345
-              value:
-                type: number
-                description: 'Value of the target object which validation is wrong. Can be of any data type, example here is using type number.'
-                example: 12345
-              property:
-                type: string
-                description: Property name of the target object which validation is wrong
-                example: property1
-              constraints:
-                type: object
-                additionalProperties: true
-                description: 'Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.'
-                example:
-                  min: property1 must not be less than 50000
-      required:
-        - errorCode
-        - message
-        - statusCode
-        - data
-      type: object
-    Error401Invalid:
-      properties:
-        errorCode:
-          example: subscription.invalid
-          description: subscription.invalid
-          type: string
-        message:
-          example: 'Unable to find valid subscription for ''${apiKey}'''
-          description: 'Unable to find valid subscription for ''${apiKey}'''
-          type: string
-        statusCode:
-          example: 401
-          description: '401'
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error401NotActive:
-      properties:
-        errorCode:
-          example: subscription.not.active
-          description: subscription.not.active
-          type: string
-        message:
-          example: Subscription not active anymore.
-          description: Subscription not active anymore.
-          type: string
-        statusCode:
-          example: 401
-          description: '401'
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403TxNotFound:
-      properties:
-        errorCode:
-          description: tx.missing
-          example: tx.missing
-          type: string
-        message:
-          description: No such tx.
-          example: No such tx.
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthBroadcast:
-      properties:
-        errorCode:
-          description: ethereum.broadcast.failed
-          example: ethereum.broadcast.failed
-          type: string
-        message:
-          description: 'Unable to broadcast transaction due to ${error}.'
-          example: 'Unable to broadcast transaction due to ${error}.'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthGasCalculation:
-      properties:
-        errorCode:
-          description: eth.transaction.gas
-          example: eth.transaction.gas
-          type: string
-        message:
-          description: 'Unable to calculate gas limit for transaction. ${error}'
-          example: 'Unable to calculate gas limit for transaction. ${error}'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthTxBody:
-      properties:
-        errorCode:
-          description: ethereum.transaction.body
-          example: ethereum.transaction.body
-          type: string
-        message:
-          description: 'Either currency, or tokenAddress must be defined.'
-          example: 'Either currency, or tokenAddress must be defined.'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthScBody:
-      properties:
-        errorCode:
-          description: ethereum.sc.invalid
-          example: ethereum.sc.invalid
-          type: string
-        message:
-          description: Invalid parameters for smart contract invocation.
-          example: Invalid parameters for smart contract invocation.
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthGasPrice:
-      properties:
-        errorCode:
-          description: gas.price.failed
-          example: gas.price.failed
-          type: string
-        message:
-          description: Unable to obtain current GAS price.
-          example: Unable to obtain current GAS price.
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthTxHash:
-      properties:
-        errorCode:
-          description: eth.transaction.hash
-          example: eth.transaction.hash
-          type: string
-        message:
-          description: 'Unable to calculate transaction hash. ${error}'
-          example: 'Unable to calculate transaction hash. ${error}'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error403EthTxSign:
-      properties:
-        errorCode:
-          description: eth.transaction.sign
-          example: eth.transaction.sign
-          type: string
-        message:
-          description: 'Unable to sign transaction. ${error}'
-          example: 'Unable to sign transaction. ${error}'
-          type: string
-        statusCode:
-          description: '403'
-          example: 403
-          type: number
-      required:
-        - errorCode
-        - message
-        - statusCode
-      type: object
-    Error500:
-      properties:
-        message:
-          example: Internal server error
-          description: Internal server error
-          type: string
-        statusCode:
-          example: 500
-          description: '500'
-          type: number
-      required:
-        - statusCode
-        - message
-      type: object2
-    BroadcastKMS:
-      properties:
-        txData:
-          description: Raw signed transaction to be published to network.
-          example: 62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D
-          maxLength: 500000
-          minLength: 1
-          type: string
-        signatureId:
-          description: 'ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.'
-          format: uuid
-          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
-          type: string
-          minLength: 36
-          maxLength: 36
-      required:
-        - txData
-      type: object
-    EthBlock:
-      type: object
-      properties:
-        difficulty:
-          description: Difficulty for this block.
-          type: string
-          example: '3296820833'
-        extraData:
-          description: The 'extra data' field of this block.
-          type: string
-          example: 0x
-        gasLimit:
-          description: The maximum gas allowed in this block.
-          type: number
-          example: 8000000
-        gasUsed:
-          description: The total used gas by all transactions in this block.
-          type: number
-          example: 7985124
-        hash:
-          description: Hash of the block. 'null' when its pending block.
-          type: string
-          example: '0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc'
-        logsBloom:
-          description: The bloom filter for the logs of the block. 'null' when its pending block.
-          type: string
-          example: '0x042080004210492080800001610060ad9600005bc81502020800000043e302020381a404000100409102040240300641108004000400007000008000c049558055a800000a0001800748900806502004200400108205005418c0218802281a0408060000533210462021050470810a010140102809011814018281115020090201068401847000a04010000c00084062000485640d00020220181150020008589105a41c0880001112034100010882545410240011402a3480050104004c310204000002009490d0012022a040c20c20011020401020140250805100410060008280200008181a220114102800001648640828200c00a94c1003a2060e001000'
-        miner:
-          description: The address of the beneficiary to whom the mining rewards were given.
-          type: string
-          example: '0xD8869d9E3d497323561Fbca2319a9FC3F6f10c4B'
-        mixHash:
-          description: ''
-          type: string
-          example: '0x7a44a1f56f12ae825fdc04550d7c3af2344daab987691771c06235f25fafcaa6'
-        nonce:
-          description: Hash of the generated proof-of-work. 'null' when its pending block.
-          type: string
-          example: '0xfa1692f52a7ac672'
-        number:
-          description: The block number. 'null' when its pending block.
-          type: number
-          example: 6470657
-        parentHash:
-          description: Hash of the parent block.
-          type: string
-          example: '0xd34aab8a455027086ac54034e68608c84d984401a883b7b5d91f9ae0bbefda15'
-        receiptsRoot:
-          description: ''
-          type: string
-          example: '0x4a496b6b7f2a1c5850bf9eebbea7193807be0067b1c06f17b9dde4eef7b2f960'
-        sha3Uncles:
-          description: SHA3 of the uncles data in the block.
-          type: string
-          example: '0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347'
-        size:
-          description: The size of this block in bytes.
-          type: number
-          example: 15296
-        stateRoot:
-          description: The root of the final state trie of the block.
-          type: string
-          example: '0x32757c92f10c6c5a106c6fb4b9ca3ff301e413a59ca3d0513b4bf98c72efddba'
-        timestamp:
-          description: The unix timestamp for when the block was collated.
-          type: number
-          example: 1569600592
-        totalDifficulty:
-          description: Total difficulty of the chain until this block.
-          type: string
-          example: '23329673338013873'
-        transactions:
-          description: Array of transactions.
-          type: array
-          items:
-            $ref: '#/components/schemas/EthTx'
-        transactionsRoot:
-          description: The root of the transaction trie of the block.
-          type: string
-          example: '0x5990081ef8515d561b50255af03c5d505f7725ddef27405dc67d23bfd0f47704'
-    CallSmartContractMethod:
-      type: object
-      title: PrivateKey
-      properties:
-        contractAddress:
-          maxLength: 42
-          minLength: 42
-          description: Address of ERC20 token
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          type: string
-        methodName:
-          minLength: 1
-          maxLength: 500
-          description: Name of the method to invoke on smart contract.
-          type: string
-          example: transfer
-        methodABI:
-          type: object
-          example:
-            inputs:
-              - internalType: uint256
-                name: amount
-                type: uint256
-            name: stake
-            outputs: []
-            stateMutability: nonpayable
-            type: function
-          description: ABI of the method to invoke.
-        params:
-          type: array
-          items:
-            type: object
-          description: Parameters of the method to be invoked.
-        amount:
-          description: Amount of the assets to be sent.
-          example: '100000'
-          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
-          type: string
-        fromPrivateKey:
-          type: string
-          maxLength: 66
-          example: '0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2'
-          minLength: 66
-          description: 'Private key of sender address. Private key, or signature Id must be present.'
-        nonce:
-          type: number
-          minimum: 0
-          description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
-        fee:
-          description: 'Custom defined fee. If not present, it will be calculated automatically.'
-          type: object
-          required:
-            - gasLimit
-            - gasPrice
-          properties:
-            gasLimit:
-              type: string
-              description: Gas limit for transaction in gas price.
-              pattern: '^[+]?\d+$'
-              example: '40000'
-            gasPrice:
-              type: string
-              description: Gas price in Gwei.
-              pattern: '^[+]?\d+$'
-              example: '20'
-      required:
-        - contractAddress
-        - params
-        - methodABI
-        - fromPrivateKey
-        - methodName
-    CallReadSmartContractMethod:
-      type: object
-      title: Call SC read method
-      properties:
-        contractAddress:
-          maxLength: 42
-          minLength: 42
-          description: Address of ERC20 token
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          type: string
-        methodName:
-          minLength: 1
-          maxLength: 500
-          description: Name of the method to invoke on smart contract.
-          type: string
-          example: transfer
-        methodABI:
-          type: object
-          example:
-            inputs:
-              - internalType: uint256
-                name: amount
-                type: uint256
-            name: stake
-            outputs: []
-            stateMutability: nonpayable
-            type: function
-          description: ABI of the method to invoke.
-        params:
-          type: array
-          items:
-            type: object
-          description: Parameters of the method to be invoked.
-      required:
-        - contractAddress
-        - params
-        - methodABI
-        - methodName
-    CallSmartContractMethodKMS:
-      type: object
-      title: Signature
-      properties:
-        contractAddress:
-          maxLength: 42
-          minLength: 42
-          description: Address of ERC20 token
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          type: string
-        amount:
-          description: Amount of the assets to be sent.
-          example: '100000'
-          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
-          type: string
-        methodName:
-          minLength: 1
-          maxLength: 500
-          description: Name of the method to invoke on smart contract.
-          type: string
-          example: transfer
-        methodABI:
-          type: object
-          description: ABI of the method to invoke.
-        params:
-          type: array
-          items:
-            type: object
-          description: Parameters of the method to be invoked.
-        signatureId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          format: uuid
-          example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
-          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
-        index:
-          type: number
-          minimum: 0
-          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
-        nonce:
-          type: number
-          minimum: 0
-          description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
-        fee:
-          description: 'Custom defined fee. If not present, it will be calculated automatically.'
-          type: object
-          required:
-            - gasLimit
-            - gasPrice
-          properties:
-            gasLimit:
-              type: string
-              description: Gas limit for transaction in gas price.
-              pattern: '^[+]?\d+$'
-              example: '40000'
-            gasPrice:
-              type: string
-              description: Gas price in Gwei.
-              pattern: '^[+]?\d+$'
-              example: '20'
-      required:
-        - contractAddress
-        - params
-        - methodABI
-        - signatureId
-        - methodName
-    Data:
-      type: object
-      properties:
-        data:
-          description: 'Result of the method, if the method was read only.'
-          example: 2
-          oneOf:
-            - type: object
-            - type: string
-            - type: number
-            - type: array
-            - type: boolean
-      required:
-        - data
-    EthTx:
-      type: object
-      properties:
-        blockHash:
-          description: Hash of the block where this transaction was in.
-          type: string
-          example: '0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137'
-        status:
-          type: boolean
-          example: true
-          description: 'TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction.'
-        blockNumber:
-          type: number
-          description: Block number where this transaction was in.
-          example: 6470854
-        from:
-          type: string
-          description: Address of the sender.
-          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-        gas:
-          type: number
-          description: Gas provided by the sender.
-          example: 21000
-        gasPrice:
-          type: string
-          description: Gas price provided by the sender in wei.
-          example: '1000000000'
-        transactionHash:
-          type: string
-          description: Hash of the transaction.
-          example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
-        input:
-          type: string
-          description: The data sent along with the transaction.
-          example: 0x
-        nonce:
-          type: number
-          description: The number of transactions made by the sender prior to this one.
-          example: 26836405
-        to:
-          type: string
-          description: Address of the receiver. 'null' when its a contract creation transaction.
-          example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
-        transactionIndex:
-          type: number
-          description: Integer of the transactions index position in the block.
-          example: 3
-        value:
-          type: string
-          description: Value transferred in wei.
-          example: '1000000000000000000'
-        gasUsed:
-          type: number
-          description: The amount of gas used by this specific transaction alone.
-          example: 21000
-        cumulativeGasUsed:
-          type: number
-          description: The total amount of gas used when this transaction was executed in the block.
-          example: 314159
-        contractAddress:
-          type: string
-          description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
-          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-        logs:
-          type: array
-          description: 'Log events, that happened in this transaction.'
-          items:
-            type: object
-            properties:
-              address:
-                type: string
-                description: From which this event originated from.
-                example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-              topics:
-                type: array
-                description: 'An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.'
-                items:
-                  type: string
-                  example: '0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234'
-              data:
-                type: string
-                description: The data containing non-indexed log parameter.
-              logIndex:
-                type: number
-                description: Integer of the event index position in the block.
-              transactionIndex:
-                type: number
-                description: 'Integer of the transaction’s index position, the event was created in.'
-              transactionHash:
-                type: string
-                description: Hash of the transaction this event was created in.
-                example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
-    EthTxInternal:
-      type: object
-      properties:
-        from:
-          type: string
-          description: Address of the sender.
-          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-        to:
-          type: string
-          description: Address of the receiver. 'null' when its a contract creation transaction.
-          example: '0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d'
-        value:
-          type: string
-          description: Value transferred in wei.
-          example: '1000000000000000000'
-        blockNumber:
-          type: number
-          description: Block number where this transaction was in.
-          example: 6470854
-        timeStamp:
-          type: string
-          description: Time of the transaction in seconds.
-          example: '1477837690'
-        hash:
-          type: string
-          description: Hash of the transaction.
-          example: '0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7'
-        input:
-          type: string
-          description: The data sent along with the transaction.
-          example: ''
-        traceId:
-          type: string
-          description: Trace ID.
-          example: '0'
-        type:
-          type: string
-          description: Type of the transaction.
-          example: create
-        errCode:
-          type: string
-          description: Error code.
-          example: Bad jump destination
-        gas:
-          type: number
-          description: Gas provided by the sender.
-          example: 21000
-        isError:
-          type: string
-          example: '0'
-          description: '1 if the transaction was not successful, 0 otherwise.'
-        gasUsed:
-          type: number
-          description: The amount of gas used by this specific transaction alone.
-          example: 21000
-        contractAddress:
-          type: string
-          description: 'The contract address created, if the transaction was a contract creation, otherwise null.'
-          example: '0x81b7E08F65Bdf5648606c89998A9CC8164397647'
-    PrivKey:
-      type: object
-      properties:
-        key:
-          description: Generated private key.
-          example: cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ
-          type: string
-    PrivKeyRequest:
-      type: object
-      properties:
-        index:
-          description: Derivation index of private key to generate.
-          example: 0
-          maximum: 2147483647
-          type: integer
-        mnemonic:
-          maxLength: 500
-          minLength: 1
-          description: Mnemonic to generate private key from.
-          example: urge pulp usage sister evidence arrest palm math please chief egg abuse
-          type: string
-      required:
-        - mnemonic
-        - index
-    SignatureId:
-      type: object
-      title: SignatureId
-      properties:
-        signatureId:
-          format: uuid
-          description: 'ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.'
-          example: 1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6
-          type: string
-      required:
-        - signatureId
-    TransferEthBlockchain:
-      type: object
-      title: PrivateKey
-      properties:
-        data:
-          type: string
-          maxLength: 50000
-          description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
-          example: My note to recipient.
-        nonce:
-          type: number
-          minimum: 0
-          description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
-        to:
-          description: Blockchain address to send assets
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          maxLength: 42
-          minLength: 42
-          type: string
-        currency:
-          description: Currency to transfer from Ethereum Blockchain Account.
-          enum:
-            - USDT
-            - LEO
-            - LINK
-            - UNI
-            - FREE
-            - GMC
-            - GMC_BSC
-            - RMD
-            - MKR
-            - USDC
-            - BAT
-            - TUSD
-            - BUSD
-            - PAX
-            - PAXG
-            - PLTC
-            - MMY
-            - WBTC
-            - XCON
-            - ETH
-          example: ETH
-          type: string
-        fee:
-          description: 'Custom defined fee. If not present, it will be calculated automatically.'
-          type: object
-          required:
-            - gasLimit
-            - gasPrice
-          properties:
-            gasLimit:
-              type: string
-              description: Gas limit for transaction in gas price.
-              example: '40000'
-              pattern: '^[+]?\d+$'
-            gasPrice:
-              type: string
-              description: Gas price in Gwei.
-              example: '20'
-              pattern: '^[+]?\d+$'
-        amount:
-          description: Amount to be sent in Ether.
-          example: '100000'
-          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
-          type: string
-        fromPrivateKey:
-          type: string
-          maxLength: 66
-          example: '0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2'
-          minLength: 66
-          description: 'Private key of sender address. Private key, or signature Id must be present.'
-      required:
-        - to
-        - currency
-        - fromPrivateKey
-    TransferEthBlockchainKMS:
-      type: object
-      title: SignatureId
-      properties:
-        data:
-          type: string
-          maxLength: 50000
-          description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
-          example: My note to recipient.
-        nonce:
-          type: number
-          minimum: 0
-          description: 'Nonce to be set to Ethereum transaction. If not present, last known nonce will be used.'
-        to:
-          description: Blockchain address to send assets
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          maxLength: 42
-          minLength: 42
-          type: string
-        currency:
-          description: Currency to transfer from Ethereum Blockchain Account.
-          enum:
-            - USDT
-            - LEO
-            - LINK
-            - UNI
-            - FREE
-            - GMC
-            - GMC_BSC
-            - RMD
-            - MKR
-            - USDC
-            - BAT
-            - TUSD
-            - BUSD
-            - PAX
-            - PAXG
-            - PLTC
-            - MMY
-            - WBTC
-            - XCON
-            - ETH
-          example: ETH
-          type: string
-        fee:
-          description: 'Custom defined fee. If not present, it will be calculated automatically.'
-          type: object
-          required:
-            - gasLimit
-            - gasPrice
-          properties:
-            gasLimit:
-              type: string
-              description: Gas limit for transaction in gas price.
-              example: '40000'
-              pattern: '^[+]?\d+$'
-            gasPrice:
-              type: string
-              description: Gas price in Gwei.
-              example: '20'
-              pattern: '^[+]?\d+$'
-        amount:
-          description: Amount to be sent in Ether.
-          example: '100000'
-          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
-          type: string
-        signatureId:
-          type: string
-          minLength: 36
-          maxLength: 36
-          format: uuid
-          example: 26d3883e-4e17-48b3-a0ee-09a3e484ac83
-          description: 'Identifier of the private key associated in signing application. Private key, or signature Id must be present.'
-        index:
-          type: number
-          minimum: 0
-          description: 'If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic.'
-      required:
-        - to
-        - amount
-        - currency
-        - signatureId
-    TransactionHashKMS:
-      type: object
-      title: 
-      properties:
-        txId:
-          description: TX hash of successful transaction.
-          example: c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9
-          type: string
-        failed:
-          description: 'In case of the transaction was broadcast to the blockchain, but it was not possible to complete Tatum KMS signature, reponse is marked as failed and must be marked manually.'
-          example: false
-          type: boolean
-      required:
-        - txId
-    EthEstimateGas:
-      type: object
-      properties:
-        from:
-          type: string
-          maxLength: 42
-          example: '0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef'
-          minLength: 42
-          description: Sender address.
-        to:
-          description: Blockchain address to send assets
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          maxLength: 42
-          minLength: 42
-          type: string
-        contractAddress:
-          description: 'Contract address of ERC20 token, if transaction is ERC20 token'
-          example: '0x687422eEA2cB73B5d3e242bA5456b782919AFc85'
-          maxLength: 42
-          minLength: 42
-          type: string
-        amount:
-          description: Amount to be sent in Ether or ERC20.
-          example: '100000'
-          pattern: '^[+]?((\d+(\.\d*)?)|(\.\d+))$'
-          type: string
-        data:
-          type: string
-          maxLength: 50000
-          description: 'Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.'
-          example: My note to recipient.
-      required:
-        - to
-        - amount
-        - from
-    Wallet:
-      type: object
-      properties:
-        mnemonic:
-          description: Generated mnemonic for wallet.
-          example: >-
-            urge pulp usage sister evidence arrest palm math please chief egg
-            abuse
-          type: string
-        xpub:
-          description: >-
-            Generated Extended public key for wallet with derivation path
-            according to BIP44. This key can be used to generate addresses.
-          example: >-
-            xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid
-          type: string
   securitySchemes:
-      X-Api-Key:
-        description: |
-          To maintain the highest security level, Tatum requires X-API-Key HTTP header.
-          This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
-          Each X-API-Key is bound to the test or production blockchains.
+    X-Api-Key:
+      description: |
+        To maintain the highest security level, Tatum requires X-API-Key HTTP header.
+        This X-API-Key represents identification of the plan and can be used by 1 developer or per environment.
+        Each X-API-Key is bound to the test or production blockchains.
 
-          Connecting without an X-API-Key results in the creation of an API Key tied to your IP Address.
-          This API Key is limited to 5req/s and 10M credits, these limits are renewed the 1st day of each month and are applicable to both testnet and mainnet.
-          To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls, otherwise the api key will default to mainnet.
-          You do not need to supply an API key in the X-API-Key header.
-        in: header
-        name: x-api-key
-        type: apiKey
+        Connecting without an X-API-Key results in the creation of an API Key tied to your IP Address.
+        This API Key is limited to 5req/s and 10M credits, these limits are renewed the 1st day of each month and are applicable to both testnet and mainnet.
+        To differentiate between testnet and mainnet, please supply a ?type=testnet|mainnet query parameter with your calls, otherwise the api key will default to mainnet.
+        You do not need to supply an API key in the X-API-Key header.
+      in: header
+      name: x-api-key
+      type: apiKey
